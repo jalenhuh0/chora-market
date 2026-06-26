@@ -4,32 +4,22 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import {
   alphaPct,
-  balances,
   communitySettlement,
-  comparePeople,
   fairProfit,
   liveProbability,
   liveSummary,
   marketStats,
   marketStatsExcluding,
   missingVoters,
-  personDebtBreakdown,
+  predictionStreak,
   predictorColor,
   predictorScore,
   rankingScore,
   repScore,
-  tagCounts,
-  totalGroupVolume as computeTotalGroupVolume,
   totalPicks,
-  peopleWithBetStats,
   accuracyPct,
   brierScore,
   calibrationGrade,
-  consistencyScore,
-  hotStreakLeaders,
-  improvementDelta,
-  predictionStreak,
-  verdictCounts,
   verdictLabel,
   verdictSummary,
   rankForScore,
@@ -67,97 +57,14 @@ import {
   syncPeopleFromMembers,
   type GroupMemberProfile,
 } from "@/lib/market/members";
-import type { Bet, LiveState, TabMarketState, UserProfile } from "@/lib/market/types";
+import type { Bet, TabMarketState, UserProfile } from "@/lib/market/types";
+import { CATEGORIES } from "@/hooks/tab-market/constants";
+import { createDemoState } from "@/hooks/tab-market/demo-state";
+import { applyExclusiveScaleVote, nowTime } from "@/hooks/tab-market/helpers";
+import type { DoubleDownDraft, LiveDraft, Screen, UseTabMarketProps, VoteDraft } from "@/hooks/tab-market/types";
+import { useTabMarketComputed } from "@/hooks/tab-market/useTabMarketComputed";
 
-export type Screen = "dashboard" | "entry" | "bets" | "people" | "settings";
-
-export type UseTabMarketProps = {
-  groupId: string;
-  groupName: string;
-  inviteCode: string;
-  userId: string;
-  onSignOut: () => void;
-  onSwitchGroup: () => void;
-};
-
-type VoteDraft = { voter: string; conf: number };
-type LiveDraft = LiveState;
-type DoubleDownDraft = { person: string; side: "yes" | "no"; stake: number };
-
-const CATEGORIES = ["Food", "Bet", "Item", "Ride", "Favor", "Cash", "Other"];
-
-function nowTime() {
-  return new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
-}
-
-function applyExclusiveScaleVote(state: TabMarketState, target: string, voter: string, tag: string) {
-  state.tagVotes[target] = state.tagVotes[target] || {};
-  const best = state.scale?.[0]?.label;
-  const worst = state.scale?.[4]?.label;
-  if (tag === best || tag === worst) {
-    Object.keys(state.tagVotes).forEach((person) => {
-      if (person !== target && state.tagVotes[person]?.[voter] === tag) {
-        delete state.tagVotes[person][voter];
-      }
-    });
-  }
-  state.tagVotes[target][voter] = tag;
-}
-
-function createDemoState(): TabMarketState {
-  return normalizeState({
-    settings: { app: APP_NAME, creditors: "Net Creditors", mooches: "Biggest Mooches" },
-    dashboardTitles: { profit: "Net Profit / Loss", shame: "Hall of Shame" },
-    scale: [
-      { label: "🐐 GOAT", mod: 1.2 },
-      { label: "📈 Sharp", mod: 1.1 },
-      { label: "😐 Neutral", mod: 1.0 },
-      { label: "📉 Sus", mod: 0.9 },
-      { label: "🚨 Giga Scammer", mod: 0.8 },
-    ],
-    ranks: defaultRanks(),
-    people: ["Jalen", "Will", "Sarah", "Matt", "Kevin"],
-    debts: [
-      { id: uid(), reason: "Lost Cane's bet", owed: "Jalen", owes: "Matt", amount: 17, category: "Food", settled: false },
-      { id: uid(), reason: "Borrowed hoodie replacement value", owed: "Sarah", owes: "Will", amount: 45, category: "Item", settled: false },
-      { id: uid(), reason: "Covered sushi", owed: "Kevin", owes: "Matt", amount: 38, category: "Food", settled: false },
-    ],
-    bets: [
-      {
-        id: uid(),
-        title: "Joseph 6/15 three-point challenge",
-        sideAUser: "Will",
-        sideBUser: "Jalen",
-        sideATake: "Joseph makes 6 of 15 threes",
-        sideBTake: "Joseph does not make 6 of 15 threes",
-        creator: "Sarah",
-        stake: 20,
-        notes: "Demo bet showing live odds and custom fair payout.",
-        status: "open",
-        votes: {
-          Sarah: { pick: "a", probA: 60 },
-          Matt: { pick: "b", probA: 45 },
-          Kevin: { pick: "a", probA: 55 },
-        },
-        live: { target: 6, total: 15, made: 5, attempted: 13, p: 35 },
-        doubleDowns: [],
-        created: Date.now(),
-      },
-    ],
-    notifs: [{ title: "Demo active bet loaded", text: "Open Bet Market to see Custom Live Bet at Fair Odds." }],
-    activity: [],
-    tagVotes: {},
-    verdictLabels: { good: "🫡 Respectable", bad: "🐷 Lucky Piggy" },
-    verdictVotes: {},
-    stats: {
-      Jalen: { correct: 2, wrong: 1, profit: 20, elo: 1088, alphaSum: 0.22, alphaCount: 3, brierSum: 0.52 },
-      Will: { correct: 1, wrong: 2, profit: -20, elo: 963, alphaSum: -0.12, alphaCount: 3, brierSum: 0.73 },
-      Sarah: { correct: 3, wrong: 1, profit: 40, elo: 1125, alphaSum: 0.31, alphaCount: 4, brierSum: 0.61 },
-      Matt: { correct: 0, wrong: 3, profit: -60, elo: 910, alphaSum: -0.38, alphaCount: 3, brierSum: 0.92 },
-      Kevin: { correct: 2, wrong: 2, profit: 0, elo: 1002, alphaSum: 0.02, alphaCount: 4, brierSum: 0.78 },
-    },
-  });
-}
+export type { Screen, UseTabMarketProps } from "@/hooks/tab-market/types";
 
 export function useTabMarket({
   groupId,
@@ -1069,154 +976,27 @@ export function useTabMarket({
   const showPersonDetail = useCallback((person: string) => setPersonModal(person), []);
   const closePersonDetail = useCallback(() => setPersonModal(null), []);
 
-  // Computed render data
-  const normalized = useMemo(() => normalizeState(structuredClone(state)), [state]);
-
-  const openDebts = useMemo(
-    () =>
-      normalized.debts
-        .filter((d) => !d.settled)
-        .sort((a, b) => (a.created || 0) - (b.created || 0)),
-    [normalized.debts]
-  );
-  const groupVolume = useMemo(() => computeTotalGroupVolume(normalized), [normalized]);
-  const activeBets = useMemo(
-    () => normalized.bets.filter((b) => !b.status || b.status === "open"),
-    [normalized.bets]
-  );
-  const resolvedBets = useMemo(
-    () =>
-      normalized.bets
-        .filter((b) => b.status === "resolved")
-        .sort((a, b) => (b.created || 0) - (a.created || 0)),
-    [normalized.bets]
-  );
-  const bal = useMemo(() => balances(normalized), [normalized]);
-  const sortedBal = useMemo(() => Object.entries(bal).sort((a, b) => b[1] - a[1]), [bal]);
-  const counts = useMemo(() => tagCounts(normalized), [normalized]);
-  const worstLabel = normalized.scale?.[4]?.label || "🚨 Giga Scammer";
-
-  const predictors = useMemo(
-    () =>
-      peopleWithBetStats(normalized)
-        .filter((p) => totalPicks(normalized, p) > 0)
-        .sort(
-          (a, b) =>
-            predictorScore(normalized, b) - predictorScore(normalized, a) ||
-            alphaPct(normalized, b) - alphaPct(normalized, a) ||
-            accuracyPct(normalized, b) - accuracyPct(normalized, a) ||
-            repScore(normalized, b) - repScore(normalized, a) ||
-            totalPicks(normalized, b) - totalPicks(normalized, a) ||
-            a.localeCompare(b)
-        ),
-    [normalized]
-  );
-
-  const alphaRows = useMemo(
-    () =>
-      peopleWithBetStats(normalized)
-        .filter((p) => (normalized.stats[p]?.alphaCount || 0) > 0)
-        .sort(comparePeople(normalized, "alpha"))
-        .map((p) => [
-          p,
-          alphaPct(normalized, p),
-          repScore(normalized, p),
-          normalized.stats[p]?.alphaCount || 0,
-          rankingScore(normalized, p, "alpha"),
-        ] as const),
-    [normalized]
-  );
-
-  const profitRows = useMemo(
-    () =>
-      peopleWithBetStats(normalized)
-        .map((p) => {
-          const st = normalized.stats[p] || {};
-          return [p, Number(st.profit || 0), repScore(normalized, p), alphaPct(normalized, p), totalPicks(normalized, p)] as const;
-        })
-        .filter((row) => row[4] > 0 || row[1] !== 0)
-        .sort((a, b) => b[1] - a[1] || b[2] - a[2] || b[3] - a[3] || b[4] - a[4] || a[0].localeCompare(b[0])),
-    [normalized]
-  );
-
-  const brierRows = useMemo(
-    () =>
-      peopleWithBetStats(normalized)
-        .filter((p) => totalPicks(normalized, p) > 0)
-        .map((p) => [p, brierScore(normalized, p), totalPicks(normalized, p)] as const)
-        .sort((a, b) => a[1] - b[1] || b[2] - a[2] || a[0].localeCompare(b[0])),
-    [normalized]
-  );
-
-  const accuracyRows = useMemo(
-    () =>
-      peopleWithBetStats(normalized)
-        .filter((p) => totalPicks(normalized, p) > 0)
-        .map((p) => {
-          const st = normalized.stats[p] || { correct: 0, wrong: 0 };
-          const n = totalPicks(normalized, p);
-          return [p, accuracyPct(normalized, p), wilsonLowerBound(st.correct || 0, n), n] as const;
-        })
-        .sort((a, b) => b[2] - a[2] || b[1] - a[1] || b[3] - a[3] || a[0].localeCompare(b[0])),
-    [normalized]
-  );
-
-  const consistencyRows = useMemo(
-    () =>
-      peopleWithBetStats(normalized)
-        .map((p) => [p, consistencyScore(normalized, p), totalPicks(normalized, p)] as const)
-        .filter((row): row is [string, number, number] => row[1] !== null)
-        .sort((a, b) => b[1] - a[1] || b[2] - a[2] || a[0].localeCompare(b[0])),
-    [normalized]
-  );
-
-  const improvedRows = useMemo(
-    () =>
-      peopleWithBetStats(normalized)
-        .map((p) => [p, improvementDelta(normalized, p), totalPicks(normalized, p)] as const)
-        .filter((row): row is [string, number, number] => row[1] !== null)
-        .sort((a, b) => b[1] - a[1] || b[2] - a[2] || a[0].localeCompare(b[0])),
-    [normalized]
-  );
-
-  const hotStreaks = useMemo(() => hotStreakLeaders(normalized), [normalized]);
-
-  const verdictRows = useMemo(
-    () =>
-      normalized.people
-        .map((p) =>
-          [p, verdictCounts(normalized, p), alphaPct(normalized, p), accuracyPct(normalized, p), repScore(normalized, p)] as const
-        )
-        .filter((x) => x[1].total > 0)
-        .sort((a, b) => b[1].total - a[1].total || b[2] - a[2] || b[3] - a[3] || b[4] - a[4]),
-    [normalized]
-  );
-
-  const shameRows = useMemo(
-    () =>
-      normalized.people
-        .map((p) => [p, counts[p]?.[worstLabel] || 0] as const)
-        .sort((a, b) => b[1] - a[1])
-        .filter((x) => x[1] > 0),
-    [normalized, counts, worstLabel]
-  );
-
-  const personDetail = useMemo(() => {
-    if (!personModal) return null;
-    const person = personModal;
-    const data = personDebtBreakdown(normalized, person);
-    const st = normalized.stats[person] || { correct: 0, wrong: 0, profit: 0 };
-    const games = (st.correct || 0) + (st.wrong || 0);
-    const acc = games ? Math.round((st.correct / games) * 100) : 0;
-    const relationships = Object.entries(data.byPerson).sort(
-      (a, b) => Math.abs(b[1].owesMe - b[1].iOwe) - Math.abs(a[1].owesMe - a[1].iOwe)
-    );
-    const items = [
-      ...data.owedToMe.map((d) => ({ ...d, dir: `${d.owes} owes ${person}`, cls: "pos" as const })),
-      ...data.iOwe.map((d) => ({ ...d, dir: `${person} owes ${d.owed}`, cls: "neg" as const })),
-    ].sort((a, b) => Number(b.amount) - Number(a.amount));
-    return { person, data, st, games, acc, streak: predictionStreak(normalized, person), relationships, items };
-  }, [personModal, normalized]);
+  const {
+    normalized,
+    openDebts,
+    groupVolume,
+    activeBets,
+    resolvedBets,
+    sortedBal,
+    counts,
+    worstLabel,
+    predictors,
+    alphaRows,
+    profitRows,
+    brierRows,
+    accuracyRows,
+    consistencyRows,
+    improvedRows,
+    hotStreaks,
+    verdictRows,
+    shameRows,
+    personDetail,
+  } = useTabMarketComputed(state, personModal);
 
   return {
     loading,
