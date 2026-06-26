@@ -4,27 +4,12 @@ import type { ChoraMarketHook } from "@/hooks/useChoraMarket";
 import { Empty } from "@/components/chora-market/Empty";
 import { ExpandableSection } from "@/components/chora-market/ExpandableSection";
 import { PersonLeaderboardItem } from "@/components/chora-market/leaderboard/PersonLeaderboardItem";
-import { SecondaryLeaderboard } from "@/components/chora-market/leaderboard/SecondaryLeaderboard";
-import { ADVANCED_LEADERBOARDS, PRIMARY_LEADERBOARDS } from "@/components/chora-market/dashboard-leaderboards";
-
-function LeaderboardGrid({ tm, configs }: { tm: ChoraMarketHook; configs: typeof PRIMARY_LEADERBOARDS }) {
-  return (
-    <div className="leaderboardSubGrid">
-      {configs.map((config) => (
-        <SecondaryLeaderboard
-          key={config.title}
-          title={config.title}
-          hint={config.hint}
-          empty={config.empty}
-          rows={config.getRows(tm)}
-          tm={tm}
-          formatAmount={(row) => config.formatAmount(tm, row)}
-          amountClass={config.amountClass}
-        />
-      ))}
-    </div>
-  );
-}
+import { LeaderboardGrid } from "@/components/chora-market/leaderboard/LeaderboardGrid";
+import {
+  ADVANCED_LEADERBOARDS,
+  ADVANCED_STATS_SUMMARY,
+  PRIMARY_LEADERBOARDS,
+} from "@/components/chora-market/dashboard-leaderboards";
 
 export function DashboardScreen({ tm }: { tm: ChoraMarketHook }) {
   return (
@@ -81,7 +66,7 @@ export function DashboardScreen({ tm }: { tm: ChoraMarketHook }) {
 
       <ExpandableSection
         title="Advanced stats"
-        summary="Brier score, accuracy, consistency, improvement"
+        summary={ADVANCED_STATS_SUMMARY}
         className="card expandableCard"
       >
         <LeaderboardGrid tm={tm} configs={ADVANCED_LEADERBOARDS} />
@@ -134,7 +119,11 @@ export function DashboardScreen({ tm }: { tm: ChoraMarketHook }) {
         </div>
       </div>
 
-      <ExpandableSection title="Community verdicts" summary={`${tm.verdictRows.length} people rated`} className="card expandableCard">
+      <ExpandableSection
+        title="Community verdicts"
+        summary={`${tm.verdictRows.length} people rated`}
+        className="card expandableCard"
+      >
         <div className="list">
           {tm.verdictRows.length ? (
             tm.verdictRows.map(([p, c]) => (

@@ -328,7 +328,7 @@ export function useBets(core: ChoraMarketCore) {
           ? market.hasMarket
             ? `Bet resolved. ${loserPerson} owes ${winnerPerson} ${money(iouAmount)} at ${marketPct}% community odds.`
             : `Bet resolved. ${loserPerson} owes ${winnerPerson} ${money(iouAmount)} (flat stake — add group odds next time for community pricing).`
-          : "Bet resolved. Dashboard updated with predictors, alpha, and profit/loss."
+          : "Bet resolved. Dashboard updated with predictors, edge, and profit/loss."
       );
     },
     [saveWithActivity, showToast, setScreen, stateRef]

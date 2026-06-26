@@ -58,7 +58,7 @@ export function PersonDetailModal({ tm }: { tm: ChoraMarketHook }) {
                 </b>
               </div>
               <div className="detailStat">
-                <span>Market alpha</span>
+                <span>Edge vs group</span>
                 <b className={tm.alphaPct(pd.person) >= 0 ? "pos" : "neg"}>
                   {(tm.alphaPct(pd.person) * 100).toFixed(1)}%
                 </b>

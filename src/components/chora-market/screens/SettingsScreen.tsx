@@ -152,7 +152,7 @@ export function SettingsScreen({ tm }: { tm: ChoraMarketHook }) {
           <div className="card">
             <h2>Customize Community Verdicts</h2>
             <p className="muted">
-              For high-alpha/high-accuracy players, let the group vote whether they are actually respectable or just
+              For players with strong edge or accuracy, let the group vote whether they are actually respectable or just
               lucky.
             </p>
             <div className="row">

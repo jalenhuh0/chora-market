@@ -89,7 +89,7 @@ export function PeopleScreen({ tm }: { tm: ChoraMarketHook }) {
                         ) : null}
                         <div className="rankBadge">{tm.rankForScore(rep)}</div>
                         <div className="small">
-                          Rep {rep} · {tm.verdictLabel(p)} · Alpha{" "}
+                          Rep {rep} · {tm.verdictLabel(p)} · Edge{" "}
                           <span className={alpha >= 0 ? "alphaGood" : "alphaBad"}>
                             {(alpha * 100).toFixed(1)}%
                           </span>{" "}
@@ -181,7 +181,7 @@ export function PeopleScreen({ tm }: { tm: ChoraMarketHook }) {
           <div className="card">
             <h2>Community Verdict Vote</h2>
             <p className="muted">
-              For someone with good accuracy/alpha: are they legit, or just running hot?
+              For someone with good accuracy or edge: are they legit, or just running hot?
             </p>
             <label>Who are we judging?</label>
             <select value={tm.verdictPerson} onChange={(e) => tm.setVerdictPerson(e.target.value)}>
