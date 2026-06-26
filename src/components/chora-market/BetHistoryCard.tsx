@@ -1,9 +1,9 @@
 "use client";
 
 import type { Bet } from "@/lib/market/types";
-import type { TabMarketHook } from "@/hooks/useTabMarket";
+import type { ChoraMarketHook } from "@/hooks/useChoraMarket";
 
-export function BetHistoryCard({ tm, bet }: { tm: TabMarketHook; bet: Bet }) {
+export function BetHistoryCard({ tm, bet }: { tm: ChoraMarketHook; bet: Bet }) {
   const m = tm.marketStats(bet);
   const pa = m.hasMarket ? Math.round(m.pa * 100) : null;
   const pb = m.hasMarket ? 100 - pa! : null;

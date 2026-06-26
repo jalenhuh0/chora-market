@@ -1,6 +1,6 @@
-# Tab Market — Next.js + Supabase
+# Chora Market — Next.js + Supabase
 
-Your Tab Market HTML app, converted to a **Next.js** web app with **Supabase** auth and cloud sync.
+Friend-group IOU and bet tracker as a **Next.js** web app with **Supabase** auth and cloud sync.
 
 ## What's included
 
@@ -12,7 +12,7 @@ Your Tab Market HTML app, converted to a **Next.js** web app with **Supabase** a
 | **groups** | Private friend groups + invite codes |
 | **markets** | Bet markets (synced from the app) |
 | **predictions** | Odds votes on each market |
-| **TabMarketApp** | Your full original UI (dashboard, IOUs, bets, people, settings) |
+| **ChoraMarketApp** | Full UI (dashboard, IOUs, bets, people, settings) |
 
 ## Prerequisites
 
@@ -74,6 +74,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 ```bash
 npm install
 npm run dev
+npm test          # optional — calculation unit tests
 ```
 
 Open [http://localhost:3000](http://localhost:3000)
@@ -84,7 +85,7 @@ Open [http://localhost:3000](http://localhost:3000)
 
 1. **Sign up** with email + password
 2. **Create a group** (or join with invite code)
-3. Use Tab Market as before — data saves to Supabase automatically
+3. Use Chora Market — data saves to Supabase automatically
 4. **Share invite link** from the header (`/join/YOURCODE`)
 
 ---
@@ -94,9 +95,9 @@ Open [http://localhost:3000](http://localhost:3000)
 1. Push this folder to GitHub
 2. Go to [vercel.com](https://vercel.com) → **Import project**
 3. Add the same env vars (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`)
-4. Deploy — you get a URL like `https://tab-market.vercel.app`
+4. Deploy — production URL: `https://chora-market-app.vercel.app`
 
-In Supabase → **Authentication → URL Configuration**, add your Vercel URL to **Site URL** and **Redirect URLs**.
+In Supabase → **Authentication → URL Configuration**, add your Vercel URL to **Site URL** and **Redirect URLs** (include `/auth/callback` and localhost for dev).
 
 ---
 
@@ -105,13 +106,13 @@ In Supabase → **Authentication → URL Configuration**, add your Vercel URL to
 ```
 src/
   app/              Next.js pages + layout
-  components/       TabMarketApp, AuthForm, GroupGate
-  hooks/            useTabMarket (all app logic)
+  components/       ChoraMarketApp, AuthForm, GroupGate, chora-market/*
+  hooks/            useChoraMarket (+ chora-market/* domain hooks)
   lib/market/       Types, calculations, Supabase sync
+  lib/storage.ts    Active group localStorage (migrates legacy key)
   lib/supabase/     Auth client helpers
 supabase/
   migrations/       Database schema
-source-index.html   Your original file (reference)
 ```
 
 ---

@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import type { TabMarketHook } from "@/hooks/useTabMarket";
+import type { ChoraMarketHook } from "@/hooks/useChoraMarket";
 import { Avatar } from "@/components/Avatar";
 
-export function SettingsScreen({ tm }: { tm: TabMarketHook }) {
+export function SettingsScreen({ tm }: { tm: ChoraMarketHook }) {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 

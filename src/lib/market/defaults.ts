@@ -1,4 +1,4 @@
-import type { TabMarketState } from "./types";
+import type { ChoraMarketState } from "./types";
 
 export const APP_NAME = "Chora Market";
 
@@ -19,7 +19,7 @@ export const defaultScale = () => [
   { label: "🚨 Giga Scammer", mod: 0.8 },
 ];
 
-export function createDefaultState(): TabMarketState {
+export function createDefaultState(): ChoraMarketState {
   return {
     settings: {
       app: APP_NAME,
@@ -41,7 +41,7 @@ export function createDefaultState(): TabMarketState {
   };
 }
 
-export function normalizeState(state: TabMarketState): TabMarketState {
+export function normalizeState(state: ChoraMarketState): ChoraMarketState {
   state.settings = state.settings || {
     app: APP_NAME,
     creditors: "Top Net Creditors",

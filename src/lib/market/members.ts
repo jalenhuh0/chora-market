@@ -1,5 +1,5 @@
 import { normalizeState } from "./defaults";
-import type { TabMarketState, UserProfile } from "./types";
+import type { ChoraMarketState, UserProfile } from "./types";
 
 export type { UserProfile };
 
@@ -51,10 +51,10 @@ export function getMyPlayerName(
 
 /** Rename a player everywhere in group state and dedupe the people list. */
 export function renamePlayerInState(
-  state: TabMarketState,
+  state: ChoraMarketState,
   oldName: string,
   newName: string
-): TabMarketState {
+): ChoraMarketState {
   const next = normalizeState(structuredClone(state));
   if (!oldName || !newName || oldName === newName) return next;
 
@@ -104,9 +104,9 @@ export function renamePlayerInState(
 
 /** Keep one player entry per signed-in member; remove stale alias duplicates. */
 export function syncPeopleFromMembers(
-  state: TabMarketState,
+  state: ChoraMarketState,
   members: GroupMemberProfile[]
-): { state: TabMarketState; changed: boolean } {
+): { state: ChoraMarketState; changed: boolean } {
   const next = normalizeState(structuredClone(state));
   let changed = false;
 

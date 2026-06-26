@@ -1,15 +1,15 @@
 "use client";
 
-import { useTabMarket } from "@/hooks/useTabMarket";
-import type { Screen } from "@/hooks/useTabMarket";
-import { AppHeader } from "@/components/tab-market/AppHeader";
-import { Empty } from "@/components/tab-market/Empty";
-import { PersonDetailModal } from "@/components/tab-market/PersonDetailModal";
-import { BetsScreen } from "@/components/tab-market/screens/BetsScreen";
-import { DashboardScreen } from "@/components/tab-market/screens/DashboardScreen";
-import { EntryScreen } from "@/components/tab-market/screens/EntryScreen";
-import { PeopleScreen } from "@/components/tab-market/screens/PeopleScreen";
-import { SettingsScreen } from "@/components/tab-market/screens/SettingsScreen";
+import { useChoraMarket } from "@/hooks/useChoraMarket";
+import type { Screen } from "@/hooks/useChoraMarket";
+import { AppHeader } from "@/components/chora-market/AppHeader";
+import { Empty } from "@/components/chora-market/Empty";
+import { PersonDetailModal } from "@/components/chora-market/PersonDetailModal";
+import { BetsScreen } from "@/components/chora-market/screens/BetsScreen";
+import { DashboardScreen } from "@/components/chora-market/screens/DashboardScreen";
+import { EntryScreen } from "@/components/chora-market/screens/EntryScreen";
+import { PeopleScreen } from "@/components/chora-market/screens/PeopleScreen";
+import { SettingsScreen } from "@/components/chora-market/screens/SettingsScreen";
 
 type Props = {
   groupId: string;
@@ -20,8 +20,8 @@ type Props = {
   onSwitchGroup: () => void;
 };
 
-export default function TabMarketApp(props: Props) {
-  const tm = useTabMarket(props);
+export default function ChoraMarketApp(props: Props) {
+  const tm = useChoraMarket(props);
   const tabs: { id: Screen; label: string }[] = [
     { id: "dashboard", label: "Dashboard" },
     { id: "entry", label: "New IOU" },

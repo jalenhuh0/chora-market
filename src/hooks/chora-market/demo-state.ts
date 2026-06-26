@@ -1,7 +1,7 @@
 import { APP_NAME, defaultRanks, normalizeState, uid } from "@/lib/market/defaults";
-import type { TabMarketState } from "@/lib/market/types";
+import type { ChoraMarketState } from "@/lib/market/types";
 
-export function createDemoState(): TabMarketState {
+export function createDemoState(): ChoraMarketState {
   return normalizeState({
     settings: { app: APP_NAME, creditors: "Net Creditors", mooches: "Biggest Mooches" },
     dashboardTitles: { profit: "Net Profit / Loss", shame: "Hall of Shame" },

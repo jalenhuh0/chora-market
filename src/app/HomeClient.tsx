@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import TabMarketApp from "@/components/TabMarketApp";
+import ChoraMarketApp from "@/components/ChoraMarketApp";
+import { clearActiveGroupId, getActiveGroupId, setActiveGroupId } from "@/lib/storage";
 import { AuthForm } from "@/components/AuthForm";
 import { GroupGate } from "@/components/GroupGate";
 import { getGroupByInviteCode, isGroupMember } from "@/lib/market/db";
@@ -60,7 +61,7 @@ export default function HomeClient() {
         if (invitedGroup) {
           const alreadyMember = await isGroupMember(supabase, invitedGroup.id, user.id);
           if (alreadyMember) {
-            localStorage.setItem("tabMarketActiveGroup", invitedGroup.id);
+            setActiveGroupId(invitedGroup.id);
             setGroup(invitedGroup);
             setShowGroupGate(false);
             setPendingInvite(null);
@@ -80,7 +81,7 @@ export default function HomeClient() {
       }
     }
 
-    const storedGroupId = localStorage.getItem("tabMarketActiveGroup");
+    const storedGroupId = getActiveGroupId();
     if (storedGroupId) {
       const { data } = await supabase
         .from("groups")
@@ -117,7 +118,7 @@ export default function HomeClient() {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    localStorage.removeItem("tabMarketActiveGroup");
+    clearActiveGroupId();
     setGroup(null);
     setShowGroupGate(true);
     setPendingInvite(null);
@@ -125,7 +126,7 @@ export default function HomeClient() {
   };
 
   const handleGroupSelected = (g: GroupInfo) => {
-    localStorage.setItem("tabMarketActiveGroup", g.id);
+    setActiveGroupId(g.id);
     setGroup(g);
     setShowGroupGate(false);
     setPendingInvite(null);
@@ -133,7 +134,7 @@ export default function HomeClient() {
   };
 
   const handleSwitchGroup = () => {
-    localStorage.removeItem("tabMarketActiveGroup");
+    clearActiveGroupId();
     setGroup(null);
     setShowGroupGate(true);
     setPendingInvite(null);
@@ -178,7 +179,7 @@ export default function HomeClient() {
   }
 
   return (
-    <TabMarketApp
+    <ChoraMarketApp
       groupId={group.id}
       groupName={group.name}
       inviteCode={group.invite_code}

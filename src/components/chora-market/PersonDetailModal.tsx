@@ -1,9 +1,9 @@
 "use client";
 
-import type { TabMarketHook } from "@/hooks/useTabMarket";
-import { Empty } from "@/components/tab-market/Empty";
+import type { ChoraMarketHook } from "@/hooks/useChoraMarket";
+import { Empty } from "@/components/chora-market/Empty";
 
-export function PersonDetailModal({ tm }: { tm: TabMarketHook }) {
+export function PersonDetailModal({ tm }: { tm: ChoraMarketHook }) {
   const pd = tm.personDetail;
 
   return (

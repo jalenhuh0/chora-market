@@ -1,13 +1,13 @@
 "use client";
 
-import type { TabMarketHook } from "@/hooks/useTabMarket";
-import type { Screen } from "@/hooks/useTabMarket";
+import type { ChoraMarketHook } from "@/hooks/useChoraMarket";
+import type { Screen } from "@/hooks/useChoraMarket";
 
 export function AppHeader({
   tm,
   tabs,
 }: {
-  tm: TabMarketHook;
+  tm: ChoraMarketHook;
   tabs: { id: Screen; label: string }[];
 }) {
   return (

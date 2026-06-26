@@ -1,11 +1,11 @@
 "use client";
 
-import type { TabMarketHook } from "@/hooks/useTabMarket";
-import { Empty } from "@/components/tab-market/Empty";
-import { PersonLeaderboardItem } from "@/components/tab-market/leaderboard/PersonLeaderboardItem";
-import { SecondaryLeaderboard } from "@/components/tab-market/leaderboard/SecondaryLeaderboard";
+import type { ChoraMarketHook } from "@/hooks/useChoraMarket";
+import { Empty } from "@/components/chora-market/Empty";
+import { PersonLeaderboardItem } from "@/components/chora-market/leaderboard/PersonLeaderboardItem";
+import { SecondaryLeaderboard } from "@/components/chora-market/leaderboard/SecondaryLeaderboard";
 
-export function DashboardScreen({ tm }: { tm: TabMarketHook }) {
+export function DashboardScreen({ tm }: { tm: ChoraMarketHook }) {
   return (
       <section id="dashboard" className={`screen${tm.screen === "dashboard" ? " active" : ""}`}>
         <div className="metricGrid">

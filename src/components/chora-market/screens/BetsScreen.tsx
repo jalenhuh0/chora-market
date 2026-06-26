@@ -1,11 +1,11 @@
 "use client";
 
-import type { TabMarketHook } from "@/hooks/useTabMarket";
-import { Empty } from "@/components/tab-market/Empty";
-import { BetCard } from "@/components/tab-market/BetCard";
-import { BetHistoryCard } from "@/components/tab-market/BetHistoryCard";
+import type { ChoraMarketHook } from "@/hooks/useChoraMarket";
+import { Empty } from "@/components/chora-market/Empty";
+import { BetCard } from "@/components/chora-market/bets/BetCard";
+import { BetHistoryCard } from "@/components/chora-market/BetHistoryCard";
 
-export function BetsScreen({ tm }: { tm: TabMarketHook }) {
+export function BetsScreen({ tm }: { tm: ChoraMarketHook }) {
   return (
       <section id="bets" className={`screen${tm.screen === "bets" ? " active" : ""}`}>
         <div className="grid">

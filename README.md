@@ -22,4 +22,4 @@ Open [http://localhost:3000](http://localhost:3000)
 - **markets** — bet markets
 - **predictions** — odds votes on markets
 
-Your original UI is preserved in `src/components/TabMarketApp.tsx`.
+Main UI lives in `src/components/ChoraMarketApp.tsx`.

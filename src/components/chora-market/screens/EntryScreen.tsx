@@ -1,9 +1,9 @@
 "use client";
 
-import type { TabMarketHook } from "@/hooks/useTabMarket";
-import { Empty } from "@/components/tab-market/Empty";
+import type { ChoraMarketHook } from "@/hooks/useChoraMarket";
+import { Empty } from "@/components/chora-market/Empty";
 
-function listPeople(tm: TabMarketHook, arr: [string, number][], cls: "pos" | "neg") {
+function listPeople(tm: ChoraMarketHook, arr: [string, number][], cls: "pos" | "neg") {
   if (!arr.length) return <Empty>Nothing here yet.</Empty>;
   const max = Math.max(...arr.map((x) => x[1]), 1);
   return arr.map(([p, v], i) => (
@@ -29,7 +29,7 @@ function listPeople(tm: TabMarketHook, arr: [string, number][], cls: "pos" | "ne
   ));
 }
 
-export function EntryScreen({ tm }: { tm: TabMarketHook }) {
+export function EntryScreen({ tm }: { tm: ChoraMarketHook }) {
   return (
       <section id="entry" className={`screen${tm.screen === "entry" ? " active" : ""}`}>
         <div className="grid">

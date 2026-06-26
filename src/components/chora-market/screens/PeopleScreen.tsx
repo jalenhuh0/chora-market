@@ -1,11 +1,11 @@
 "use client";
 
-import type { TabMarketHook } from "@/hooks/useTabMarket";
+import type { ChoraMarketHook } from "@/hooks/useChoraMarket";
 import { Avatar } from "@/components/Avatar";
 import { findMemberForPlayer } from "@/lib/market/members";
-import { Empty } from "@/components/tab-market/Empty";
+import { Empty } from "@/components/chora-market/Empty";
 
-export function PeopleScreen({ tm }: { tm: TabMarketHook }) {
+export function PeopleScreen({ tm }: { tm: ChoraMarketHook }) {
   return (
       <section id="people" className={`screen${tm.screen === "people" ? " active" : ""}`}>
         <div className="card" style={{ marginBottom: 20 }}>

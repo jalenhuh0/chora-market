@@ -23,9 +23,9 @@ import {
   wilsonLowerBound,
 } from "@/lib/market/calculations";
 import { normalizeState } from "@/lib/market/defaults";
-import type { TabMarketState } from "@/lib/market/types";
+import type { ChoraMarketState } from "@/lib/market/types";
 
-export function useTabMarketComputed(state: TabMarketState, personModal: string | null) {
+export function useChoraMarketComputed(state: ChoraMarketState, personModal: string | null) {
   const normalized = useMemo(() => normalizeState(structuredClone(state)), [state]);
 
   const openDebts = useMemo(

@@ -67,7 +67,7 @@ export type Bet = {
   b?: string;
 };
 
-export type TabMarketState = {
+export type ChoraMarketState = {
   settings: {
     app: string;
     creditors: string;
@@ -94,7 +94,7 @@ export type GroupRow = {
   id: string;
   name: string;
   invite_code: string;
-  app_state: Partial<TabMarketState>;
+  app_state: Partial<ChoraMarketState>;
   created_by: string | null;
 };
 

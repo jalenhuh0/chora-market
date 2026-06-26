@@ -1,15 +1,15 @@
 "use client";
 
-import type { TabMarketHook } from "@/hooks/useTabMarket";
-import { Empty } from "@/components/tab-market/Empty";
-import { PersonLeaderboardItem } from "@/components/tab-market/leaderboard/PersonLeaderboardItem";
+import type { ChoraMarketHook } from "@/hooks/useChoraMarket";
+import { Empty } from "@/components/chora-market/Empty";
+import { PersonLeaderboardItem } from "@/components/chora-market/leaderboard/PersonLeaderboardItem";
 
 type SecondaryLeaderboardProps = {
   title: string;
   hint?: string;
   empty: string;
   rows: readonly (readonly [string, ...unknown[]])[];
-  tm: TabMarketHook;
+  tm: ChoraMarketHook;
   formatAmount: (row: readonly [string, ...unknown[]]) => string;
   amountClass?: (row: readonly [string, ...unknown[]]) => string;
 };

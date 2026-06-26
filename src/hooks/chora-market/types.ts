@@ -2,7 +2,7 @@ import type { LiveState } from "@/lib/market/types";
 
 export type Screen = "dashboard" | "entry" | "bets" | "people" | "settings";
 
-export type UseTabMarketProps = {
+export type UseChoraMarketProps = {
   groupId: string;
   groupName: string;
   inviteCode: string;

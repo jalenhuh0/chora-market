@@ -1,5 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Bet, TabMarketState } from "./types";
+import type { Bet, ChoraMarketState } from "./types";
 import { createDefaultState, inviteCode, normalizeState } from "./defaults";
 import { syncPeopleFromMembers } from "./members";
 
@@ -72,7 +72,7 @@ function betToMarketRow(groupId: string, bet: Bet) {
 export async function loadGroupState(
   supabase: SupabaseClient,
   groupId: string
-): Promise<TabMarketState> {
+): Promise<ChoraMarketState> {
   const [{ data: group, error: gErr }, { data: markets, error: mErr }] = await Promise.all([
     supabase.from("groups").select("app_state").eq("id", groupId).single(),
     supabase.from("markets").select("*").eq("group_id", groupId),
@@ -83,7 +83,7 @@ export async function loadGroupState(
 
   const base = normalizeState({
     ...createDefaultState(),
-    ...(group?.app_state as Partial<TabMarketState>),
+    ...(group?.app_state as Partial<ChoraMarketState>),
   });
 
   if (!markets?.length) {
@@ -122,7 +122,7 @@ export async function loadGroupState(
 export async function saveGroupState(
   supabase: SupabaseClient,
   groupId: string,
-  state: TabMarketState
+  state: ChoraMarketState
 ) {
   const normalized = normalizeState(structuredClone(state));
 
@@ -286,7 +286,7 @@ async function resolveMemberLedgerName(
 export async function syncGroupPlayersFromMembers(
   supabase: SupabaseClient,
   groupId: string
-): Promise<TabMarketState> {
+): Promise<ChoraMarketState> {
   const members = await listGroupMembers(supabase, groupId);
   const loaded = await loadGroupState(supabase, groupId);
   const { state, changed } = syncPeopleFromMembers(loaded, members);
