@@ -5,6 +5,7 @@ import type { ChoraMarketHook } from "@/hooks/useChoraMarket";
 import { BetLiveOddsSection } from "@/components/chora-market/bets/BetLiveOddsSection";
 import { BetPayGrid } from "@/components/chora-market/bets/BetPayGrid";
 import { BetVoteSide } from "@/components/chora-market/bets/BetVoteSide";
+import { ExpandableSection } from "@/components/chora-market/ExpandableSection";
 
 export function BetCard({ tm, bet }: { tm: ChoraMarketHook; bet: Bet }) {
   const m = tm.marketStats(bet);
@@ -50,7 +51,10 @@ export function BetCard({ tm, bet }: { tm: ChoraMarketHook; bet: Bet }) {
       </div>
 
       <BetPayGrid tm={tm} bet={bet} m={m} pa={pa} pb={pb} stake={stake} />
-      <BetLiveOddsSection tm={tm} bet={bet} stake={stake} />
+
+      <ExpandableSection title="Live odds (optional)" summary="In-game fair pricing & double-down">
+        <BetLiveOddsSection tm={tm} bet={bet} stake={stake} />
+      </ExpandableSection>
 
       <div className="small" style={{ marginTop: 12 }}>
         Market votes: {votes}

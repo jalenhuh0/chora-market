@@ -22,24 +22,27 @@ type Props = {
 
 export default function ChoraMarketApp(props: Props) {
   const tm = useChoraMarket(props);
-  const tabs: { id: Screen; label: string }[] = [
-    { id: "dashboard", label: "Dashboard" },
-    { id: "entry", label: "New IOU" },
-    { id: "bets", label: "Bet Market" },
-    { id: "people", label: "People" },
-    { id: "settings", label: "Settings" },
+  const tabs: { id: Screen; label: string; shortLabel: string }[] = [
+    { id: "dashboard", label: "Dashboard", shortLabel: "Home" },
+    { id: "entry", label: "New IOU", shortLabel: "IOU" },
+    { id: "bets", label: "Bet Market", shortLabel: "Bets" },
+    { id: "people", label: "People", shortLabel: "People" },
+    { id: "settings", label: "Settings", shortLabel: "Settings" },
   ];
 
   if (tm.loading) {
     return (
-      <div className="app">
-        <Empty>Loading group data…</Empty>
+      <div className="appShell">
+        <div className="app">
+          <Empty>Loading group data…</Empty>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="app">
+    <div className="appShell">
+      <div className="app">
       <AppHeader tm={tm} tabs={tabs} />
       <DashboardScreen tm={tm} />
       <EntryScreen tm={tm} />
@@ -55,6 +58,7 @@ export default function ChoraMarketApp(props: Props) {
             <div className="small">{tm.toast}</div>
           </>
         )}
+      </div>
       </div>
     </div>
   );

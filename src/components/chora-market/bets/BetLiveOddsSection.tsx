@@ -30,7 +30,7 @@ export function BetLiveOddsSection({
       : tm.liveSummary(bet);
 
   return (
-    <div className="liveBox">
+    <div className="liveBox liveBoxInset">
       <div className="betHeader">
         <div>
           <span className="pill">NEW</span>

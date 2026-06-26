@@ -3,29 +3,25 @@
 import type { ChoraMarketHook } from "@/hooks/useChoraMarket";
 import type { Screen } from "@/hooks/useChoraMarket";
 
-export function AppHeader({
-  tm,
-  tabs,
-}: {
-  tm: ChoraMarketHook;
-  tabs: { id: Screen; label: string }[];
-}) {
+export type AppTab = { id: Screen; label: string; shortLabel: string };
+
+export function AppHeader({ tm, tabs }: { tm: ChoraMarketHook; tabs: AppTab[] }) {
   return (
     <>
       <div className="headerBar">
         <div className="headerBarLeft">
           <strong>{tm.localGroupName}</strong>
-          <span className="pill">Invite: {tm.inviteCode}</span>
+          <span className="pill hideMobile">Invite: {tm.inviteCode}</span>
         </div>
         <div className="headerBarRight">
-          <button type="button" className="btn secondary" onClick={tm.copyInviteLink}>
-            Copy invite link
+          <button type="button" className="btn secondary btnCompact" onClick={tm.copyInviteLink}>
+            Invite
           </button>
-          <button type="button" className="btn secondary" onClick={tm.onSwitchGroup}>
-            Switch group
+          <button type="button" className="btn secondary btnCompact hideMobile" onClick={tm.onSwitchGroup}>
+            Switch
           </button>
-          <button type="button" className="btn secondary" onClick={tm.onSignOut}>
-            Sign out
+          <button type="button" className="btn secondary btnCompact" onClick={tm.onSignOut}>
+            Out
           </button>
         </div>
       </div>
@@ -35,22 +31,26 @@ export function AppHeader({
           <div className="logo">CM</div>
           <div>
             <h1>{tm.state.settings.app}</h1>
-            <div className="sub">Track debts, bets, IOUs, payouts, and your friend group&apos;s economy.</div>
+            <div className="sub hideMobile">
+              IOUs, bets, and who reads the room in your friend group.
+            </div>
           </div>
         </div>
-        <div className="tabs">
-          {tabs.map((t) => (
-            <button
-              key={t.id}
-              type="button"
-              className={`tab${tm.screen === t.id ? " active" : ""}`}
-              onClick={() => tm.showScreen(t.id)}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
       </div>
+
+      <nav className="appTabs" aria-label="Main">
+        {tabs.map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            className={`tab${tm.screen === t.id ? " active" : ""}`}
+            onClick={() => tm.showScreen(t.id)}
+          >
+            <span className="tabShort">{t.shortLabel}</span>
+            <span className="tabFull">{t.label}</span>
+          </button>
+        ))}
+      </nav>
     </>
   );
 }

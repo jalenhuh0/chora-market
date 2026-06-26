@@ -70,7 +70,8 @@ h1 {
   margin-top: 4px;
 }
 
-.tabs {
+.tabs,
+.appTabs {
   display: flex;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--line);
@@ -78,6 +79,19 @@ h1 {
   padding: 5px;
   gap: 4px;
   flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.appShell {
+  min-height: 100vh;
+}
+
+.tabShort {
+  display: none;
+}
+
+.tabFull {
+  display: inline;
 }
 
 .tab {
@@ -183,6 +197,13 @@ button {
   cursor: pointer;
   background: #fff;
   color: #07101f;
+  min-height: 44px;
+  touch-action: manipulation;
+}
+
+.btnCompact {
+  padding: 10px 14px;
+  font-size: 14px;
 }
 
 .btn.secondary {
@@ -340,7 +361,9 @@ button {
 }
 
 .screen.active {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .empty {
@@ -606,6 +629,10 @@ button {
   padding: 16px;
 }
 
+.liveBoxInset {
+  margin-top: 0;
+}
+
 .liveGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -701,6 +728,108 @@ button {
 .leaderboardHint {
   margin: 0 0 10px;
   line-height: 1.35;
+}
+
+.expandable {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+}
+
+.expandableCard {
+  padding: 0;
+  box-shadow: var(--shadow);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.035));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.expandableInset {
+  margin-top: 14px;
+}
+
+.expandableTrigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  min-height: 52px;
+  touch-action: manipulation;
+}
+
+.expandableTitle {
+  display: block;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.expandableSummary {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.expandableChevron {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--muted);
+}
+
+.expandableBody {
+  padding: 0 16px 16px;
+}
+
+.expandableBody .leaderboardSubGrid {
+  margin-top: 0;
+}
+
+.modalSection {
+  margin-top: 14px;
+  box-shadow: none;
+}
+
+.pillRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.activityItem {
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.activityItemMain {
+  flex: 1;
+  min-width: 0;
+}
+
+.activityTime {
+  flex-shrink: 0;
+}
+
+.dashboardSocialGrid {
+  margin-top: 0;
 }
 
 @media (max-width: 980px) {
@@ -876,15 +1005,19 @@ button {
     grid-template-columns: 1fr;
   }
 
-  .metricGrid,
+  .metricGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .payGrid,
   .payoutSimple {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .top {
     align-items: flex-start;
     flex-direction: column;
+    margin-bottom: 0;
   }
 
   .row,
@@ -893,11 +1026,117 @@ button {
   }
 
   .app {
-    padding: 18px;
+    padding: 16px 16px 0;
+  }
+
+  .appShell {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
   }
 
   .headerBar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+  }
+
+  .headerBarRight {
+    flex-wrap: nowrap;
+  }
+
+  .betHeader {
     flex-direction: column;
-    align-items: flex-start;
+  }
+
+  .betHeaderActions {
+    width: 100%;
+  }
+
+  .betHeaderActions .btn {
+    flex: 1;
+  }
+
+  .modalOverlay {
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .modal {
+    width: 100%;
+    max-height: none;
+    min-height: 100%;
+    border-radius: 0;
+    padding: 16px;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .toast {
+    left: 16px;
+    right: 16px;
+    bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+    max-width: none;
+  }
+
+  .tabFull {
+    display: none;
+  }
+
+  .tabShort {
+    display: inline;
+  }
+
+  .hideMobile {
+    display: none !important;
+  }
+
+  .appTabs {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30;
+    margin: 0;
+    border-radius: 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+    background: rgba(11, 16, 32, 0.96);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px));
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 2px;
+  }
+
+  .tab {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 4px;
+    font-size: 11px;
+    line-height: 1.2;
+    min-height: 44px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .logo {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .payGrid,
+  .payoutSimple,
+  .liveGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .metric b {
+    font-size: 20px;
   }
 }
