@@ -19,7 +19,6 @@ import {
   totalGroupVolume as computeTotalGroupVolume,
   totalPicks,
   accuracyPct,
-  verdictCounts,
   wilsonLowerBound,
 } from "@/lib/market/calculations";
 import { normalizeState } from "@/lib/market/defaults";
@@ -50,7 +49,7 @@ export function useChoraMarketComputed(state: ChoraMarketState, personModal: str
   const bal = useMemo(() => balances(normalized), [normalized]);
   const sortedBal = useMemo(() => Object.entries(bal).sort((a, b) => b[1] - a[1]), [bal]);
   const counts = useMemo(() => tagCounts(normalized), [normalized]);
-  const worstLabel = normalized.scale?.[4]?.label || "🚨 Giga Scammer";
+  const worstLabel = normalized.scale?.[2]?.label || "🚨 Giga Scammer";
 
   const predictors = useMemo(
     () =>
@@ -140,18 +139,6 @@ export function useChoraMarketComputed(state: ChoraMarketState, personModal: str
 
   const hotStreaks = useMemo(() => hotStreakLeaders(normalized), [normalized]);
 
-  const verdictRows = useMemo(
-    () =>
-      normalized.people
-        .map(
-          (p) =>
-            [p, verdictCounts(normalized, p), alphaPct(normalized, p), accuracyPct(normalized, p), repScore(normalized, p)] as const
-        )
-        .filter((x) => x[1].total > 0)
-        .sort((a, b) => b[1].total - a[1].total || b[2] - a[2] || b[3] - a[3] || b[4] - a[4]),
-    [normalized]
-  );
-
   const shameRows = useMemo(
     () =>
       normalized.people
@@ -195,7 +182,6 @@ export function useChoraMarketComputed(state: ChoraMarketState, personModal: str
     consistencyRows,
     improvedRows,
     hotStreaks,
-    verdictRows,
     shameRows,
     personDetail,
   };

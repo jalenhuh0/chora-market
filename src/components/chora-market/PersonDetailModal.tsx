@@ -97,13 +97,6 @@ export function PersonDetailModal({ tm }: { tm: ChoraMarketHook }) {
                   </div>
                   <div className="amount">{tm.predictorScore(pd.person).toFixed(1)}</div>
                 </div>
-                <div className="miniRow">
-                  <div>
-                    <strong>Verdict</strong>
-                    <div className="small">{tm.verdictSummary(pd.person)}</div>
-                  </div>
-                  <div className="amount">{tm.verdictLabel(pd.person)}</div>
-                </div>
               </div>
             </ExpandableSection>
 

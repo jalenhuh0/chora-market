@@ -15,8 +15,6 @@ import {
   accuracyPct,
   brierScore,
   calibrationGrade,
-  verdictLabel,
-  verdictSummary,
   rankForScore,
   wilsonLowerBound,
 } from "@/lib/market/calculations";
@@ -56,7 +54,6 @@ export function useChoraMarket(props: UseChoraMarketProps) {
     consistencyRows,
     improvedRows,
     hotStreaks,
-    verdictRows,
     shameRows,
     personDetail,
   } = useChoraMarketComputed(core.state, core.personModal);
@@ -95,7 +92,6 @@ export function useChoraMarket(props: UseChoraMarketProps) {
     consistencyRows,
     improvedRows,
     hotStreaks,
-    verdictRows,
     shameRows,
     counts,
     worstLabel,
@@ -111,8 +107,6 @@ export function useChoraMarket(props: UseChoraMarketProps) {
     alphaPct: (p: string) => alphaPct(normalized, p),
     repScore: (p: string) => repScore(normalized, p),
     rankForScore: (score: number) => rankForScore(normalized, score),
-    verdictLabel: (p: string) => verdictLabel(normalized, p),
-    verdictSummary: (p: string) => verdictSummary(normalized, p),
     predictorScore: (p: string) => predictorScore(normalized, p),
     predictorColor,
     totalPicks: (p: string) => totalPicks(normalized, p),

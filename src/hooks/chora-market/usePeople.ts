@@ -1,37 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback } from "react";
 import { renamePlayerInState, getMyPlayerName, memberPlayerName } from "@/lib/market/members";
 import { updateMemberLedgerName } from "@/lib/market/db";
 import { applyExclusiveScaleVote, nowTime } from "@/hooks/chora-market/helpers";
 import type { ChoraMarketCore } from "@/hooks/chora-market/useChoraMarketCore";
 
 export function usePeople(core: ChoraMarketCore) {
-  const { state, stateRef, groupMembers, setGroupMembers, supabase, groupId, userId, save, saveWithActivity, showToast } = core;
-
-  const [tagPerson, setTagPerson] = useState("");
-  const [tagName, setTagName] = useState("");
-  const [tagVoter, setTagVoter] = useState("");
-  const [verdictPerson, setVerdictPerson] = useState("");
-  const [verdictChoice, setVerdictChoice] = useState("good");
-  const [verdictVoter, setVerdictVoter] = useState("");
-  const didInit = useRef(false);
-
-  useEffect(() => {
-    didInit.current = false;
-  }, [core.groupId]);
-
-  useEffect(() => {
-    if (core.loading || didInit.current) return;
-    didInit.current = true;
-    if (core.state.people.length) {
-      setTagPerson(core.state.people[0]);
-      setTagVoter(core.state.people[0]);
-      setVerdictPerson(core.state.people[0]);
-      setVerdictVoter(core.state.people[0]);
-    }
-    if (core.state.scale?.length) setTagName(core.state.scale[0].label);
-  }, [core.loading, core.state.people, core.state.scale, core.groupId]);
+  const { stateRef, groupMembers, setGroupMembers, supabase, groupId, userId, save, saveWithActivity, showToast } = core;
 
   const renameMyPlayer = useCallback(async () => {
     const old = getMyPlayerName(groupMembers, userId);
@@ -70,65 +46,26 @@ export function usePeople(core: ChoraMarketCore) {
     showToast(`You are now ${n}.`);
   }, [groupMembers, userId, showToast, supabase, groupId, save, setGroupMembers, stateRef]);
 
-  const castTag = useCallback(async () => {
-    if (tagPerson === tagVoter) return showToast("You can tag yourself, but pick someone else for better drama.");
-    await saveWithActivity(
-      (s) => {
-        applyExclusiveScaleVote(s, tagPerson, tagVoter, tagName);
-      },
-      { title: "Community Rating", text: `${tagVoter} rated ${tagPerson}: ${tagName}.` }
-    );
-    showToast("Rating saved. GOAT and worst-title votes are exclusive per voter.");
-  }, [tagPerson, tagVoter, tagName, saveWithActivity, showToast]);
-
   const quickTag = useCallback(
     async (target: string, tag: string) => {
-      const voter = prompt("Who is casting this tag vote?", state.people[0] || "");
-      if (!voter) return;
-      if (!state.people.includes(voter)) return showToast("Voter must be in the group.");
+      const voter = getMyPlayerName(groupMembers, userId);
+      if (!voter) return showToast("Set your player name when you join the group.");
+      if (target === voter) return showToast("Pick someone else for an allegation.");
+
       await saveWithActivity(
         (s) => {
           applyExclusiveScaleVote(s, target, voter, tag);
         },
-        { title: "Community Rating", text: `${voter} rated ${target}: ${tag}.` }
+        { title: "Friend allegation", text: `${voter} tagged ${target}: ${tag}.` }
       );
-      showToast("Rating saved. GOAT and worst-title votes are exclusive per voter.");
+      showToast("Allegation saved.");
     },
-    [state.people, saveWithActivity, showToast]
+    [groupMembers, userId, saveWithActivity, showToast]
   );
-
-  const castVerdictVote = useCallback(async () => {
-    if (verdictPerson === verdictVoter) return showToast("Pick someone else for the verdict.");
-    await saveWithActivity(
-      (s) => {
-        s.verdictVotes[verdictPerson] = s.verdictVotes[verdictPerson] || {};
-        s.verdictVotes[verdictPerson][verdictVoter] = verdictChoice;
-      },
-      {
-        title: "Community Verdict",
-        text: `${verdictVoter} voted ${verdictPerson} as ${verdictChoice === "good" ? state.verdictLabels.good : state.verdictLabels.bad}.`,
-      }
-    );
-    showToast("Verdict vote saved.");
-  }, [verdictPerson, verdictVoter, verdictChoice, state.verdictLabels, saveWithActivity, showToast]);
 
   return {
     myPlayerName: getMyPlayerName(groupMembers, userId),
     renameMyPlayer,
-    tagPerson,
-    setTagPerson,
-    tagName,
-    setTagName,
-    tagVoter,
-    setTagVoter,
-    castTag,
     quickTag,
-    verdictPerson,
-    setVerdictPerson,
-    verdictChoice,
-    setVerdictChoice,
-    verdictVoter,
-    setVerdictVoter,
-    castVerdictVote,
   };
 }

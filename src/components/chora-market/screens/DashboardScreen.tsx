@@ -5,6 +5,7 @@ import { Empty } from "@/components/chora-market/Empty";
 import { ExpandableSection } from "@/components/chora-market/ExpandableSection";
 import { PersonLeaderboardItem } from "@/components/chora-market/leaderboard/PersonLeaderboardItem";
 import { LeaderboardGrid } from "@/components/chora-market/leaderboard/LeaderboardGrid";
+import { RecentActivityCard } from "@/components/chora-market/RecentActivityCard";
 import {
   ADVANCED_LEADERBOARDS,
   ADVANCED_STATS_SUMMARY,
@@ -32,6 +33,8 @@ export function DashboardScreen({ tm }: { tm: ChoraMarketHook }) {
           <span>Resolved</span>
         </div>
       </div>
+
+      <RecentActivityCard activity={tm.state.activity} />
 
       <div className="card leaderboardHero">
         <div className="leaderboardHeroHead">
@@ -95,7 +98,7 @@ export function DashboardScreen({ tm }: { tm: ChoraMarketHook }) {
         </div>
         <div className="card">
           <h2>{tm.state.dashboardTitles?.shame || "Hall of Shame"}</h2>
-          <p className="small leaderboardHint">Most {tm.worstLabel} votes from People.</p>
+          <p className="small leaderboardHint">Most {tm.worstLabel} allegations from People.</p>
           <div className="list">
             {tm.shameRows.length ? (
               tm.shameRows.map(([p, c], i) => (
@@ -116,54 +119,6 @@ export function DashboardScreen({ tm }: { tm: ChoraMarketHook }) {
               <Empty>No votes yet.</Empty>
             )}
           </div>
-        </div>
-      </div>
-
-      <ExpandableSection
-        title="Community verdicts"
-        summary={`${tm.verdictRows.length} people rated`}
-        className="card expandableCard"
-      >
-        <div className="list">
-          {tm.verdictRows.length ? (
-            tm.verdictRows.map(([p, c]) => (
-              <div key={p} className="item clickable" onClick={() => tm.showPersonDetail(p)}>
-                <div className="personLine">
-                  <div className="avatar">{tm.initials(p)}</div>
-                  <div>
-                    <strong>{p}</strong>
-                    <div className="small">
-                      {tm.verdictLabel(p)} · {tm.verdictSummary(p)}
-                    </div>
-                  </div>
-                </div>
-                <div className={`amount ${c.good >= c.bad ? "pos" : "neg"}`}>
-                  {c.good}/{c.total}
-                </div>
-              </div>
-            ))
-          ) : (
-            <Empty>No verdict votes yet.</Empty>
-          )}
-        </div>
-      </ExpandableSection>
-
-      <div className="card">
-        <h2>Recent Activity</h2>
-        <div className="list">
-          {tm.state.activity.slice(0, 10).length ? (
-            tm.state.activity.slice(0, 10).map((a, i) => (
-              <div key={i} className="item activityItem">
-                <div className="activityItemMain">
-                  <strong>{a.title}</strong>
-                  <div className="small">{a.text}</div>
-                </div>
-                <span className="pill activityTime">{a.time}</span>
-              </div>
-            ))
-          ) : (
-            <Empty>No activity yet.</Empty>
-          )}
         </div>
       </div>
     </section>

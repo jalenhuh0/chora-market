@@ -29,8 +29,6 @@ export function useSettings(core: ChoraMarketCore) {
   const [setMoochTitle, setSetMoochTitle] = useState("");
   const [setProfitTitle, setSetProfitTitle] = useState("");
   const [setShameTitle, setSetShameTitle] = useState("");
-  const [verdictGood, setVerdictGood] = useState("");
-  const [verdictBad, setVerdictBad] = useState("");
   const [rankInputs, setRankInputs] = useState<{ title: string; min: number }[]>(defaultRanks());
   const [groupRename, setGroupRename] = useState(initialGroupName);
   const [displayName, setDisplayName] = useState("");
@@ -58,8 +56,6 @@ export function useSettings(core: ChoraMarketCore) {
     setSetMoochTitle(state.settings.mooches);
     setSetProfitTitle(state.dashboardTitles?.profit || "Net Profit / Loss");
     setSetShameTitle(state.dashboardTitles?.shame || "Hall of Shame");
-    setVerdictGood(state.verdictLabels.good);
-    setVerdictBad(state.verdictLabels.bad);
     setRankInputs(state.ranks || defaultRanks());
     const prof = core.profile;
     if (prof) {
@@ -175,25 +171,6 @@ export function useSettings(core: ChoraMarketCore) {
     showToast("Custom names saved.");
   }, [setAppName, setCredTitle, setMoochTitle, setProfitTitle, setShameTitle, saveWithActivity, showToast]);
 
-  const saveVerdicts = useCallback(async () => {
-    await saveWithActivity((s) => {
-      s.verdictLabels = {
-        good: (verdictGood || "🫡 Respectable").trim(),
-        bad: (verdictBad || "🐷 Lucky Piggy").trim(),
-      };
-    });
-    showToast("Community verdict labels saved.");
-  }, [verdictGood, verdictBad, saveWithActivity, showToast]);
-
-  const resetVerdicts = useCallback(async () => {
-    setVerdictGood("🫡 Respectable");
-    setVerdictBad("🐷 Lucky Piggy");
-    await saveWithActivity((s) => {
-      s.verdictLabels = { good: "🫡 Respectable", bad: "🐷 Lucky Piggy" };
-    });
-    showToast("Community verdict labels reset.");
-  }, [saveWithActivity, showToast]);
-
   const saveRankTitles = useCallback(async () => {
     const defaults = defaultRanks();
     const ranks = rankInputs
@@ -248,12 +225,6 @@ export function useSettings(core: ChoraMarketCore) {
     setShameTitle,
     setSetShameTitle,
     saveSettings,
-    verdictGood,
-    setVerdictGood,
-    verdictBad,
-    setVerdictBad,
-    saveVerdicts,
-    resetVerdicts,
     rankInputs,
     setRankInputs,
     saveRankTitles,

@@ -150,32 +150,6 @@ export function SettingsScreen({ tm }: { tm: ChoraMarketHook }) {
           </div>
 
           <div className="card">
-            <h2>Customize Community Verdicts</h2>
-            <p className="muted">
-              For players with strong edge or accuracy, let the group vote whether they are actually respectable or just
-              lucky.
-            </p>
-            <div className="row">
-              <div>
-                <label>Positive verdict</label>
-                <input value={tm.verdictGood} onChange={(e) => tm.setVerdictGood(e.target.value)} />
-              </div>
-              <div>
-                <label>Negative verdict</label>
-                <input value={tm.verdictBad} onChange={(e) => tm.setVerdictBad(e.target.value)} />
-              </div>
-            </div>
-            <div className="actions">
-              <button type="button" className="btn green" onClick={tm.saveVerdicts}>
-                Save Verdicts
-              </button>
-              <button type="button" className="btn secondary" onClick={tm.resetVerdicts}>
-                Reset Verdicts
-              </button>
-            </div>
-          </div>
-
-          <div className="card">
             <h2>Customize Rank Titles</h2>
             <p className="muted">These cosmetic rank titles are based on Elo-style reputation score.</p>
             {tm.rankInputs.map((r, i) => (
@@ -213,15 +187,6 @@ export function SettingsScreen({ tm }: { tm: ChoraMarketHook }) {
                 Reset Rank Titles
               </button>
             </div>
-          </div>
-
-          <div className="card">
-            <h2>Reputation Formula</h2>
-            <p className="muted">
-              Each vote is equal weight. A 60% vote means 60 points to one friend and 40 points to the other.
-              Reputation is cosmetic for credibility, jokes, and profiles; it does not change market odds.
-            </p>
-            <div className="small">Reputation is cosmetic only. Market odds use equal-weight probability splits.</div>
           </div>
 
           <div className="card dangerZone">

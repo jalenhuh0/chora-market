@@ -1,4 +1,5 @@
 import type { ChoraMarketState } from "./types";
+import { defaultAllegationScale, normalizeAllegations } from "./allegations";
 
 export const APP_NAME = "Chora Market";
 
@@ -11,13 +12,7 @@ export const defaultRanks = () => [
   { title: "🚨 Giga Scammer", min: 0 },
 ];
 
-export const defaultScale = () => [
-  { label: "🐐 GOAT", mod: 1.2 },
-  { label: "📈 Sharp", mod: 1.1 },
-  { label: "😐 Neutral", mod: 1.0 },
-  { label: "📉 Sus", mod: 0.9 },
-  { label: "🚨 Giga Scammer", mod: 0.8 },
-];
+export const defaultScale = defaultAllegationScale;
 
 export function createDefaultState(): ChoraMarketState {
   return {
@@ -56,6 +51,7 @@ export function normalizeState(state: ChoraMarketState): ChoraMarketState {
     shame: "Hall of Shame",
   };
   state.scale = state.scale || defaultScale();
+  normalizeAllegations(state);
   state.ranks = state.ranks || defaultRanks();
   state.people = state.people || [];
   state.debts = state.debts || [];
