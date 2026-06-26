@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { createDefaultState, normalizeState } from "@/lib/market/defaults";
+import { createDefaultState, normalizeState, SAVE_DEBOUNCE_MS } from "@/lib/market/defaults";
 import {
   getUserProfile,
   inviteLink,
@@ -35,6 +35,15 @@ export function useChoraMarketCore({
 
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const stateRef = useRef(state);
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pendingSaveRef = useRef<ChoraMarketState | null>(null);
+  const supabaseRef = useRef(supabase);
+  const groupIdRef = useRef(groupId);
+
+  useEffect(() => {
+    supabaseRef.current = supabase;
+    groupIdRef.current = groupId;
+  }, [supabase, groupId]);
 
   useEffect(() => {
     stateRef.current = state;
@@ -46,18 +55,57 @@ export function useChoraMarketCore({
     toastTimer.current = setTimeout(() => setToast(null), 3300);
   }, []);
 
+  const flushSave = useCallback(async () => {
+    if (saveTimerRef.current) {
+      clearTimeout(saveTimerRef.current);
+      saveTimerRef.current = null;
+    }
+    const pending = pendingSaveRef.current;
+    if (!pending) return;
+    pendingSaveRef.current = null;
+    try {
+      await saveGroupState(supabaseRef.current, groupIdRef.current, pending);
+    } catch (e) {
+      console.error("Save failed", e);
+      showToast("Save warning: could not sync to server.");
+    }
+  }, [showToast]);
+
+  const scheduleSave = useCallback(
+    (normalized: ChoraMarketState) => {
+      pendingSaveRef.current = normalized;
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+      saveTimerRef.current = setTimeout(() => {
+        saveTimerRef.current = null;
+        void flushSave();
+      }, SAVE_DEBOUNCE_MS);
+    },
+    [flushSave]
+  );
+
+  useEffect(() => {
+    return () => {
+      if (saveTimerRef.current) {
+        clearTimeout(saveTimerRef.current);
+        saveTimerRef.current = null;
+      }
+      const pending = pendingSaveRef.current;
+      if (pending) {
+        pendingSaveRef.current = null;
+        saveGroupState(supabaseRef.current, groupIdRef.current, pending).catch((e) => {
+          console.error("Save flush on unmount failed", e);
+        });
+      }
+    };
+  }, []);
+
   const save = useCallback(
     async (next: ChoraMarketState) => {
       const normalized = normalizeState(structuredClone(next));
       setState(normalized);
-      try {
-        await saveGroupState(supabase, groupId, normalized);
-      } catch (e) {
-        console.error("Save failed", e);
-        showToast("Save warning: could not sync to server.");
-      }
+      scheduleSave(normalized);
     },
-    [supabase, groupId, showToast]
+    [scheduleSave]
   );
 
   const saveWithActivity = useCallback(

@@ -3,6 +3,11 @@ import { defaultAllegationScale, normalizeAllegations } from "./allegations";
 
 export const APP_NAME = "Chora Market";
 
+export const MAX_ACTIVITY_ITEMS = 100;
+export const MAX_NOTIFS_ITEMS = 100;
+export const MAX_BETS_PER_GROUP = 500;
+export const SAVE_DEBOUNCE_MS = 1500;
+
 export const defaultRanks = () => [
   { title: "🐐 GOAT", min: 1500 },
   { title: "🧠 Sharp", min: 1300 },
@@ -94,6 +99,13 @@ export function normalizeState(state: ChoraMarketState): ChoraMarketState {
     b.votes = b.votes || {};
     b.doubleDowns = b.doubleDowns || [];
   });
+
+  if (state.activity.length > MAX_ACTIVITY_ITEMS) {
+    state.activity = state.activity.slice(0, MAX_ACTIVITY_ITEMS);
+  }
+  if (state.notifs.length > MAX_NOTIFS_ITEMS) {
+    state.notifs = state.notifs.slice(0, MAX_NOTIFS_ITEMS);
+  }
 
   return state;
 }

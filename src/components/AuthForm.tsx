@@ -1,10 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { authRedirectAfterSignup, authRedirectPasswordReset } from "@/lib/supabase/auth-redirect";
 import { APP_NAME } from "@/lib/market/defaults";
+import { LegalFooter } from "@/components/LegalFooter";
 
 type Props = {
   initialMode?: "login" | "signup";
@@ -24,11 +26,18 @@ export function AuthForm({ initialMode = "login", joinHint, joinCode, onSuccess 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setMessage(null);
+
+    if (mode === "signup" && !acceptedTerms) {
+      setError("Please accept the Terms and Privacy Policy to create an account.");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -180,11 +189,29 @@ export function AuthForm({ initialMode = "login", joinHint, joinCode, onSuccess 
           </button>
         ) : null}
 
+        {mode === "signup" && (
+          <label className="termsCheck small">
+            <input
+              type="checkbox"
+              checked={acceptedTerms}
+              onChange={(e) => setAcceptedTerms(e.target.checked)}
+            />
+            <span>
+              I agree to the <Link href="/terms">Terms</Link> and{" "}
+              <Link href="/privacy">Privacy Policy</Link>
+            </span>
+          </label>
+        )}
+
         {error && <p className="small neg" style={{ marginTop: 12 }}>{error}</p>}
         {message && <p className="small" style={{ marginTop: 12, color: "var(--green)" }}>{message}</p>}
 
         <div className="actions">
-          <button className="btn green" type="submit" disabled={loading}>
+          <button
+            className="btn green"
+            type="submit"
+            disabled={loading || (mode === "signup" && !acceptedTerms)}
+          >
             {loading ? "Please wait…" : mode === "signup" ? "Create account" : "Sign in"}
           </button>
           <button
@@ -194,6 +221,7 @@ export function AuthForm({ initialMode = "login", joinHint, joinCode, onSuccess 
               setMode(mode === "login" ? "signup" : "login");
               setError(null);
               setMessage(null);
+              setAcceptedTerms(false);
             }}
           >
             {mode === "login" ? "Need an account?" : "Already have an account?"}
@@ -201,6 +229,7 @@ export function AuthForm({ initialMode = "login", joinHint, joinCode, onSuccess 
         </div>
       </form>
       )}
+      <LegalFooter />
     </div>
   );
 }

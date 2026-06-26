@@ -400,14 +400,13 @@ export async function uploadAvatar(
 }
 
 export async function getGroupByInviteCode(supabase: SupabaseClient, code: string) {
-  const { data, error } = await supabase
-    .from("groups_public")
-    .select("id, name, invite_code")
-    .eq("invite_code", code.trim().toUpperCase())
-    .maybeSingle();
+  const { data, error } = await supabase.rpc("lookup_group_by_invite", {
+    p_code: code.trim(),
+  });
 
   if (error) throw error;
-  return data;
+  const row = Array.isArray(data) ? data[0] : data;
+  return row ?? null;
 }
 
 export async function isGroupMember(

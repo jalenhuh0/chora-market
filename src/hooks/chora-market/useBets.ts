@@ -12,7 +12,7 @@ import {
   missingVoters,
   reputationDelta,
 } from "@/lib/market/calculations";
-import { clamp, money, uid } from "@/lib/market/defaults";
+import { clamp, MAX_BETS_PER_GROUP, money, uid } from "@/lib/market/defaults";
 import { getMyPlayerName } from "@/lib/market/members";
 import type { Bet } from "@/lib/market/types";
 import { nowTime } from "@/hooks/chora-market/helpers";
@@ -51,6 +51,9 @@ export function useBets(core: ChoraMarketCore) {
     const title = betTitle.trim();
     if (!title) return showToast("Add a bet title first.");
     if (sideAUser === sideBUser) return showToast("Pick two different people.");
+    if (stateRef.current.bets.length >= MAX_BETS_PER_GROUP) {
+      return showToast(`This group has reached the ${MAX_BETS_PER_GROUP} bet limit.`);
+    }
     const creator = getMyPlayerName(groupMembers, userId);
     if (!creator) return showToast("Set your player name in People before creating a bet.");
     await saveWithActivity(

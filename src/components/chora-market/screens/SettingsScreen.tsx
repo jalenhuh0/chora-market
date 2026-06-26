@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { ChoraMarketHook } from "@/hooks/useChoraMarket";
 import { Avatar } from "@/components/Avatar";
+import { LegalFooter } from "@/components/LegalFooter";
 
 export function SettingsScreen({ tm }: { tm: ChoraMarketHook }) {
   const [newPassword, setNewPassword] = useState("");
@@ -202,6 +203,7 @@ export function SettingsScreen({ tm }: { tm: ChoraMarketHook }) {
             </div>
           </div>
         </div>
+        <LegalFooter />
       </section>
   );
 }
