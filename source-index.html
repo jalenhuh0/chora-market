@@ -1,0 +1,1025 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tab Market Beta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b1020;--panel:#11182d;--panel2:#151e36;--text:#eef3ff;--muted:#96a3bd;--line:#27324d;--green:#43d17a;--red:#ff6464;--blue:#64a6ff;--yellow:#f5c542;--purple:#a989ff;--shadow:0 18px 50px rgba(0,0,0,.35);--radius:22px}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at top left,#1c2a54 0,#0b1020 38%,#070a13 100%);color:var(--text);font-family:Inter,system-ui,sans-serif;min-height:100vh}
+.app{max-width:1240px;margin:0 auto;padding:28px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:24px}
+.brand{display:flex;align-items:center;gap:14px}.logo{width:54px;height:54px;border-radius:17px;background:linear-gradient(135deg,#43d17a,#64a6ff 55%,#a989ff);display:grid;place-items:center;font-weight:900;color:#06101c;box-shadow:var(--shadow)}
+h1{margin:0;font-size:30px;letter-spacing:-.05em}.sub{color:var(--muted);font-size:13px;margin-top:4px}
+.tabs{display:flex;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:999px;padding:5px;gap:4px;flex-wrap:wrap}
+.tab{border:0;background:transparent;color:var(--muted);padding:10px 14px;border-radius:999px;font-weight:700;cursor:pointer}.tab.active{background:#fff;color:#08101e}
+.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:20px}.split{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.card{background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.035));border:1px solid rgba(255,255,255,.12);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+.card h2{margin:0 0 14px;font-size:18px;letter-spacing:-.03em}.muted{color:var(--muted)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+label{font-size:12px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em;display:block;margin:10px 0 7px}
+input,select,textarea{width:100%;border:1px solid var(--line);background:rgba(9,13,25,.9);color:var(--text);border-radius:15px;padding:13px 14px;font:inherit;outline:none}
+textarea{min-height:86px;resize:vertical}input:focus,select:focus,textarea:focus{border-color:var(--blue)}
+button{font-family:inherit}.btn{border:0;border-radius:15px;padding:13px 16px;font-weight:850;cursor:pointer;background:#fff;color:#07101f}.btn.secondary{background:rgba(255,255,255,.08);color:var(--text);border:1px solid var(--line)}.btn.green{background:var(--green);color:#041208}.btn.blue{background:var(--blue);color:#06111f}.btn.red{background:rgba(255,100,100,.15);color:#ffb1b1;border:1px solid rgba(255,100,100,.35)}.btn.purple{background:var(--purple);color:#10071f}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.pill{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:rgba(255,255,255,.06);padding:7px 10px;border-radius:999px;font-size:12px;color:var(--muted);font-weight:750}
+.metricGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}.metric{padding:18px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}.metric b{font-size:24px;display:block;letter-spacing:-.04em}.metric span{font-size:12px;color:var(--muted);font-weight:700}
+.list{display:flex;flex-direction:column;gap:10px}.item{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:14px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.045)}.item.block{display:block}.item strong{display:block}.small{font-size:12px;color:var(--muted);margin-top:4px}.amount{font-weight:900;font-size:18px;white-space:nowrap}.pos{color:var(--green)}.neg{color:var(--red)}
+.avatar{width:36px;height:36px;border-radius:14px;background:linear-gradient(135deg,#29375f,#1b233d);display:grid;place-items:center;font-weight:900;margin-right:10px;flex:none}.personLine{display:flex;align-items:center}
+.bar{height:8px;background:#24304e;border-radius:999px;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--blue));border-radius:999px}
+.screen{display:none}.screen.active{display:block}.empty{padding:28px;text-align:center;border:1px dashed var(--line);border-radius:18px;color:var(--muted)}
+.marketChoice{border:1px solid var(--line);border-radius:18px;padding:14px;background:rgba(255,255,255,.04)}.odds{font-size:28px;font-weight:900;letter-spacing:-.05em}.toast{position:fixed;right:22px;bottom:22px;background:#10192d;border:1px solid var(--line);border-radius:18px;padding:14px 16px;box-shadow:var(--shadow);display:none;max-width:320px;z-index:5}.toast.show{display:block}.dangerZone{border:1px solid rgba(255,100,100,.25);background:rgba(255,100,100,.06)}
+.betHeader{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}
+.sideTitle{font-size:14px;color:#fff;font-weight:900}.take{font-size:13px;color:var(--muted);line-height:1.35;margin-top:4px}.payGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}.payBox{padding:12px;border-radius:16px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.1)}.payBox b{font-size:17px;display:block}.payBox span{font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.tagGrid{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.tagBtn{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:8px 10px;background:rgba(255,255,255,.06);color:var(--text);cursor:pointer;font-weight:800}.needVote{color:var(--yellow);font-weight:900}.doneVote{color:var(--green);font-weight:900}.payoutSimple{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.explain{line-height:1.45;color:var(--muted);font-size:13px;margin-top:8px}.bigLabel{font-size:20px;font-weight:950;letter-spacing:-.04em}.winnerBadge{display:inline-flex;background:rgba(67,209,122,.12);border:1px solid rgba(67,209,122,.35);color:#a8ffc8;border-radius:999px;padding:6px 9px;font-weight:900;font-size:12px}.clickable{cursor:pointer;transition:.15s transform,.15s border-color}.clickable:hover{transform:translateY(-1px);border-color:rgba(100,166,255,.65)}.modalOverlay{position:fixed;inset:0;background:rgba(0,0,0,.62);display:none;align-items:center;justify-content:center;padding:18px;z-index:20}.modalOverlay.show{display:flex}.modal{width:min(760px,100%);max-height:86vh;overflow:auto;background:#10182d;border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:20px}.modalTop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}.closeBtn{border:1px solid var(--line);background:rgba(255,255,255,.08);color:var(--text);border-radius:12px;padding:9px 11px;cursor:pointer;font-weight:900}.detailGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.detailStat{border:1px solid var(--line);background:rgba(255,255,255,.045);border-radius:16px;padding:13px}.detailStat b{font-size:21px;display:block}.detailStat span{font-size:12px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.04em}.miniTable{display:flex;flex-direction:column;gap:8px;margin-top:12px}.miniRow{display:flex;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:14px;padding:10px;background:rgba(255,255,255,.035)}.liveBox{margin-top:18px;border:1px solid rgba(245,197,66,.45);background:linear-gradient(180deg,rgba(245,197,66,.12),rgba(245,197,66,.045));border-radius:20px;padding:16px}.liveGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.liveStat{border:1px solid var(--line);border-radius:14px;padding:10px;background:rgba(255,255,255,.045)}.liveStat b{display:block;font-size:18px}.liveStat span{display:block;color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}.alphaGood{color:var(--green)}.alphaBad{color:var(--red)}.rankBadge{display:inline-flex;border:1px solid var(--line);background:rgba(255,255,255,.06);border-radius:999px;padding:5px 8px;font-size:11px;font-weight:900;color:var(--text);margin-top:5px}.predictor-good{color:#22c55e;font-weight:950}.predictor-bad{color:#ef4444;font-weight:950}
+@media(max-width:900px){.grid,.split,.detailGrid,.liveGrid{grid-template-columns:1fr}.metricGrid,.payGrid,.payoutSimple{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.row,.row3{grid-template-columns:1fr}.app{padding:18px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="brand"><div class="logo">TM</div><div><h1 id="appTitle">Tab Market</h1><div class="sub">Track debts, bets, IOUs, payouts, and your friend group's economy.</div></div></div>
+    <div class="tabs">
+      <button class="tab active" data-screen="dashboard">Dashboard</button>
+      <button class="tab" data-screen="entry">New IOU</button>
+      <button class="tab" data-screen="bets">Bet Market</button>
+      <button class="tab" data-screen="people">People</button>
+      <button class="tab" data-screen="settings">Settings</button>
+    </div>
+  </div>
+
+  <section id="dashboard" class="screen active">
+    <div class="metricGrid">
+      <div class="metric"><b id="totalOpen">$0</b><span>Open market value</span></div>
+      <div class="metric"><b id="activeDebts">0</b><span>Open IOUs</span></div>
+      <div class="metric"><b id="activeBets">0</b><span>Active bets</span></div>
+      <div class="metric"><b id="groupSize">0</b><span>People in group</span></div>
+    </div>
+    <div class="grid" style="margin-top:20px">
+      <div class="card"><h2>Best Predictors</h2><div id="predictorList" class="list"></div></div>
+      <div class="card"><h2>Market Alpha Leaders</h2><div id="alphaList" class="list"></div></div>
+    </div>
+    <div class="grid" style="margin-top:20px">
+      <div class="card"><h2 id="profitTitle">Net Profit / Loss</h2><div id="profitList" class="list"></div></div>
+      <div class="card"><h2 id="shameTitle">Hall of Shame</h2><div id="shameList" class="list"></div></div>
+    </div>
+    <div class="card" style="margin-top:20px"><h2>Community Verdicts</h2><div id="verdictList" class="list"></div></div>
+    <div class="card" style="margin-top:20px"><h2>Recent Activity</h2><div id="activityList" class="list"></div></div>
+  </section>
+
+  <section id="entry" class="screen">
+    <div class="grid">
+      <div class="card">
+        <h2>Create an IOU</h2>
+        <label>Reason</label><textarea id="reason" placeholder="Example: Jake owes Sarah Cane's because he lost mini golf"></textarea>
+        <div class="row">
+          <div><label>Person owed</label><select id="owedSelect"></select></div>
+          <div><label>Person who owes</label><select id="owesSelect"></select></div>
+        </div>
+        <div class="row">
+          <div><label>Value amount optional</label><input id="amount" type="number" min="0" step="0.01" placeholder="Leave blank for AI estimate"></div>
+          <div><label>Category</label><select id="category"><option>Food</option><option>Bet</option><option>Item</option><option>Ride</option><option>Favor</option><option>Cash</option><option>Other</option></select></div>
+        </div>
+        <div class="actions"><button class="btn green" id="addDebt">Add to Market</button><button class="btn secondary" id="parseReason">AI-style Parse</button></div>
+      </div>
+      <div class="card">
+        <h2>Open IOUs</h2><div id="debtList" class="list"></div>
+      </div>
+    </div>
+    <div class="grid" style="margin-top:20px">
+      <div class="card"><h2 id="creditorTitle">Top Net Creditors</h2><div id="creditorList" class="list"></div></div>
+      <div class="card"><h2 id="moochTitle">Biggest Mooches</h2><div id="moochList" class="list"></div></div>
+    </div>
+  </section>
+
+  <section id="bets" class="screen">
+    <div class="grid">
+      <div class="card">
+        <h2>Create Friend-vs-Friend Bet</h2>
+        <label>Bet title / event</label><input id="betTitle" placeholder="Example: NBA championship bet">
+        <div class="row"><div><label>Person 1</label><select id="sideAUser"></select></div><div><label>Person 2</label><select id="sideBUser"></select></div></div>
+        <div class="row"><div><label>Person 1's take</label><input id="sideATake" placeholder="Spurs win the championship"></div><div><label>Person 2's take</label><input id="sideBTake" placeholder="Knicks win the championship"></div></div>
+        <div class="row"><div><label>Stake / agreed value</label><input id="betStake" type="number" step="0.01" placeholder="20"></div><div><label>Creator</label><select id="betCreator"></select></div></div>
+        <label>Notes</label><textarea id="betNotes" placeholder="Cash, dinner, boba, punishment, etc."></textarea>
+        <div class="actions"><button class="btn blue" id="createBet">Launch Market + Notify Group</button></div>
+      </div>
+      <div class="card">
+        <h2>Group Notifications</h2><div id="notifList" class="list"></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:20px"><h2>Active Bet Markets</h2><div id="betList" class="list"></div></div>
+  </section>
+
+  <section id="people" class="screen">
+    <div class="split">
+      <div class="card"><h2>Add Person</h2><label>Name</label><input id="newPerson" placeholder="Jake"><div class="actions"><button class="btn green" id="addPerson">Add Person</button></div></div>
+      <div class="card"><h2>Group Members</h2><div id="peopleList" class="list"></div></div>
+    </div>
+    <div class="grid" style="margin-top:20px">
+      <div class="card"><h2>Friend Allegations</h2><p class="muted">Joke-only community tags. Call out fake gurus, sharks, mooches, and market manipulators.</p><div id="allegationList" class="list"></div></div>
+      <div class="card"><h2>Vote Reputation</h2><p class="muted">Each person can rate each friend. Your GOAT vote and worst-title vote are exclusive, so you can only crown one GOAT and one Giga Scammer at a time.</p><label>Who are we rating?</label><select id="tagPerson"></select><label>Rating</label><select id="tagName"></select><label>Your name</label><select id="tagVoter"></select><div class="actions"><button class="btn purple" id="castTag">Cast / Change Vote</button></div></div>
+      <div class="card"><h2>Community Verdict Vote</h2><p class="muted">For someone with good accuracy/alpha: are they legit, or just running hot?</p><label>Who are we judging?</label><select id="verdictPerson"></select><label>Verdict</label><select id="verdictChoice"></select><label>Your name</label><select id="verdictVoter"></select><div class="actions"><button class="btn blue" id="castVerdict" onclick="castVerdictVote()">Cast / Change Verdict</button></div></div>
+    </div>
+  </section>
+
+  <section id="settings" class="screen">
+    <div class="split">
+      <div class="card"><h2>Customize Names</h2><label>App name</label><input id="setAppName"><label>Creditor leaderboard title</label><input id="setCredTitle"><label>Mooch leaderboard title</label><input id="setMoochTitle"><label>Profit/Loss leaderboard title</label><input id="setProfitTitle"><label>Hall of Shame title</label><input id="setShameTitle"><div class="actions"><button class="btn green" id="saveSettings">Save Names</button></div></div>
+      <div class="card"><h2>Customize Community Verdicts</h2><p class="muted">For high-alpha/high-accuracy players, let the group vote whether they are actually respectable or just lucky.</p>
+        <div class="row"><div><label>Positive verdict</label><input id="verdictGood"></div><div><label>Negative verdict</label><input id="verdictBad"></div></div>
+        <div class="actions"><button class="btn green" id="saveVerdicts" onclick="saveVerdicts()">Save Verdicts</button><button class="btn secondary" id="resetVerdicts" onclick="resetVerdicts()">Reset Verdicts</button></div>
+      </div>
+      <div class="card"><h2>Customize Rank Titles</h2><p class="muted">These cosmetic rank titles are based on Elo-style reputation score.</p>
+        <div class="row"><div><label>Rank 1 title</label><input id="rankTitle0"></div><div><label>Minimum score</label><input id="rankMin0" type="number"></div></div>
+        <div class="row"><div><label>Rank 2 title</label><input id="rankTitle1"></div><div><label>Minimum score</label><input id="rankMin1" type="number"></div></div>
+        <div class="row"><div><label>Rank 3 title</label><input id="rankTitle2"></div><div><label>Minimum score</label><input id="rankMin2" type="number"></div></div>
+        <div class="row"><div><label>Rank 4 title</label><input id="rankTitle3"></div><div><label>Minimum score</label><input id="rankMin3" type="number"></div></div>
+        <div class="row"><div><label>Rank 5 title</label><input id="rankTitle4"></div><div><label>Minimum score</label><input id="rankMin4" type="number"></div></div>
+        <div class="row"><div><label>Rank 6 title</label><input id="rankTitle5"></div><div><label>Minimum score</label><input id="rankMin5" type="number"></div></div>
+        <div class="actions"><button class="btn green" id="saveRanks" onclick="saveRankTitles()">Save Rank Titles</button><button class="btn secondary" id="resetRanks" onclick="resetRankTitles()">Reset Ranks</button></div>
+      </div>
+        
+      <div class="card"><h2>Reputation Formula</h2><p class="muted">Each vote is equal weight. A 60% vote means 60 points to one friend and 40 points to the other. Reputation is cosmetic for credibility, jokes, and profiles; it does not change market odds.</p><div class="small">Reputation is cosmetic only. Market odds use equal-weight probability splits.</div></div>
+      <div class="card dangerZone"><h2>Demo / Reset</h2><p class="muted">Load demo data to test the app, or reset everything stored in this browser.</p><div class="actions"><button class="btn secondary" id="demoData">Load Demo Data</button><button class="btn red" id="resetData">Reset App</button></div></div>
+    </div>
+  </section>
+</div>
+<div id="personModal" class="modalOverlay" onclick="if(event.target.id==='personModal')closePersonDetail()"><div class="modal"><div id="personDetail"></div></div></div>
+<div id="toast" class="toast"></div>
+<script>
+const $=id=>document.getElementById(id);
+const money=n=>'$'+Number(n||0).toFixed(2);
+const uid=()=>Math.random().toString(36).slice(2,10);
+const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
+function safeNode(id){return document.getElementById(id)}
+function safeToast(msg){
+ try{
+   const t=document.getElementById('toast');
+   if(t){t.innerHTML='<strong>App notice</strong><div class="small">'+String(msg)+'</div>';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3600)}
+ }catch(e){console.warn(msg)}
+}
+function safeCall(label,fn){
+ try{return fn()}
+ catch(e){console.error(label,e);safeToast(label+': '+(e.message||e));}
+}
+let state;
+try{
+ state=JSON.parse(localStorage.getItem('tabMarketV2')||localStorage.getItem('tabMarketV1')||'null');
+}catch(e){
+ console.error('Primary storage parse failed',e);
+ try{state=JSON.parse(localStorage.getItem('tabMarketV2_backup')||'null');}catch(_){state=null}
+}
+state=state||{
+ settings:{app:'Tab Market',creditors:'Top Net Creditors',mooches:'Biggest Mooches'},
+ people:['Jalen','Will','Sarah','Matt'],
+ debts:[],bets:[],notifs:[],activity:[],tagVotes:{},stats:{}
+};
+function normalizeState(){
+ state.settings=state.settings||{app:'Tab Market',creditors:'Top Net Creditors',mooches:'Biggest Mooches'};
+ state.dashboardTitles=state.dashboardTitles||{profit:'Net Profit / Loss',shame:'Hall of Shame'};
+ state.scale=state.scale||[
+   {label:'🐐 GOAT',mod:1.20},
+   {label:'📈 Sharp',mod:1.10},
+   {label:'😐 Neutral',mod:1.00},
+   {label:'📉 Sus',mod:0.90},
+   {label:'🚨 Giga Scammer',mod:0.80}
+ ];
+ state.ranks=state.ranks||[
+   {title:'🐐 GOAT',min:1500},
+   {title:'🧠 Sharp',min:1300},
+   {title:'📈 Winning',min:1150},
+   {title:'🙂 Average',min:1000},
+   {title:'📉 Sus',min:850},
+   {title:'🚨 Giga Scammer',min:0}
+ ];
+ state.people=state.people||[];
+ state.debts=state.debts||[];
+ state.bets=state.bets||[];
+ state.notifs=state.notifs||[];
+ state.activity=state.activity||[];
+ state.tagVotes=state.tagVotes||{};
+ state.verdictVotes=state.verdictVotes||{};
+ state.verdictLabels=state.verdictLabels||{good:'🫡 Respectable',bad:'🐷 Lucky Piggy'};
+ state.stats=state.stats||{};
+ state.people.forEach(p=>{
+   state.stats[p]=state.stats[p]||{correct:0,wrong:0,profit:0,elo:1000,alphaSum:0,alphaCount:0,brierSum:0};
+   if(state.stats[p].elo===undefined) state.stats[p].elo=1000;
+   if(state.stats[p].alphaSum===undefined) state.stats[p].alphaSum=0;
+   if(state.stats[p].alphaCount===undefined) state.stats[p].alphaCount=0;
+   if(state.stats[p].brierSum===undefined) state.stats[p].brierSum=0;
+ });
+ state.bets.forEach(b=>{
+   if(!b.sideAUser && b.a){b.sideAUser=b.creator||state.people[0]||'Person 1';b.sideBUser=state.people.find(p=>p!==b.sideAUser)||'Person 2';b.sideATake=b.a;b.sideBTake=b.b;}
+   b.status=b.status||'open'; b.votes=b.votes||{}; b.doubleDowns=b.doubleDowns||[];
+ });
+}
+normalizeState();
+function save(){
+ normalizeState();
+ try{
+   const current=localStorage.getItem('tabMarketV2');
+   if(current) localStorage.setItem('tabMarketV2_backup',current);
+   localStorage.setItem('tabMarketV2',JSON.stringify(state));
+ }catch(e){
+   console.error('Save failed',e);
+   safeToast('Save warning: browser storage may be full or blocked.');
+ }
+ render();
+}
+function toast(msg){$('toast').innerHTML='<strong>Notification</strong><div class="small">'+msg+'</div>';$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),3300)}
+function initials(n){return String(n||'?').split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase()}
+function estimate(text){text=(text||'').toLowerCase();if(/golf/.test(text))return 80;if(/dinner|sushi/.test(text))return 35;if(/boba|coffee/.test(text))return 7;if(/chipotle|cane|burger|food|lunch/.test(text))return 15;if(/airport|ride|uber/.test(text))return 32;if(/hoodie/.test(text))return 45;if(/monitor/.test(text))return 140;if(/beer|drink/.test(text))return 9;return 20}
+function balances(){let b={};state.people.forEach(p=>b[p]=0);b['Market']=b['Market']||0;state.debts.filter(d=>!d.settled).forEach(d=>{b[d.owed]=(b[d.owed]||0)+Number(d.amount);b[d.owes]=(b[d.owes]||0)-Number(d.amount)});return b}
+function addActivity(title,text){state.activity.unshift({title,text,time:new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})})}
+function empty(t){return `<div class="empty">${t}</div>`}
+function reputationBoost(person){
+ const voters=state.tagVotes?.[person]||{};
+ const vals=Object.values(voters);
+ if(!vals.length) return 1;
+ let total=0, count=0;
+ vals.forEach(label=>{
+   let item=(state.scale||[]).find(s=>s.label===label);
+   if(item){ total+=Number(item.mod||1); count++; }
+ });
+ return count ? clamp(total/count,0.70,1.30) : 1;
+}
+
+function rankForScore(score){
+ const ranks=[...(state.ranks||[])].sort((a,b)=>Number(b.min)-Number(a.min));
+ return (ranks.find(r=>score>=Number(r.min))||ranks[ranks.length-1]||{title:'Unranked'}).title;
+}
+function alphaPct(person){
+ const st=state.stats[person]||{};
+ return st.alphaCount ? (st.alphaSum/st.alphaCount) : 0;
+}
+function calibrationGrade(person){
+ const st=state.stats[person]||{};
+ const n=(st.correct||0)+(st.wrong||0);
+ if(!n || !st.brierSum) return '—';
+ const brier=st.brierSum/n;
+ if(brier<=0.12) return 'A+';
+ if(brier<=0.16) return 'A';
+ if(brier<=0.20) return 'B';
+ if(brier<=0.25) return 'C';
+ return 'D';
+}
+function repScore(person){
+ const st=state.stats[person]||{};
+ return Math.round(st.elo||1000);
+}
+function reputationDelta(predProbWinner, marketProbWinner, correct){
+ const confidence=Math.abs(predProbWinner-0.5)/0.5;
+ const alpha=(predProbWinner-marketProbWinner)*(correct?1:-1);
+ const base=16;
+ const alphaBonus=12*alpha;
+ const confBonus=base*confidence;
+ return Math.round((correct?1:-1)*confBonus + alphaBonus);
+}
+
+function voteWeight(person){ return 100; }
+function fairProfit(stake,prob){return Number(stake||0)*(1/prob-1)}
+function evForSide(stake,marketProb,userProb){let fair=fairProfit(stake,marketProb);return userProb*fair-(1-userProb)*Number(stake||0)}
+function missingVoters(b){return state.people.filter(p=>!b.votes || !b.votes[p])}
+function allVoted(b){return missingVoters(b).length===0 && state.people.length>0}
+function friendlyMarketLabel(prob){
+ let pct=Math.round(prob*100);
+ if(pct>=70) return 'Heavy favorite';
+ if(pct>=58) return 'Slight favorite';
+ if(pct>=43) return 'Toss-up';
+ if(pct>=30) return 'Underdog';
+ return 'Long shot';
+}
+function payoutExplain(stake,prob){
+ let pct=Math.round(prob*100);
+ let profit=fairProfit(stake,prob);
+ return {pct,profit,label:friendlyMarketLabel(prob)};
+}
+
+function voteWeight(person){ return 100; }
+function marketStats(b){
+ let votes=Object.entries(b.votes||{});
+ let scoreA=0,scoreB=0;
+ votes.forEach(([person,v])=>{
+   let p=clamp(Number(v.probA ?? 50),1,99);
+   scoreA += p;
+   scoreB += (100-p);
+ });
+ if(scoreA+scoreB===0){scoreA=50;scoreB=50}
+ let total=scoreA+scoreB;
+ let pa=clamp(scoreA/total,0.01,0.99);
+ let pb=1-pa;
+ return {pa,pb,scoreA,scoreB,voteCount:votes.length};
+}
+function fairProfit(stake,prob){return Number(stake||0)*(1/prob-1)}
+function evForSide(stake,marketProb,userProb){let fair=fairProfit(stake,marketProb);return userProb*fair-(1-userProb)*Number(stake||0)}
+function missingVoters(b){return state.people.filter(p=>!b.votes || !b.votes[p])}
+function allVoted(b){return missingVoters(b).length===0 && state.people.length>0}
+function friendlyMarketLabel(prob){
+ let pct=Math.round(prob*100);
+ if(pct>=70) return 'Heavy favorite';
+ if(pct>=58) return 'Slight favorite';
+ if(pct>=43) return 'Toss-up';
+ if(pct>=30) return 'Underdog';
+ return 'Long shot';
+}
+function payoutExplain(stake,prob){
+ let pct=Math.round(prob*100);
+ let profit=fairProfit(stake,prob);
+ return {pct,profit,label:friendlyMarketLabel(prob)};
+}
+
+function comb(n,k){
+ if(k<0||k>n)return 0;
+ k=Math.min(k,n-k);
+ let res=1;
+ for(let i=1;i<=k;i++) res=res*(n-k+i)/i;
+ return res;
+}
+function binomAtLeast(needed,remaining,p){
+ if(needed<=0)return 1;
+ if(needed>remaining)return 0;
+ let sum=0;
+ for(let x=needed;x<=remaining;x++) sum+=comb(remaining,x)*Math.pow(p,x)*Math.pow(1-p,remaining-x);
+ return sum;
+}
+function liveProbability(b){
+ if(!b.live) return null;
+ let made=Number(b.live.made||0), attempted=Number(b.live.attempted||0), target=Number(b.live.target||0), total=Number(b.live.total||0), p=Number(b.live.p||35)/100;
+ let remaining=Math.max(0,total-attempted);
+ let needed=Math.max(0,target-made);
+ return clamp(binomAtLeast(needed,remaining,p),0.001,0.999);
+}
+function liveFairProfit(stake,prob){return fairProfit(Number(stake||0),prob)}
+function liveSummary(b){
+ let prob=liveProbability(b);
+ if(prob===null)return '';
+ let made=Number(b.live.made||0), attempted=Number(b.live.attempted||0), target=Number(b.live.target||0), total=Number(b.live.total||0);
+ return `${made}/${attempted} so far · needs ${Math.max(0,target-made)} more in ${Math.max(0,total-attempted)} attempts`;
+}
+function renderSelects(){
+ ['owedSelect','owesSelect','betCreator','sideAUser','sideBUser','tagPerson','tagVoter','verdictPerson','verdictVoter'].forEach(id=>{
+   let el=$(id); if(el) el.innerHTML=state.people.map(p=>`<option>${p}</option>`).join('')
+ });
+ let tag=$('tagName'); if(tag) tag.innerHTML=(state.scale||[]).map(s=>`<option>${s.label}</option>`).join('');
+ let verdict=$('verdictChoice'); if(verdict) verdict.innerHTML=`<option value="good">${state.verdictLabels.good}</option><option value="bad">${state.verdictLabels.bad}</option>`;
+}
+function listPeople(arr,cls){if(!arr.length)return empty('Nothing here yet.');let max=Math.max(...arr.map(x=>x[1]),1);return arr.map(([p,v],i)=>`<div class="item clickable" onclick="showPersonDetail('${p}')"><div style="width:100%"><div class="personLine"><div class="avatar">${initials(p)}</div><div><strong>#${i+1} ${p}</strong><div class="small">${cls==='pos'?'Is owed':'Owes'} ${money(v)} · click for details</div></div></div><div class="bar"><i style="width:${Math.min(100,v/max*100)}%"></i></div></div><div class="amount ${cls}">${money(v)}</div></div>`).join('')}
+function tagCounts(){
+ const counts={}; state.people.forEach(p=>counts[p]={});
+ Object.entries(state.tagVotes||{}).forEach(([target,voters])=>{
+   counts[target]=counts[target]||{};
+   Object.values(voters||{}).forEach(tag=>counts[target][tag]=(counts[target][tag]||0)+1);
+ });
+ return counts;
+}
+
+function personDebtBreakdown(person){
+ const open=state.debts.filter(d=>!d.settled);
+ const owedToMe=open.filter(d=>d.owed===person);
+ const iOwe=open.filter(d=>d.owes===person);
+ const byPerson={};
+ owedToMe.forEach(d=>{byPerson[d.owes]=byPerson[d.owes]||{owesMe:0,iOwe:0,items:[]};byPerson[d.owes].owesMe+=Number(d.amount);byPerson[d.owes].items.push(d)});
+ iOwe.forEach(d=>{byPerson[d.owed]=byPerson[d.owed]||{owesMe:0,iOwe:0,items:[]};byPerson[d.owed].iOwe+=Number(d.amount);byPerson[d.owed].items.push(d)});
+ const categoryTotals={};
+ open.filter(d=>d.owed===person||d.owes===person).forEach(d=>{categoryTotals[d.category]=categoryTotals[d.category]||0;categoryTotals[d.category]+=Number(d.amount)});
+ const owedToMeTotal=owedToMe.reduce((s,d)=>s+Number(d.amount),0);
+ const iOweTotal=iOwe.reduce((s,d)=>s+Number(d.amount),0);
+ return {owedToMe,iOwe,byPerson,categoryTotals,owedToMeTotal,iOweTotal,net:owedToMeTotal-iOweTotal};
+}
+function showPersonDetail(person){
+ const data=personDebtBreakdown(person);
+ const st=state.stats[person]||{correct:0,wrong:0,profit:0};
+ const games=(st.correct||0)+(st.wrong||0);
+ const acc=games?Math.round(st.correct/games*100):0;
+ const relationships=Object.entries(data.byPerson).sort((a,b)=>Math.abs((b[1].owesMe-b[1].iOwe))-Math.abs((a[1].owesMe-a[1].iOwe)));
+ const relHtml=relationships.length?relationships.map(([other,v])=>{
+   const net=v.owesMe-v.iOwe;
+   const label=net>=0?`${other} owes ${person}`:`${person} owes ${other}`;
+   return `<div class="miniRow"><div><strong>${label}</strong><div class="small">${v.items.length} open item${v.items.length===1?'':'s'}</div></div><div class="amount ${net>=0?'pos':'neg'}">${money(Math.abs(net))}</div></div>`;
+ }).join(''):empty('No open relationships.');
+ const itemHtml=[...data.owedToMe.map(d=>({...d,dir:`${d.owes} owes ${person}`,cls:'pos'})),...data.iOwe.map(d=>({...d,dir:`${person} owes ${d.owed}`,cls:'neg'}))]
+   .sort((a,b)=>Number(b.amount)-Number(a.amount))
+   .map(d=>`<div class="miniRow"><div><span class="pill">${d.category}</span><strong>${d.dir}</strong><div class="small">${d.reason}</div></div><div class="amount ${d.cls}">${money(d.amount)}</div></div>`).join('')||empty('No open IOUs.');
+ const catHtml=Object.entries(data.categoryTotals).sort((a,b)=>b[1]-a[1]).map(([c,v])=>`<span class="pill">${c}: ${money(v)}</span>`).join(' ')||'<span class="pill">No categories yet</span>';
+ $('personDetail').innerHTML=`<div class="modalTop"><div><div class="personLine"><div class="avatar">${initials(person)}</div><div><h2 style="margin:0">${person}</h2><div class="small">Detailed market position</div></div></div></div><button class="closeBtn" onclick="closePersonDetail()">Close</button></div>
+ <div class="detailGrid">
+   <div class="detailStat"><span>Net position</span><b class="${data.net>=0?'pos':'neg'}">${money(data.net)}</b></div>
+   <div class="detailStat"><span>People owe them</span><b class="pos">${money(data.owedToMeTotal)}</b></div>
+   <div class="detailStat"><span>They owe others</span><b class="neg">${money(data.iOweTotal)}</b></div>
+   <div class="detailStat"><span>Prediction record</span><b>${acc}%</b><div class="small">${st.correct||0} correct · ${st.wrong||0} wrong · P/L ${money(st.profit||0)}</div></div>
+   <div class="detailStat"><span>Market Alpha</span><b class="${alphaPct(person)>=0?'pos':'neg'}">${(alphaPct(person)*100).toFixed(1)}%</b><div class="small">Calibration ${calibrationGrade(person)} · Rank ${rankForScore(repScore(person))}</div></div>
+   <div class="detailStat"><span>Community Verdict</span><b>${verdictLabel(person)}</b><div class="small">${verdictSummary(person)}</div></div>
+ </div>
+ <div class="card" style="margin-top:14px;box-shadow:none"><h2>Ranking Tie-Breakers</h2>
+ <div class="miniTable">
+   <div class="miniRow"><div><strong>Wilson Accuracy</strong><div class="small">Accuracy adjusted for sample size, so 2/2 does not outrank 50/70 unfairly.</div></div><div class="amount">${(wilsonLowerBound(st.correct||0,games)*100).toFixed(1)}%</div></div>
+   <div class="miniRow"><div><strong>Brier / Calibration</strong><div class="small">Lower is better. Penalizes being confidently wrong.</div></div><div class="amount">${brierScore(person).toFixed(3)}</div></div>
+   <div class="miniRow"><div><strong>Overall Predictor Score</strong><div class="small">40% alpha, 30% calibration, 20% accuracy, 10% sample size.</div></div><div class="amount">${predictorScore(person).toFixed(1)}</div></div>
+   <div class="miniRow"><div><strong>Overall Ranking Score</strong><div class="small">Used only to break ties in leaderboards.</div></div><div class="amount">${rankingScore(person,'overall').toFixed(3)}</div></div>
+ </div></div>
+ <div class="card" style="margin-top:14px;box-shadow:none"><h2>Breakdown by Person</h2><div class="miniTable">${relHtml}</div></div>
+ <div class="card" style="margin-top:14px;box-shadow:none"><h2>Open IOU Details</h2><div style="margin-bottom:10px">${catHtml}</div><div class="miniTable">${itemHtml}</div></div>`;
+ $('personModal').classList.add('show');
+}
+function closePersonDetail(){ $('personModal').classList.remove('show'); }
+window.showPersonDetail=showPersonDetail;
+window.closePersonDetail=closePersonDetail;
+
+
+function totalPicks(person){
+ const st=state.stats[person]||{};
+ return (st.correct||0)+(st.wrong||0);
+}
+function accuracyPct(person){
+ const st=state.stats[person]||{};
+ const n=totalPicks(person);
+ return n ? (st.correct||0)/n : 0;
+}
+function brierScore(person){
+ const st=state.stats[person]||{};
+ const n=totalPicks(person);
+ return n && st.brierSum!==undefined ? st.brierSum/n : 0.25;
+}
+function wilsonLowerBound(correct,total,z=1.28155){
+ if(!total) return 0;
+ const phat=correct/total;
+ const denom=1+z*z/total;
+ const center=phat+z*z/(2*total);
+ const margin=z*Math.sqrt((phat*(1-phat)+z*z/(4*total))/total);
+ return (center-margin)/denom;
+}
+
+function clamp01(x){return Math.max(0,Math.min(1,x));}
+function predictorColor(score){return score>=50?'predictor-good':'predictor-bad';}
+function predictorScore(person){
+ const st=state.stats[person]||{};
+ const n=totalPicks(person);
+ const alpha=alphaPct(person);               // usually -0.20 to +0.20
+ const acc=accuracyPct(person);              // 0 to 1
+ const brier=brierScore(person);             // lower is better
+ const alphaScore=clamp01((alpha+0.20)/0.40)*100;     // -20% => 0, 0% => 50, +20% => 100
+ const calibrationScore=clamp01(1-(brier/0.35))*100;  // excellent brier high score
+ const accuracyScore=acc*100;
+ const sampleScore=clamp01(Math.sqrt(n)/10)*100;      // 100 picks => 100
+ return (0.40*alphaScore)+(0.30*calibrationScore)+(0.20*accuracyScore)+(0.10*sampleScore);
+}
+
+function rankingScore(person,mode='overall'){
+ const st=state.stats[person]||{};
+ const n=totalPicks(person);
+ const acc=accuracyPct(person);
+ const alpha=alphaPct(person);
+ const rep=repScore(person);
+ const brier=brierScore(person);
+ const wilson=wilsonLowerBound(st.correct||0,n);
+ const sampleBoost=Math.log1p(n)/10;
+ // This is only for tie-breaking/ranking display, not market weighting.
+ if(mode==='alpha') return alpha + sampleBoost*0.01 + wilson*0.005 - brier*0.003 + rep/100000;
+ if(mode==='accuracy') return wilson*0.7 + acc*0.2 + alpha*0.08 - brier*0.05 + sampleBoost*0.02 + rep/100000;
+ if(mode==='rep') return rep + alpha*50 + wilson*25 - brier*10 + sampleBoost;
+ return rep/1000 + alpha*0.5 + wilson*0.3 - brier*0.2 + sampleBoost;
+}
+function comparePeople(mode='overall'){
+ return (a,b)=>rankingScore(b,mode)-rankingScore(a,mode) || totalPicks(b)-totalPicks(a) || alphaPct(b)-alphaPct(a) || repScore(b)-repScore(a) || a.localeCompare(b);
+}
+
+
+function renderRankInputs(){
+ (state.ranks||defaultRanks()).forEach((r,i)=>{
+   if($('rankTitle'+i)) $('rankTitle'+i).value=r.title;
+   if($('rankMin'+i)) $('rankMin'+i).value=r.min;
+ });
+}
+
+
+function verdictCounts(person){
+ const votes=state.verdictVotes?.[person]||{};
+ let good=0,bad=0;
+ Object.values(votes).forEach(v=>{ if(v==='good') good++; else if(v==='bad') bad++; });
+ return {good,bad,total:good+bad};
+}
+function verdictLabel(person){
+ const c=verdictCounts(person);
+ if(!c.total) return 'No verdict yet';
+ if(c.good===c.bad) return 'Split verdict';
+ return c.good>c.bad ? state.verdictLabels.good : state.verdictLabels.bad;
+}
+function verdictSummary(person){
+ const c=verdictCounts(person);
+ return `${state.verdictLabels.good}: ${c.good} · ${state.verdictLabels.bad}: ${c.bad}`;
+}
+
+function renderCore(){
+ normalizeState();
+ document.title=state.settings.app;if($('appTitle')) $('appTitle').textContent=state.settings.app;if($('creditorTitle')) $('creditorTitle').textContent=state.settings.creditors;if($('moochTitle')) $('moochTitle').textContent=state.settings.mooches;
+ if($('setAppName')) $('setAppName').value=state.settings.app;if($('setCredTitle')) $('setCredTitle').value=state.settings.creditors;if($('setMoochTitle')) $('setMoochTitle').value=state.settings.mooches;if($('setProfitTitle')) if($('setProfitTitle')) $('setProfitTitle').value=(state.dashboardTitles&&state.dashboardTitles.profit)||'Net Profit / Loss';if($('profitTitle')) if($('profitTitle')) $('profitTitle').textContent=(state.dashboardTitles&&state.dashboardTitles.profit)||'Net Profit / Loss';if($('setShameTitle')) $('setShameTitle').value=(state.dashboardTitles&&state.dashboardTitles.shame)||'Hall of Shame';if($('shameTitle')) $('shameTitle').textContent=(state.dashboardTitles&&state.dashboardTitles.shame)||'Hall of Shame';
+ (state.scale||[]).forEach((s,i)=>{ if($('scale'+i)) $('scale'+i).value=s.label; if($('scaleMod'+i)) $('scaleMod'+i).value=s.mod; });
+ renderRankInputs();
+ if($('verdictGood')) $('verdictGood').value=state.verdictLabels.good;
+ if($('verdictBad')) $('verdictBad').value=state.verdictLabels.bad;
+ renderSelects();
+ let open=state.debts.filter(d=>!d.settled), total=open.reduce((s,d)=>s+Number(d.amount),0);
+ if($('totalOpen')) $('totalOpen').textContent=money(total);if($('activeDebts')) $('activeDebts').textContent=open.length;if($('activeBets')) $('activeBets').textContent=(state.bets||[]).filter(b=>!b.status||b.status==='open').length;if($('groupSize')) $('groupSize').textContent=state.people.length;
+ let b=balances();let sorted=Object.entries(b).sort((a,b)=>b[1]-a[1]);
+ if($('creditorList')) $('creditorList').innerHTML=listPeople(sorted.filter(x=>x[1]>0),'pos');
+ if($('moochList')) $('moochList').innerHTML=listPeople([...sorted].reverse().filter(x=>x[1]<0).map(x=>[x[0],Math.abs(x[1])]),'neg');
+ if($('peopleList')) $('peopleList').innerHTML=state.people.map(p=>{
+   let st=state.stats[p]||{correct:0,wrong:0,profit:0,elo:1000}; let totalP=st.correct+st.wrong; let acc=totalP?Math.round(st.correct/totalP*100):0; let rep=repScore(p); let alpha=alphaPct(p);
+   return `<div class="item clickable" onclick="showPersonDetail('${p}')"><div class="personLine"><div class="avatar">${initials(p)}</div><div><strong>${p}</strong><div class="rankBadge">${rankForScore(rep)}</div><div class="small">Rep ${rep} · ${verdictLabel(p)} · Alpha <span class="${alpha>=0?'alphaGood':'alphaBad'}">${(alpha*100).toFixed(1)}%</span> · Accuracy ${acc}% · click for details</div></div></div><button class="btn secondary" onclick="event.stopPropagation();renamePerson('${p}')">Rename</button></div>`;
+ }).join('')||empty('No people yet.');
+ if($('debtList')) $('debtList').innerHTML=open.map(d=>`<div class="item"><div><span class="pill">${d.category}</span><strong>${d.owes} owes ${d.owed}</strong><div class="small">${d.reason}</div></div><div><div class="amount">${money(d.amount)}</div><button class="btn secondary" onclick="settleDebt('${d.id}')">Settle</button></div></div>`).join('')||empty('No open IOUs.');
+ 
+ if($('profitList')){
+   const profitRows=state.people.map(p=>{
+     const st=state.stats[p]||{};
+     return [p,Number(st.profit||0),repScore(p),alphaPct(p),totalPicks(p)];
+   }).sort((a,b)=>b[1]-a[1] || b[2]-a[2] || b[3]-a[3] || b[4]-a[4] || a[0].localeCompare(b[0]));
+   if($('profitList')) $('profitList').innerHTML=profitRows.map(([p,profit,rep,alpha,picks],i)=>`<div class="item clickable" onclick="showPersonDetail('${p}')"><div class="personLine"><div class="avatar">${initials(p)}</div><div><strong>#${i+1} ${p}</strong><div class="small">${rankForScore(rep)} · ${picks} scored picks · Alpha ${(alpha*100).toFixed(1)}%</div></div></div><div class="amount ${profit>=0?'pos':'neg'}">${money(profit)}</div></div>`).join('')||empty('No profit/loss data yet.');
+ }
+
+ if($('verdictList')){
+   const verdictRows=state.people.map(p=>[p,verdictCounts(p),alphaPct(p),accuracyPct(p),repScore(p)]).filter(x=>x[1].total>0).sort((a,b)=>b[1].total-a[1].total || b[2]-a[2] || b[3]-a[3] || b[4]-a[4]);
+   if($('verdictList')) $('verdictList').innerHTML=verdictRows.map(([p,c,a,acc,rep])=>`<div class="item clickable" onclick="showPersonDetail('${p}')"><div class="personLine"><div class="avatar">${initials(p)}</div><div><strong>${p}</strong><div class="small">${verdictLabel(p)} · ${verdictSummary(p)}</div></div></div><div class="amount ${c.good>=c.bad?'pos':'neg'}">${c.good}/${c.total}</div></div>`).join('')||empty('No verdict votes yet.');
+ }
+ if($('activityList')) $('activityList').innerHTML=state.activity.slice(0,10).map(a=>`<div class="item"><div><strong>${a.title}</strong><div class="small">${a.text}</div></div><span class="pill">${a.time}</span></div>`).join('')||empty('No activity yet.');
+ if($('notifList')) $('notifList').innerHTML=state.notifs.slice(0,8).map(n=>`<div class="item"><div><strong>${n.title}</strong><div class="small">${n.text}</div></div></div>`).join('')||empty('No notifications yet.');
+ let predictors=state.people.slice().filter(p=>totalPicks(p)>0).sort((a,b)=>predictorScore(b)-predictorScore(a) || alphaPct(b)-alphaPct(a) || accuracyPct(b)-accuracyPct(a) || repScore(b)-repScore(a) || totalPicks(b)-totalPicks(a) || a.localeCompare(b));
+ if($('predictorList')) $('predictorList').innerHTML=predictors.map((p,i)=>{
+   const st=state.stats[p]||{};
+   const n=totalPicks(p);
+   const score=predictorScore(p);
+   const color=predictorColor(score);
+   const acc=n?Math.round(accuracyPct(p)*100):0;
+   const alpha=alphaPct(p);
+   return `<div class="item clickable" onclick="showPersonDetail('${p}')"><div class="personLine"><div class="avatar">${initials(p)}</div><div><strong>#${i+1} ${p}</strong><div class="small">Overall ${score.toFixed(1)} · Alpha ${(alpha*100).toFixed(1)}% · Accuracy ${acc}% · ${n} picks</div></div></div><div class="amount ${color}">${score.toFixed(1)}</div></div>`;
+ }).join('')||empty('No resolved picks yet.');
+ let alphaRows=state.people.slice().filter(p=>(state.stats[p]?.alphaCount||0)>0).sort(comparePeople('alpha')).map(p=>[p,alphaPct(p),repScore(p),(state.stats[p]?.alphaCount||0),rankingScore(p,'alpha')]);
+ if($('alphaList')) $('alphaList').innerHTML=alphaRows.filter(x=>x[1]>=0).map(([p,a,rep,count],i)=>`<div class="item clickable" onclick="showPersonDetail('${p}')"><div class="personLine"><div class="avatar">${initials(p)}</div><div><strong>#${i+1} ${p}</strong><div class="small">${rankForScore(rep)} · ${count} scored picks · tie score ${rankingScore(p,'alpha').toFixed(3)}</div></div></div><div class="amount alphaGood">+${(a*100).toFixed(1)}%</div></div>`).join('')||empty('No positive alpha yet.');
+ if($('terroristList')) if($('terroristList')) if($('terroristList')) $('terroristList').innerHTML=alphaRows.filter(x=>x[1]<0).reverse().map(([p,a,rep,count],i)=>`<div class="item clickable" onclick="showPersonDetail('${p}')"><div class="personLine"><div class="avatar">${initials(p)}</div><div><strong>#${i+1} ${p}</strong><div class="small">${rankForScore(rep)} · ${count} scored picks · tie score ${rankingScore(p,'alpha').toFixed(3)}</div></div></div><div class="amount alphaBad">${(a*100).toFixed(1)}%</div></div>`).join('')||empty('No negative alpha yet.');
+
+ const counts=tagCounts();
+ let worstLabel=(state.scale&&state.scale[4]?state.scale[4].label:'🚨 Giga Scammer'); let shame=state.people.map(p=>[p,counts[p]?.[worstLabel]||0]).sort((a,b)=>b[1]-a[1]).filter(x=>x[1]>0);
+ if($('shameList')) $('shameList').innerHTML=shame.map(([p,c],i)=>`<div class="item"><div class="personLine"><div class="avatar">${initials(p)}</div><div><strong>#${i+1} ${p}</strong><div class="small">${worstLabel} votes</div></div></div><div class="amount neg">${c}</div></div>`).join('')||empty('No market manipulators called out yet.');
+ if($('allegationList')) $('allegationList').innerHTML=state.people.map(p=>{
+   let tags=counts[p]||{}; let tagHtml=Object.entries(tags).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<span class="pill">${k} (${v})</span>`).join(' ');
+   return `<div class="item block"><div class="personLine"><div class="avatar">${initials(p)}</div><div><strong>${p}</strong><div class="small">${tagHtml||'No allegations yet.'}</div></div></div><div class="tagGrid">${(state.scale||[]).map(t=>`<button class="tagBtn" onclick="quickTag('${p}','${t.label}')">${t.label}</button>`).join('')}</div></div>`;
+ }).join('');
+ renderBets();
+ ensureActiveBetVisibility();
+}
+
+function render(){
+ safeCall('Render',()=>renderCore());
+}
+if($('addDebt')) $('addDebt').onclick=()=>{let owed=$('owedSelect').value, owes=$('owesSelect').value, reason=$('reason').value.trim()||'Untitled IOU'; if(owed===owes)return toast('Owed and owes must be different people.');let amount=$('amount').value||estimate(reason);state.debts.unshift({id:uid(),reason,owed,owes,amount:Number(amount),category:$('category').value,settled:false,created:Date.now()});addActivity('New IOU',`${owes} owes ${owed} ${money(amount)} for ${reason}`);$('reason').value='';$('amount').value='';save();toast('IOU added to the market.')}
+if($('parseReason')) $('parseReason').onclick=()=>{let r=$('reason').value.toLowerCase();state.people.forEach(p=>{let re=new RegExp(p.toLowerCase()); if(re.test(r)){ if(/owes|lost/.test(r))$('owesSelect').value=p; else $('owedSelect').value=p;}});$('amount').value=estimate(r); if(/bet|lost|wins|winner/.test(r))$('category').value='Bet'; else if(/borrowed|hoodie|monitor|item/.test(r))$('category').value='Item'; else if(/ride|airport|uber/.test(r))$('category').value='Ride'; else if(/food|dinner|boba|coffee|sushi|cane|chipotle/.test(r))$('category').value='Food';toast('Parsed reason and suggested fields.')}
+function settleDebt(id){let d=state.debts.find(x=>x.id===id);d.settled=true;addActivity('Settled IOU',`${d.owes} settled ${money(d.amount)} with ${d.owed}.`);save()}window.settleDebt=settleDebt;
+if($('addPerson')) $('addPerson').onclick=()=>{let n=$('newPerson').value.trim();if(!n)return;if(!state.people.includes(n))state.people.push(n);state.stats[n]={correct:0,wrong:0,profit:0,elo:1000,alphaSum:0,alphaCount:0,brierSum:0};$('newPerson').value='';save();toast(n+' joined the group.')}
+window.renamePerson=(old)=>{let n=prompt('New name for '+old,old);if(!n||n===old)return;state.people=state.people.map(p=>p===old?n:p);state.debts.forEach(d=>{if(d.owed===old)d.owed=n;if(d.owes===old)d.owes=n});state.bets.forEach(b=>{if(b.creator===old)b.creator=n;if(b.sideAUser===old)b.sideAUser=n;if(b.sideBUser===old)b.sideBUser=n;Object.keys(b.votes).forEach(k=>{if(k===old){b.votes[n]=b.votes[k];delete b.votes[k]}})});if(state.stats[old]){state.stats[n]=state.stats[old];delete state.stats[old]} if(state.tagVotes[old]){state.tagVotes[n]=state.tagVotes[old];delete state.tagVotes[old]} Object.values(state.tagVotes).forEach(v=>{if(v[old]){v[n]=v[old];delete v[old]}});save()}
+if($('saveSettings')) $('saveSettings').onclick=()=>{state.settings.app=$('setAppName').value||'Tab Market';state.settings.creditors=$('setCredTitle').value||'Top Net Creditors';state.settings.mooches=$('setMoochTitle').value||'Biggest Mooches';state.dashboardTitles=state.dashboardTitles||{};state.dashboardTitles.profit=$('setProfitTitle')?($('setProfitTitle').value||'Net Profit / Loss'):'Net Profit / Loss';state.dashboardTitles.shame=$('setShameTitle')?($('setShameTitle').value||'Hall of Shame'):'Hall of Shame';save();toast('Custom names saved.')}
+
+
+
+function saveVerdicts(){
+ state.verdictLabels={good:($('verdictGood')?.value||'🫡 Respectable').trim(),bad:($('verdictBad')?.value||'🐷 Lucky Piggy').trim()};
+ save();toast('Community verdict labels saved.');
+}
+function resetVerdicts(){
+ state.verdictLabels={good:'🫡 Respectable',bad:'🐷 Lucky Piggy'};
+ save();toast('Community verdict labels reset.');
+}
+function castVerdictVote(){
+ let target=$('verdictPerson').value, voter=$('verdictVoter').value, choice=$('verdictChoice').value;
+ if(target===voter)return toast('Pick someone else for the verdict.');
+ state.verdictVotes[target]=state.verdictVotes[target]||{};
+ state.verdictVotes[target][voter]=choice;
+ addActivity('Community Verdict',`${voter} voted ${target} as ${choice==='good'?state.verdictLabels.good:state.verdictLabels.bad}.`);
+ save();toast('Verdict vote saved.');
+}
+window.saveVerdicts=saveVerdicts;
+window.resetVerdicts=resetVerdicts;
+window.castVerdictVote=castVerdictVote;
+
+function defaultRanks(){
+ return [
+   {title:'🐐 GOAT',min:1500},
+   {title:'🧠 Sharp',min:1300},
+   {title:'📈 Winning',min:1150},
+   {title:'🙂 Average',min:1000},
+   {title:'📉 Sus',min:850},
+   {title:'🚨 Giga Scammer',min:0}
+ ];
+}
+function saveRankTitles(){
+ let defaults=defaultRanks();
+ state.ranks=[0,1,2,3,4,5].map(i=>({
+   title:($('rankTitle'+i)?.value||defaults[i].title).trim(),
+   min:Number($('rankMin'+i)?.value||defaults[i].min)
+ }));
+ state.ranks=state.ranks.filter(r=>r.title && Number.isFinite(r.min)).sort((a,b)=>Number(b.min)-Number(a.min));
+ if(!state.ranks.length) state.ranks=defaults;
+ save();
+ toast('Rank titles saved.');
+}
+function resetRankTitles(){
+ state.ranks=defaultRanks();
+ save();
+ toast('Rank titles reset.');
+}
+window.saveRankTitles=saveRankTitles;
+window.resetRankTitles=resetRankTitles;
+
+
+
+
+if($('createBet')) $('createBet').onclick=()=>{
+ let title=$('betTitle').value.trim();
+ if(!title)return toast('Add a bet title first.');
+ let aUser=$('sideAUser').value,bUser=$('sideBUser').value;
+ if(aUser===bUser)return toast('Pick two different people.');
+ let bet={
+   id:uid(),
+   title,
+   sideAUser:aUser,
+   sideBUser:bUser,
+   sideATake:$('sideATake').value||'Take A',
+   sideBTake:$('sideBTake').value||'Take B',
+   creator:$('betCreator').value,
+   stake:Number($('betStake').value||20),
+   notes:$('betNotes').value,
+   status:'open',
+   votes:{},
+   doubleDowns:[],
+   created:Date.now()
+ };
+ state.bets.unshift(bet);
+ state.notifs.unshift({title:'New friend bet market',text:`${bet.sideAUser} vs ${bet.sideBUser}: ${bet.title}. Group can submit odds now.`});
+ addActivity('Bet market launched',`${bet.sideAUser} backs "${bet.sideATake}" vs ${bet.sideBUser} backs "${bet.sideBTake}"`);
+ ['betTitle','sideATake','sideBTake','betStake','betNotes'].forEach(id=>$(id).value='');
+ save();
+ showScreen('bets');
+ toast('Active bet market created.');
+}
+
+function renderLiveBox(b){
+ b.doubleDowns=b.doubleDowns||[];
+ let prob=liveProbability(b);
+ let live=b.live||{target:'',total:'',made:'',attempted:'',p:'35'};
+ let yesPct = prob===null ? '—' : Math.round(prob*100)+'%';
+ let noPct = prob===null ? '—' : Math.round((1-prob)*100)+'%';
+ let sampleStake = Number(b.stake||20);
+ let fairYesProfit = prob===null ? '—' : money(liveFairProfit(sampleStake,prob));
+ let fairNoProfit = prob===null ? '—' : money(liveFairProfit(sampleStake,1-prob));
+ let fairYesPayout = prob===null ? '—' : money(sampleStake+liveFairProfit(sampleStake,prob));
+ let fairNoPayout = prob===null ? '—' : money(sampleStake+liveFairProfit(sampleStake,1-prob));
+ let summary = prob===null ? 'Use this when the bet changes mid-game. Enter the current state to calculate fresh fair odds.' : liveSummary(b);
+ let dd=(b.doubleDowns||[]).map(x=>`<div class="miniRow"><div><strong>${x.person} placed ${money(x.stake)} on ${x.side==='yes'?'YES / it happens':'NO / it fails'}</strong><div class="small">${x.note} · fair odds were ${Math.round(x.prob*100)}% · profit ${money(x.fairProfit)} · total payout ${money(x.totalPayout||x.stake+x.fairProfit)}</div></div><div class="amount">${money(x.totalPayout||x.stake+x.fairProfit)}</div></div>`).join('')||'<div class="empty">No custom live bets yet.</div>';
+ return `<div class="liveBox">
+   <div class="betHeader"><div><span class="pill">NEW</span><span class="pill">Live odds</span><strong>Custom Live Bet at Fair Odds</strong><div class="small">${summary}</div></div></div>
+   <div class="row3">
+     <div><label>Target made</label><input id="liveTarget${b.id}" type="number" value="${live.target}" placeholder="6"></div>
+     <div><label>Total attempts</label><input id="liveTotal${b.id}" type="number" value="${live.total}" placeholder="15"></div>
+     <div><label>Expected make % from here</label><input id="liveP${b.id}" type="number" min="1" max="99" value="${live.p}" placeholder="35"></div>
+   </div>
+   <div class="row">
+     <div><label>Made so far</label><input id="liveMade${b.id}" type="number" value="${live.made}" placeholder="5"></div>
+     <div><label>Attempted so far</label><input id="liveAttempted${b.id}" type="number" value="${live.attempted}" placeholder="13"></div>
+   </div>
+   <div class="actions"><button class="btn secondary" onclick="updateLiveOdds('${b.id}')">Calculate current odds</button></div>
+   <div class="liveGrid" style="margin-top:12px">
+     <div class="liveStat"><span>Chance YES happens</span><b>${yesPct}</b></div>
+     <div class="liveStat"><span>Chance NO happens</span><b>${noPct}</b></div>
+     <div class="liveStat"><span>Risk ${money(sampleStake)} on YES</span><b>${fairYesPayout}</b><div class="small">profit ${fairYesProfit}</div></div>
+     <div class="liveStat"><span>Risk ${money(sampleStake)} on NO</span><b>${fairNoPayout}</b><div class="small">profit ${fairNoProfit}</div></div>
+   </div>
+   <div class="explain"><strong>Example:</strong> Joseph needs 6 made threes out of 15. He is currently 5/13. Enter target 6, total 15, made 5, attempted 13, and his expected make % on the remaining shots. Then choose any custom bet amount below to calculate the fair payout.</div>
+   <div class="row3" style="margin-top:12px">
+     <div><label>Person</label><select id="ddPerson${b.id}">${state.people.map(p=>`<option>${p}</option>`).join('')}</select></div>
+     <div><label>Live bet side</label><select id="ddSide${b.id}" onchange="previewLiveBet('${b.id}')"><option value="yes">YES / it happens</option><option value="no">NO / it fails</option></select></div>
+     <div><label>Custom bet amount</label><input id="ddStake${b.id}" type="number" step="0.01" value="${b.stake||20}" oninput="previewLiveBet('${b.id}')"></div>
+   </div>
+   <div class="liveGrid" style="margin-top:12px">
+     <div class="liveStat"><span>Selected fair odds</span><b id="ddOdds${b.id}">—</b></div>
+     <div class="liveStat"><span>Amount risked</span><b id="ddRisk${b.id}">—</b></div>
+     <div class="liveStat"><span>Fair profit</span><b id="ddProfit${b.id}">—</b></div>
+     <div class="liveStat"><span>Total payout</span><b id="ddPayout${b.id}">—</b></div>
+   </div>
+   <div class="actions"><button class="btn green" onclick="addDoubleDown('${b.id}')">Add custom live bet</button></div>
+   <div class="miniTable">${dd}</div>
+ </div>`;
+}
+function previewLiveBet(id){
+ let b=state.bets.find(x=>x.id===id);
+ let prob=liveProbability(b);
+ if(prob===null){
+   ['ddOdds','ddRisk','ddProfit','ddPayout'].forEach(prefix=>{let el=$(prefix+id); if(el) el.textContent='—';});
+   return;
+ }
+ let side=$('ddSide'+id)?.value||'yes';
+ let stake=Number($('ddStake'+id)?.value||b.stake||20);
+ let sideProb=side==='yes'?prob:1-prob;
+ let profit=liveFairProfit(stake,sideProb);
+ if($('ddOdds'+id)) $('ddOdds'+id).textContent=Math.round(sideProb*100)+'%';
+ if($('ddRisk'+id)) $('ddRisk'+id).textContent=money(stake);
+ if($('ddProfit'+id)) $('ddProfit'+id).textContent=money(profit);
+ if($('ddPayout'+id)) $('ddPayout'+id).textContent=money(stake+profit);
+}
+function updateLiveOdds(id){
+ let b=state.bets.find(x=>x.id===id);
+ b.live={
+   target:Number($('liveTarget'+id).value||0),
+   total:Number($('liveTotal'+id).value||0),
+   made:Number($('liveMade'+id).value||0),
+   attempted:Number($('liveAttempted'+id).value||0),
+   p:Number($('liveP'+id).value||35)
+ };
+ if(b.live.attempted>b.live.total){toast('Attempted so far cannot be bigger than total attempts.');return}
+ if(b.live.made>b.live.attempted){toast('Made so far cannot be bigger than attempted so far.');return}
+ addActivity('Live odds updated',`${b.title}: ${liveSummary(b)}. Current YES odds ${Math.round(liveProbability(b)*100)}%.`);
+ save();toast('Current live odds calculated.');
+}
+function addDoubleDown(id){
+ let b=state.bets.find(x=>x.id===id);
+ let prob=liveProbability(b);
+ if(prob===null){toast('Calculate current odds before adding a custom live bet.');return}
+ let person=$('ddPerson'+id).value, side=$('ddSide'+id).value, stake=Number($('ddStake'+id).value||b.stake||20);
+ let sideProb=side==='yes'?prob:1-prob;
+ let fair=liveFairProfit(stake,sideProb);
+ let totalPayout=stake+fair;
+ b.doubleDowns=b.doubleDowns||[];
+ b.doubleDowns.unshift({id:uid(),person,side,stake,prob:sideProb,fairProfit:fair,totalPayout,note:liveSummary(b),created:Date.now()});
+ state.notifs.unshift({title:'Custom live bet placed',text:`${person} put ${money(stake)} on ${side==='yes'?'YES':'NO'} in ${b.title}. Fair payout: ${money(totalPayout)}.`});
+ addActivity('Custom live bet',`${person} risked ${money(stake)} on ${side==='yes'?'YES':'NO'} at ${Math.round(sideProb*100)}% live odds. Fair payout ${money(totalPayout)}.`);
+ save();toast('Custom live bet added.');
+}
+window.previewLiveBet=previewLiveBet;
+window.updateLiveOdds=updateLiveOdds;
+window.addDoubleDown=addDoubleDown;
+
+
+function ensureActiveBetVisibility(){
+ const list=$('betList');
+ if(!list) return;
+ const open=(state.bets||[]).filter(b=>!b.status||b.status==='open');
+ if(!open.length){
+   list.innerHTML=empty('No active bet markets. Create one above or click Load Demo Data to see the Custom Live Bet at Fair Odds module.');
+ }
+}
+
+function renderBets(){
+ const el=$('betList');
+ if(!el) return;
+ let open=(state.bets||[]).filter(b=>!b.status||b.status==='open');
+ try{
+   el.innerHTML=open.map(b=>{
+     b.id=b.id||uid();
+     b.sideAUser=b.sideAUser||state.people[0]||'Person 1';
+     b.sideBUser=b.sideBUser||state.people.find(p=>p!==b.sideAUser)||'Person 2';
+     b.sideATake=b.sideATake||'Take A';
+     b.sideBTake=b.sideBTake||'Take B';
+     b.votes=b.votes||{};
+     b.doubleDowns=b.doubleDowns||[];
+     let m=marketStats(b), pa=Math.round(m.pa*100), pb=100-pa, stake=Number(b.stake||20);
+     let fairA=fairProfit(stake,m.pa), fairB=fairProfit(stake,m.pb);
+     let votes=Object.entries(b.votes||{}).map(([p,v])=>`${p}: ${b.sideAUser} ${v.probA ?? 50}% / ${b.sideBUser} ${100-(v.probA ?? 50)}%`).join(', ')||'none yet';
+     let liveHtml='';
+     try{ liveHtml=renderLiveBox(b); }catch(e){ liveHtml=`<div class="liveBox"><strong>Custom Live Bet at Fair Odds</strong><div class="small">Live section error: ${e.message}</div></div>`; }
+     return `<div class="item block">
+       <div class="betHeader">
+         <div>
+           <span class="pill">${money(stake)} stake</span><span class="pill">${m.voteCount} market votes</span><span class="pill">${missingVoters(b).length} not voted</span>
+           <strong>${b.title||'Untitled Bet'}</strong>
+           <div class="small">Original bet: ${b.sideAUser} vs ${b.sideBUser}. ${b.notes||'No notes.'}</div>
+         </div>
+         <button class="btn secondary" onclick="resolveBet('${b.id}')">Resolve</button>
+       </div>
+       <div class="row">
+         <div class="marketChoice">
+           <div class="sideTitle">Back ${b.sideAUser}</div>
+           <div class="take">${b.sideATake}</div>
+           <div class="odds">${pa}%</div>
+           <div class="bar"><i style="width:${pa}%"></i></div>
+           <label>Voter</label><select id="voterA${b.id}">${state.people.map(p=>`<option>${p}</option>`).join('')}</select>
+           <label>Chance ${b.sideAUser} is right</label><input id="confA${b.id}" type="number" min="1" max="99" value="50" oninput="updateSplitPreview('${b.id}','a')">
+           <div class="small" id="splitA${b.id}">${b.sideAUser}: 50% · ${b.sideBUser}: 50%</div>
+           <div class="actions"><button class="btn green" onclick="voteBet('${b.id}','a')">Submit odds</button></div>
+         </div>
+         <div class="marketChoice">
+           <div class="sideTitle">Back ${b.sideBUser}</div>
+           <div class="take">${b.sideBTake}</div>
+           <div class="odds">${pb}%</div>
+           <div class="bar"><i style="width:${pb}%"></i></div>
+           <label>Voter</label><select id="voterB${b.id}">${state.people.map(p=>`<option>${p}</option>`).join('')}</select>
+           <label>Chance ${b.sideBUser} is right</label><input id="confB${b.id}" type="number" min="1" max="99" value="50" oninput="updateSplitPreview('${b.id}','b')">
+           <div class="small" id="splitB${b.id}">${b.sideBUser}: 50% · ${b.sideAUser}: 50%</div>
+           <div class="actions"><button class="btn blue" onclick="voteBet('${b.id}','b')">Submit odds</button></div>
+         </div>
+       </div>
+       <div class="payGrid">
+         <div class="payBox"><span>50/50 payout</span><b>${money(stake)}</b><div class="small">Profit if your side wins</div></div>
+         <div class="payBox"><span>Fair payout ${b.sideAUser}</span><b>${money(fairA)}</b><div class="small">Based on ${pa}% market odds</div></div>
+         <div class="payBox"><span>Fair payout ${b.sideBUser}</span><b>${money(fairB)}</b><div class="small">Based on ${pb}% market odds</div></div>
+         <div class="payBox"><span>Vote model</span><b>Equal weight</b><div class="small">Reputation is cosmetic only</div></div>
+       </div>
+       ${liveHtml}
+       <div class="small" style="margin-top:12px">Market votes: ${votes}</div>
+     </div>`;
+   }).join('')||empty('No active bet markets.');
+ }catch(e){
+   el.innerHTML=`<div class="empty">Bet market render error: ${e.message}</div>`;
+ }
+}
+function updateSplitPreview(id,pick){
+ let b=state.bets.find(x=>x.id===id);
+ if(!b) return;
+ let input=$(pick==='a'?'confA'+id:'confB'+id);
+ let val=clamp(Number(input?.value||50),1,99);
+ if(input) input.value=val;
+ if(pick==='a'){
+   let el=$('splitA'+id);
+   if(el) el.textContent=`${b.sideAUser}: ${val}% · ${b.sideBUser}: ${100-val}%`;
+ } else {
+   let el=$('splitB'+id);
+   if(el) el.textContent=`${b.sideBUser}: ${val}% · ${b.sideAUser}: ${100-val}%`;
+ }
+}
+window.updateSplitPreview=updateSplitPreview;
+window.voteBet=(id,pick)=>{
+ let b=state.bets.find(x=>x.id===id);
+ let voter=$(pick==='a'?'voterA'+id:'voterB'+id).value;
+ let raw=Number($(pick==='a'?'confA'+id:'confB'+id).value||50);
+ raw=clamp(raw,1,99);
+ let probA=pick==='a'?raw:(100-raw);
+ b.votes[voter]={pick:probA>=50?'a':'b',probA,ts:Date.now()};
+ state.notifs.unshift({title:'Market probability split',text:`${voter} set ${b.sideAUser} ${probA}% / ${b.sideBUser} ${100-probA}% in ${b.title}.`});
+ save();toast(`${voter} set odds: ${b.sideAUser} ${probA}% / ${b.sideBUser} ${100-probA}%.`);
+}
+window.resolveBet=(id)=>{
+ let b=state.bets.find(x=>x.id===id);
+ if(!Object.keys(b.votes||{}).length){toast('Resolving with no market votes. Only the original IOU will be created.');}
+ let winner=prompt(`Who won the original bet? Type A for ${b.sideAUser}: "${b.sideATake}" or B for ${b.sideBUser}: "${b.sideBTake}"`,'A');
+ if(!winner)return;winner=winner.toLowerCase().startsWith('b')?'b':'a';
+ let winnerPerson=winner==='a'?b.sideAUser:b.sideBUser;
+ let loserPerson=winner==='a'?b.sideBUser:b.sideAUser;
+ state.debts.unshift({id:uid(),reason:`Lost original bet: ${b.title}`,owed:winnerPerson,owes:loserPerson,amount:b.stake,category:'Bet',settled:false,created:Date.now()});
+ let finalMarket=marketStats(b);
+ let marketProbWinner = winner==='a' ? finalMarket.pa : finalMarket.pb;
+ Object.entries(b.votes||{}).forEach(([p,v])=>{
+   state.stats[p]=state.stats[p]||{correct:0,wrong:0,profit:0,elo:1000,alphaSum:0,alphaCount:0,brierSum:0};
+   let predProbWinner = (winner==='a' ? Number(v.probA ?? 50) : 100-Number(v.probA ?? 50))/100;
+   let pickedWinner = predProbWinner>=0.5;
+   let delta=reputationDelta(predProbWinner,marketProbWinner,pickedWinner);
+   if(pickedWinner){state.stats[p].correct++;state.stats[p].profit+=Number(b.stake||0)*Math.max(0.2,(predProbWinner-0.5)/0.5)}
+   else{state.stats[p].wrong++;state.stats[p].profit-=Number(b.stake||0)*Math.max(0.2,(0.5-predProbWinner)/0.5)}
+   let alpha=(predProbWinner-marketProbWinner)*(pickedWinner?1:-1);
+   state.stats[p].alphaSum=(state.stats[p].alphaSum||0)+alpha;
+   state.stats[p].alphaCount=(state.stats[p].alphaCount||0)+1;
+   state.stats[p].brierSum=(state.stats[p].brierSum||0)+Math.pow(predProbWinner-1,2);
+   state.stats[p].elo=clamp((state.stats[p].elo||1000)+delta,100,3000);
+ });
+ if((b.doubleDowns||[]).length){
+   let liveResult=prompt('For custom live bets, did the live YES condition happen? Type Y for yes or N for no.','Y');
+   if(liveResult){
+     let yesWon=liveResult.toLowerCase().startsWith('y');
+     b.doubleDowns.forEach(dd=>{
+       let won=(dd.side==='yes')===yesWon;
+       // House-style settlement against the market, represented as note-only IOU with app as counterparty label.
+       if(won){
+         state.debts.unshift({id:uid(),reason:`Won custom live bet: ${b.title}`,owed:dd.person,owes:'Market',amount:dd.totalPayout||dd.fairProfit,category:'Bet',settled:false,created:Date.now()});
+       } else {
+         state.debts.unshift({id:uid(),reason:`Lost custom live bet: ${b.title}`,owed:'Market',owes:dd.person,amount:dd.stake,category:'Bet',settled:false,created:Date.now()});
+       }
+     });
+     addActivity('Custom live bet resolved',`${b.doubleDowns.length} live custom live bet(s) settled.`);
+   }
+ }
+ b.status='resolved';b.winner=winner;addActivity('Bet resolved',`${winnerPerson} won: ${b.title}. ${loserPerson} now owes ${money(b.stake)}.`);save();toast('Bet resolved, original IOU created, prediction stats updated, and custom live bets settled if entered.');
+}
+function applyExclusiveScaleVote(target,voter,tag){
+ state.tagVotes[target]=state.tagVotes[target]||{};
+ let best=state.scale?.[0]?.label;
+ let worst=state.scale?.[4]?.label;
+ if(tag===best || tag===worst){
+   Object.keys(state.tagVotes).forEach(person=>{
+     if(person!==target && state.tagVotes[person] && state.tagVotes[person][voter]===tag){
+       delete state.tagVotes[person][voter];
+     }
+   });
+ }
+ state.tagVotes[target][voter]=tag;
+}
+if($('castTag')) $('castTag').onclick=()=>{let target=$('tagPerson').value, voter=$('tagVoter').value, tag=$('tagName').value;if(target===voter)return toast('You can tag yourself, but pick someone else for better drama.');applyExclusiveScaleVote(target,voter,tag);addActivity('Community Rating',`${voter} rated ${target}: ${tag}.`);save();toast('Rating saved. GOAT and worst-title votes are exclusive per voter.')}
+window.quickTag=(target,tag)=>{let voter=prompt('Who is casting this tag vote?',state.people[0]||'');if(!voter)return;if(!state.people.includes(voter))return toast('Voter must be in the group.');applyExclusiveScaleVote(target,voter,tag);addActivity('Community Rating',`${voter} rated ${target}: ${tag}.`);save();toast('Rating saved. GOAT and worst-title votes are exclusive per voter.')}
+if($('demoData')) $('demoData').onclick=()=>{
+ state={
+  settings:{app:'Tab Market',creditors:'Net Creditors',mooches:'Biggest Mooches'},
+  dashboardTitles:{profit:'Net Profit / Loss',shame:'Hall of Shame'},
+  scale:[
+    {label:'🐐 GOAT',mod:1.20},
+    {label:'📈 Sharp',mod:1.10},
+    {label:'😐 Neutral',mod:1.00},
+    {label:'📉 Sus',mod:0.90},
+    {label:'🚨 Giga Scammer',mod:0.80}
+  ],
+  ranks:[
+    {title:'🐐 GOAT',min:1500},
+    {title:'🧠 Sharp',min:1300},
+    {title:'📈 Winning',min:1150},
+    {title:'🙂 Average',min:1000},
+    {title:'📉 Sus',min:850},
+    {title:'🚨 Giga Scammer',min:0}
+  ],
+  people:['Jalen','Will','Sarah','Matt','Kevin'],
+  debts:[
+    {id:uid(),reason:"Lost Cane's bet",owed:'Jalen',owes:'Matt',amount:17,category:'Food',settled:false},
+    {id:uid(),reason:'Borrowed hoodie replacement value',owed:'Sarah',owes:'Will',amount:45,category:'Item',settled:false},
+    {id:uid(),reason:'Covered sushi',owed:'Kevin',owes:'Matt',amount:38,category:'Food',settled:false}
+  ],
+  bets:[
+    {
+      id:uid(),
+      title:'Joseph 6/15 three-point challenge',
+      sideAUser:'Will',
+      sideBUser:'Jalen',
+      sideATake:'Joseph makes 6 of 15 threes',
+      sideBTake:'Joseph does not make 6 of 15 threes',
+      creator:'Sarah',
+      stake:20,
+      notes:'Demo bet showing live odds and custom fair payout.',
+      status:'open',
+      votes:{
+        Sarah:{pick:'a',probA:60},
+        Matt:{pick:'b',probA:45},
+        Kevin:{pick:'a',probA:55}
+      },
+      live:{target:6,total:15,made:5,attempted:13,p:35},
+      doubleDowns:[],
+      created:Date.now()
+    }
+  ],
+  notifs:[{title:'Demo active bet loaded',text:'Open Bet Market to see Custom Live Bet at Fair Odds.'}],
+  activity:[],
+  tagVotes:{},
+  verdictLabels:{good:'🫡 Respectable',bad:'🐷 Lucky Piggy'},
+  verdictVotes:{},
+  stats:{
+    Jalen:{correct:2,wrong:1,profit:20,elo:1088,alphaSum:.22,alphaCount:3,brierSum:.52},
+    Will:{correct:1,wrong:2,profit:-20,elo:963,alphaSum:-.12,alphaCount:3,brierSum:.73},
+    Sarah:{correct:3,wrong:1,profit:40,elo:1125,alphaSum:.31,alphaCount:4,brierSum:.61},
+    Matt:{correct:0,wrong:3,profit:-60,elo:910,alphaSum:-.38,alphaCount:3,brierSum:.92},
+    Kevin:{correct:2,wrong:2,profit:0,elo:1002,alphaSum:.02,alphaCount:4,brierSum:.78}
+  }
+ };
+ addActivity('Demo loaded','Go to Bet Market to see the active market and Custom Live Bet at Fair Odds.');
+ save();
+ showScreen('bets');
+ toast('Demo data loaded with an active live-odds bet.');
+}
+if($('resetData')) $('resetData').onclick=()=>{if(confirm('Reset everything?')){localStorage.removeItem('tabMarketV1');localStorage.removeItem('tabMarketV2');location.reload()}}
+function showScreen(name){document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.screen===name));document.querySelectorAll('.screen').forEach(x=>x.classList.toggle('active',x.id===name)); if(name==='bets'){try{renderBets();ensureActiveBetVisibility();}catch(e){console.error(e);}}}
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>showScreen(t.dataset.screen)));
+function wireRankButtons(){
+ const saveBtn=$('saveRanks'); if(saveBtn) saveBtn.onclick=saveRankTitles;
+ const resetBtn=$('resetRanks'); if(resetBtn) resetBtn.onclick=resetRankTitles;
+}
+safeCall('Startup render',()=>render());
+wireRankButtons();
+function wireVerdictButtons(){
+ const saveV=$('saveVerdicts'); if(saveV) saveV.onclick=saveVerdicts;
+ const resetV=$('resetVerdicts'); if(resetV) resetV.onclick=resetVerdicts;
+ const castV=$('castVerdict'); if(castV) castV.onclick=castVerdictVote;
+}
+wireVerdictButtons();
+
+function forceWireTabs(){
+ document.querySelectorAll('.tab').forEach(btn=>{
+   btn.onclick=function(ev){
+     ev.preventDefault();
+     const name=this.dataset.screen;
+     if(!name) return;
+     document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.screen===name));
+     document.querySelectorAll('.screen').forEach(x=>x.classList.toggle('active',x.id===name));
+     if(name==='bets' && typeof renderBets==='function'){
+       safeCall('Bet market render',()=>{renderBets(); if(typeof ensureActiveBetVisibility==='function') ensureActiveBetVisibility();});
+     }
+   };
+ });
+}
+forceWireTabs();
+setTimeout(forceWireTabs,0);
+window.forceWireTabs=forceWireTabs;
+
+window.addEventListener('error',function(e){
+ console.error(e.error||e.message);
+ safeToast('Warning: '+(e.message||'unknown app error'));
+});
+window.addEventListener('unhandledrejection',function(e){
+ console.error(e.reason);
+ safeToast('Warning: '+((e.reason&&e.reason.message)||e.reason||'unknown promise error'));
+});
+</script>
+</body></html>
