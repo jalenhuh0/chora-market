@@ -828,6 +828,23 @@ button {
   flex-shrink: 0;
 }
 
+.activityScroll {
+  max-height: min(320px, 45vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 4px;
+}
+
+.activityScroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.activityScroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+}
+
 .dashboardSocialGrid {
   margin-top: 0;
 }

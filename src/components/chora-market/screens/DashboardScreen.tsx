@@ -34,8 +34,6 @@ export function DashboardScreen({ tm }: { tm: ChoraMarketHook }) {
         </div>
       </div>
 
-      <RecentActivityCard activity={tm.state.activity} />
-
       <div className="card leaderboardHero">
         <div className="leaderboardHeroHead">
           <h2>🏆 Best Predictor</h2>
@@ -121,6 +119,8 @@ export function DashboardScreen({ tm }: { tm: ChoraMarketHook }) {
           </div>
         </div>
       </div>
+
+      <RecentActivityCard activity={tm.state.activity} />
     </section>
   );
 }

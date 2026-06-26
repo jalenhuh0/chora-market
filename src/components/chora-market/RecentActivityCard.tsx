@@ -2,7 +2,7 @@
 
 import { Empty } from "@/components/chora-market/Empty";
 
-const VISIBLE_COUNT = 5;
+const SCROLL_LIMIT = 30;
 
 type ActivityItem = {
   title: string;
@@ -15,13 +15,13 @@ type Props = {
 };
 
 export function RecentActivityCard({ activity }: Props) {
-  const items = activity.slice(0, VISIBLE_COUNT);
+  const items = activity.slice(0, SCROLL_LIMIT);
 
   return (
     <div className="card">
       <h2>Recent Activity</h2>
       <p className="small leaderboardHint">Latest updates in your group.</p>
-      <div className="list">
+      <div className="activityScroll list">
         {items.length ? (
           items.map((a, i) => (
             <div key={i} className="item activityItem">
