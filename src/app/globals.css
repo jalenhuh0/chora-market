@@ -1204,10 +1204,11 @@ button {
 }
 
 .marketingPage {
+  position: relative;
   width: 100%;
-  max-width: 1100px;
+  max-width: 1080px;
   margin: 0 auto;
-  padding: 0 16px 40px;
+  padding: 0 16px 48px;
 }
 
 .marketingNav {
@@ -1232,6 +1233,24 @@ button {
   font-size: 14px;
 }
 
+.marketingNavLinks {
+  display: none;
+  align-items: center;
+  gap: 24px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.marketingNavLinks a {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.marketingNavLinks a:hover {
+  color: var(--text);
+}
+
 .marketingLogo {
   width: 40px;
   height: 40px;
@@ -1244,41 +1263,80 @@ button {
 }
 
 .marketingMain {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: 48px;
-  padding-top: 12px;
+  gap: 40px;
+  padding-top: 8px;
 }
 
 .marketingHero {
   display: grid;
-  gap: 28px;
+  gap: 32px;
   align-items: center;
-  padding: 12px 0 8px;
+  padding: 16px 0 8px;
   text-align: center;
 }
 
-.marketingHeroBrand {
-  margin: 0 0 16px;
-  font-size: clamp(2.5rem, 10vw, 4rem);
-  letter-spacing: 0.22em;
-  font-weight: 900;
-  line-height: 1;
+.marketingEyebrow {
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--blue);
 }
 
 .marketingHeroTitle {
-  margin: 0 0 12px;
-  font-size: clamp(1.35rem, 4vw, 1.85rem);
+  margin: 0 0 14px;
+  font-size: clamp(1.85rem, 5.5vw, 2.75rem);
   letter-spacing: -0.03em;
-  line-height: 1.2;
+  line-height: 1.12;
+  font-weight: 900;
+}
+
+.marketingGradient {
+  background: linear-gradient(120deg, #ffffff 0%, #a8d4f0 50%, #43d17a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .marketingHeroSubtitle {
   margin: 0 auto 24px;
-  max-width: 36rem;
+  max-width: 34rem;
   color: var(--muted);
-  font-size: 15px;
-  line-height: 1.65;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.marketingTrust {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 16px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.marketingTrust li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.marketingTrust li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--green);
+  box-shadow: 0 0 10px rgba(67, 209, 122, 0.6);
 }
 
 .marketingActions {
@@ -1326,6 +1384,7 @@ button {
   text-align: left;
   max-width: 420px;
   margin: 0 auto;
+  padding: 18px;
 }
 
 .marketingPreviewHeader {
@@ -1336,7 +1395,7 @@ button {
 }
 
 .marketingPreviewTitle {
-  margin: 0 0 16px;
+  margin: 0 0 12px;
   font-size: 1.05rem;
   line-height: 1.35;
   letter-spacing: -0.02em;
@@ -1346,7 +1405,7 @@ button {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 4px;
 }
 
 .marketingPreviewStat {
@@ -1378,11 +1437,13 @@ button {
   gap: 12px;
   padding: 10px 0;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 14px;
 }
 
 .marketingPreviewIou {
   font-weight: 700;
   color: var(--yellow);
+  text-align: right;
 }
 
 .marketingPreviewRank {
@@ -1390,32 +1451,81 @@ button {
   color: var(--green);
 }
 
+.marketingOddsBar {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.marketingOddsFill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--green), #8ef0b0);
+}
+
+.marketingPillLive {
+  border-color: rgba(67, 209, 122, 0.35);
+  background: rgba(67, 209, 122, 0.12);
+  color: #9ef0bc;
+}
+
 .marketingSection {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
+}
+
+.marketingSectionHead {
+  text-align: center;
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+.marketingSectionHeadLeft {
+  text-align: left;
+  margin: 0;
+  max-width: none;
 }
 
 .marketingSectionTitle {
-  margin: 0;
-  font-size: 1.25rem;
+  margin: 0 0 10px;
+  font-size: clamp(1.35rem, 3vw, 1.85rem);
   letter-spacing: -0.03em;
-  text-align: center;
 }
 
-.marketingSteps,
-.marketingWhyGrid {
+.marketingSectionLead {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
+  font-size: 15px;
+}
+
+.marketingBento {
+  display: grid;
+  gap: 12px;
+}
+
+.marketingBentoItem {
+  padding: 18px;
+}
+
+.marketingBentoItem h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.marketingSteps {
   display: grid;
   gap: 14px;
 }
 
-.marketingStep,
-.marketingWhy {
-  padding: 18px;
+.marketingStep {
+  padding: 20px;
 }
 
-.marketingStep h3,
-.marketingWhy h3 {
+.marketingStep h3 {
   margin: 0 0 8px;
   font-size: 1rem;
 }
@@ -1434,8 +1544,76 @@ button {
   margin-bottom: 10px;
 }
 
+.marketingCompare {
+  padding: 22px 18px;
+}
+
+.marketingCompare .marketingSectionTitle {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.marketingCompareGrid {
+  display: grid;
+  gap: 16px;
+}
+
+.marketingCompareCol {
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.marketingCompareColChora {
+  border-color: rgba(67, 209, 122, 0.25);
+  background: rgba(67, 209, 122, 0.06);
+}
+
+.marketingCompareLabel {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.marketingCompareList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.marketingCompareColChora .marketingCompareList {
+  color: var(--text);
+}
+
+.marketingCompareList li {
+  position: relative;
+  padding-left: 18px;
+}
+
+.marketingCompareList li::before {
+  content: "ΓÇö";
+  position: absolute;
+  left: 0;
+  color: var(--muted);
+}
+
+.marketingCompareColChora .marketingCompareList li::before {
+  content: "Γ£ô";
+  color: var(--green);
+  font-weight: 900;
+}
+
 .marketingStory {
-  padding: 22px;
+  padding: 28px 22px;
 }
 
 .marketingStoryText {
@@ -1443,6 +1621,7 @@ button {
   color: var(--muted);
   line-height: 1.7;
   font-size: 15px;
+  max-width: 40rem;
 }
 
 .marketingStoryText em {
@@ -1458,18 +1637,22 @@ button {
 
 .marketingFinalTitle {
   margin: 0 0 8px;
-  font-size: 1.35rem;
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
   letter-spacing: -0.03em;
 }
 
 .marketingFooter {
+  position: relative;
+  z-index: 1;
   margin-top: 8px;
   padding-top: 16px;
 }
 
 .marketingInviteWrap {
+  position: relative;
+  z-index: 1;
   width: 100%;
-  max-width: 1100px;
+  max-width: 1080px;
   margin: 0 auto;
   padding: 16px 16px 0;
 }
@@ -1512,43 +1695,70 @@ button {
 
 @media (min-width: 768px) {
   .marketingPage {
-    padding: 0 28px 56px;
+    padding: 0 28px 64px;
+  }
+
+  .marketingNavLinks {
+    display: flex;
   }
 
   .marketingHero {
     grid-template-columns: 1fr 1fr;
-    gap: 40px;
+    gap: 36px;
     text-align: left;
-    padding: 24px 0 16px;
+    padding: 20px 0 12px;
   }
 
   .marketingHeroSubtitle {
     margin-left: 0;
   }
 
+  .marketingTrust {
+    justify-content: flex-start;
+  }
+
   .marketingActions {
     margin: 0;
     flex-direction: row;
+    flex-wrap: wrap;
     max-width: none;
   }
 
   .marketingActions .btn {
     width: auto;
     flex: 1;
-    min-width: 0;
+    min-width: 150px;
+  }
+
+  .marketingActionsCenter {
+    flex-wrap: wrap;
+  }
+
+  .marketingPreview {
+    margin: 0;
+    max-width: none;
+  }
+
+  .marketingBento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .marketingSteps {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .marketingWhyGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .marketingCompareGrid {
+    grid-template-columns: 1fr 1fr;
   }
 
-  .marketingPreview {
-    margin: 0;
-    max-width: none;
+  .marketingCompare {
+    padding: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .marketingBento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

@@ -30,14 +30,17 @@ function HeroActions({ onJoin, onCreate, onSignIn, stack }: CtaProps & { stack?:
   );
 }
 
-function HomePreviewCard() {
+function ProductMock() {
   return (
     <div className="card marketingPreview">
       <div className="marketingPreviewHeader">
-        <span className="pill">Live bet</span>
+        <span className="pill marketingPillLive">Live bet</span>
         <span className="pill">8 votes</span>
       </div>
       <h3 className="marketingPreviewTitle">Will Joseph make over 6 threes?</h3>
+      <div className="marketingOddsBar">
+        <div className="marketingOddsFill" style={{ width: "64%" }} />
+      </div>
       <div className="marketingPreviewGrid">
         <div className="marketingPreviewStat">
           <span className="marketingPreviewLabel">Community odds</span>
@@ -50,7 +53,7 @@ function HomePreviewCard() {
       </div>
       <div className="marketingPreviewRow">
         <span className="small muted">IOU</span>
-        <span className="marketingPreviewIou">Will owes Jalen $20</span>
+        <span className="marketingPreviewIou">Will owes Jalen $20 · Ongoing</span>
       </div>
       <div className="marketingPreviewRow">
         <span className="small muted">Top predictor</span>
@@ -114,6 +117,43 @@ export function HomeInviteHero({
   );
 }
 
+const FEATURES = [
+  {
+    title: "Group-set fair odds",
+    text: "Everyone votes their probability. Chora aggregates the room — no arguing about lines in the chat.",
+  },
+  {
+    title: "IOUs that stick",
+    text: "Track food, rides, and bet debts in one private ledger. Settle when you're ready.",
+  },
+  {
+    title: "Predictor reputation",
+    text: "Leaderboards for accuracy, calibration, and edge vs the group over time.",
+  },
+  {
+    title: "Invite-only groups",
+    text: "Your community, your rules. Not a public exchange — just the people you actually know.",
+  },
+];
+
+const STEPS = [
+  {
+    num: "1",
+    title: "Create a bet",
+    text: "Pick two sides on anything — sports, dares, deadlines. Set a stake your group cares about.",
+  },
+  {
+    num: "2",
+    title: "Let the group vote",
+    text: "Everyone submits odds. Chora finds community pricing before anything resolves.",
+  },
+  {
+    num: "3",
+    title: "Settle & score",
+    text: "Resolve the outcome, record IOUs automatically, and update who's actually sharp.",
+  },
+];
+
 export function ChoraHomepage({ onJoin, onCreate, onSignIn }: CtaProps) {
   return (
     <div className="marketingPage">
@@ -122,6 +162,11 @@ export function ChoraHomepage({ onJoin, onCreate, onSignIn }: CtaProps) {
           <div className="logo marketingLogo">CM</div>
           <span>CHORA</span>
         </div>
+        <nav className="marketingNavLinks" aria-label="Page sections">
+          <a href="#features">Features</a>
+          <a href="#how">How it works</a>
+          <a href="#story">About</a>
+        </nav>
         <button type="button" className="btn secondary btnCompact marketingNavSignIn" onClick={onSignIn}>
           Sign In
         </button>
@@ -130,73 +175,100 @@ export function ChoraHomepage({ onJoin, onCreate, onSignIn }: CtaProps) {
       <main className="marketingMain">
         <section className="marketingHero">
           <div className="marketingHeroCopy">
-            <h1 className="marketingHeroBrand">CHORA</h1>
-            <p className="marketingHeroTitle">Fair odds for your friend group.</p>
+            <p className="marketingEyebrow">Private markets for friend groups</p>
+            <h1 className="marketingHeroTitle">
+              Fair odds for your <span className="marketingGradient">group chat</span>
+            </h1>
             <p className="marketingHeroSubtitle">
-              Friends already make bets. Chora helps your group set fair odds, track IOUs, and see who
-              actually makes the best predictions.
+              Chora helps your crew set community odds, track IOUs, and see who actually reads the room —
+              like Splitwise for bets, built for people you trust.
             </p>
             <HeroActions onJoin={onJoin} onCreate={onCreate} onSignIn={onSignIn} />
+            <ul className="marketingTrust">
+              <li>Free for friends</li>
+              <li>Invite-only</li>
+              <li>No house edge</li>
+            </ul>
           </div>
           <div className="marketingHeroVisual">
-            <HomePreviewCard />
+            <ProductMock />
           </div>
         </section>
 
-        <section className="marketingSection">
-          <h2 className="marketingSectionTitle">How it works</h2>
+        <section id="features" className="marketingSection">
+          <div className="marketingSectionHead">
+            <p className="marketingEyebrow">Built for your crew</p>
+            <h2 className="marketingSectionTitle">Everything the group chat loses track of</h2>
+          </div>
+          <div className="marketingBento">
+            {FEATURES.map((f) => (
+              <div key={f.title} className="card marketingBentoItem">
+                <h3>{f.title}</h3>
+                <p className="small muted">{f.text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section id="how" className="marketingSection">
+          <div className="marketingSectionHead">
+            <p className="marketingEyebrow">How it works</p>
+            <h2 className="marketingSectionTitle">From bet to settled IOU</h2>
+          </div>
           <div className="marketingSteps">
-            <div className="card marketingStep">
-              <span className="marketingStepNum">1</span>
-              <h3>Create a bet</h3>
-              <p className="small muted">Set up a head-to-head market for anything your group cares about.</p>
-            </div>
-            <div className="card marketingStep">
-              <span className="marketingStepNum">2</span>
-              <h3>Let the group vote</h3>
-              <p className="small muted">Everyone submits odds. Chora finds fair community pricing.</p>
-            </div>
-            <div className="card marketingStep">
-              <span className="marketingStepNum">3</span>
-              <h3>Settle and build reputation</h3>
-              <p className="small muted">Resolve bets, track IOUs, and see who reads the room best.</p>
-            </div>
+            {STEPS.map((s) => (
+              <div key={s.num} className="card marketingStep">
+                <span className="marketingStepNum">{s.num}</span>
+                <h3>{s.title}</h3>
+                <p className="small muted">{s.text}</p>
+              </div>
+            ))}
           </div>
         </section>
 
         <section className="marketingSection">
-          <h2 className="marketingSectionTitle">Why Chora</h2>
-          <div className="marketingWhyGrid">
-            <div className="card marketingWhy">
-              <h3>Discover fair odds</h3>
-              <p className="small muted">Stop arguing about lines in the group chat. Vote once, settle together.</p>
-            </div>
-            <div className="card marketingWhy">
-              <h3>Track bets and IOUs</h3>
-              <p className="small muted">Private ledger for friend-group stakes — like Splitwise for bets.</p>
-            </div>
-            <div className="card marketingWhy">
-              <h3>Build predictor reputation</h3>
-              <p className="small muted">Rankings for accuracy, calibration, and edge over time.</p>
+          <div className="card marketingCompare">
+            <h2 className="marketingSectionTitle">Group chat vs Chora</h2>
+            <div className="marketingCompareGrid">
+              <div className="marketingCompareCol">
+                <h3 className="marketingCompareLabel muted">Group chat</h3>
+                <ul className="marketingCompareList">
+                  <li>Odds argued every time</li>
+                  <li>IOUs lost in scrollback</li>
+                  <li>No scoreboard for who&apos;s sharp</li>
+                </ul>
+              </div>
+              <div className="marketingCompareCol marketingCompareColChora">
+                <h3 className="marketingCompareLabel">Chora</h3>
+                <ul className="marketingCompareList">
+                  <li>One vote sets fair odds</li>
+                  <li>Open IOUs with ongoing status</li>
+                  <li>Leaderboards update on resolve</li>
+                </ul>
+              </div>
             </div>
           </div>
         </section>
 
-        <section className="marketingSection marketingStory card">
-          <h2 className="marketingSectionTitle">The name</h2>
+        <section id="story" className="marketingSection marketingStory card">
+          <p className="marketingEyebrow">The name</p>
+          <h2 className="marketingSectionTitle">Chora — the center of the island</h2>
           <p className="marketingStoryText">
-            In Greece, the <em>Chora</em> was the center of an island community — a trusted place where people
-            gathered. We built Chora with the same idea: a private home where your community can make
-            predictions together.
+            In Greece, the <em>Chora</em> is the heart of an island village — whitewashed walls, blue domes,
+            and the place everyone gathers. We built Chora Market with that spirit: a private home where your
+            friend group makes predictions together and settles up honestly.
           </p>
         </section>
 
         <section className="marketingSection marketingFinalCta card">
-          <h2 className="marketingFinalTitle">Ready to settle your next bet?</h2>
-          <p className="small muted">Create a private community in minutes. Invite friends when you&apos;re ready.</p>
+          <h2 className="marketingFinalTitle">Start your group&apos;s market tonight</h2>
+          <p className="small muted">Create a community in minutes. Invite friends when you&apos;re ready.</p>
           <div className="marketingActions marketingActionsCenter">
             <button type="button" className="btn green" onClick={onCreate}>
               Create a Community
+            </button>
+            <button type="button" className="btn secondary" onClick={onJoin}>
+              Join with invite code
             </button>
           </div>
         </section>
