@@ -1201,13 +1201,46 @@ button {
   align-items: stretch;
   justify-content: flex-start;
   padding: 0;
+  overflow-x: hidden;
 }
 
 .marketingPage {
+  position: relative;
   width: 100%;
-  max-width: 1100px;
+  max-width: 1180px;
   margin: 0 auto;
-  padding: 0 16px 40px;
+  padding: 0 16px 48px;
+}
+
+.marketingBg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.marketingBgOrb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(80px);
+  opacity: 0.45;
+}
+
+.marketingBgOrb1 {
+  width: 520px;
+  height: 520px;
+  top: -180px;
+  left: -120px;
+  background: radial-gradient(circle, rgba(100, 166, 255, 0.35), transparent 70%);
+}
+
+.marketingBgOrb2 {
+  width: 420px;
+  height: 420px;
+  top: 40%;
+  right: -140px;
+  background: radial-gradient(circle, rgba(67, 209, 122, 0.22), transparent 70%);
 }
 
 .marketingNav {
@@ -1232,6 +1265,24 @@ button {
   font-size: 14px;
 }
 
+.marketingNavLinks {
+  display: none;
+  align-items: center;
+  gap: 24px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.marketingNavLinks a {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.marketingNavLinks a:hover {
+  color: var(--text);
+}
+
 .marketingLogo {
   width: 40px;
   height: 40px;
@@ -1244,41 +1295,80 @@ button {
 }
 
 .marketingMain {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  gap: 56px;
   padding-top: 12px;
 }
 
 .marketingHero {
   display: grid;
-  gap: 28px;
+  gap: 32px;
   align-items: center;
-  padding: 12px 0 8px;
+  padding: 16px 0 8px;
   text-align: center;
 }
 
-.marketingHeroBrand {
-  margin: 0 0 16px;
-  font-size: clamp(2.5rem, 10vw, 4rem);
-  letter-spacing: 0.22em;
-  font-weight: 900;
-  line-height: 1;
+.marketingEyebrow {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--blue);
 }
 
 .marketingHeroTitle {
-  margin: 0 0 12px;
-  font-size: clamp(1.35rem, 4vw, 1.85rem);
-  letter-spacing: -0.03em;
-  line-height: 1.2;
+  margin: 0 0 16px;
+  font-size: clamp(2rem, 6vw, 3.25rem);
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+  font-weight: 900;
+}
+
+.marketingGradient {
+  background: linear-gradient(120deg, #eef3ff 0%, #64a6ff 45%, #43d17a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .marketingHeroSubtitle {
   margin: 0 auto 24px;
-  max-width: 36rem;
+  max-width: 34rem;
   color: var(--muted);
-  font-size: 15px;
-  line-height: 1.65;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.marketingTrust {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 16px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.marketingTrust li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.marketingTrust li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--green);
+  box-shadow: 0 0 10px rgba(67, 209, 122, 0.6);
 }
 
 .marketingActions {
@@ -1322,10 +1412,162 @@ button {
   text-decoration: underline;
 }
 
-.marketingPreview {
-  text-align: left;
-  max-width: 420px;
+.marketingMockStage {
+  position: relative;
+  max-width: 480px;
   margin: 0 auto;
+}
+
+.marketingMockGlow {
+  position: absolute;
+  inset: 10% 5%;
+  background: radial-gradient(circle, rgba(100, 166, 255, 0.18), transparent 65%);
+  filter: blur(24px);
+}
+
+.marketingMockShell {
+  position: relative;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 12, 24, 0.85);
+  box-shadow: var(--shadow), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  overflow: hidden;
+}
+
+.marketingMockChrome {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.marketingMockDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.marketingMockUrl {
+  margin-left: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.marketingMockBody {
+  position: relative;
+  padding: 18px;
+  min-height: 320px;
+}
+
+.marketingMockBet {
+  position: relative;
+  z-index: 2;
+  text-align: left;
+  padding: 16px;
+}
+
+.marketingMockFloat {
+  position: absolute;
+  z-index: 3;
+  text-align: left;
+  padding: 14px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  animation: marketingFloat 5s ease-in-out infinite;
+}
+
+.marketingMockIou {
+  right: 8px;
+  bottom: 18px;
+  width: min(220px, 58%);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-color: rgba(245, 197, 66, 0.25);
+  background: linear-gradient(165deg, rgba(245, 197, 66, 0.08), rgba(17, 24, 45, 0.95));
+}
+
+.marketingMockRank {
+  left: 8px;
+  bottom: 88px;
+  width: min(240px, 62%);
+  animation-delay: -2.5s;
+}
+
+.marketingMockRankRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.marketingMockRankRow strong {
+  display: block;
+}
+
+.marketingMockRankRow .small {
+  display: block;
+}
+
+.marketingMockAvatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  background: rgba(67, 209, 122, 0.15);
+  color: var(--green);
+  font-weight: 900;
+  font-size: 14px;
+}
+
+.marketingMockSides {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.marketingMockSide {
+  color: var(--text);
+}
+
+.marketingOddsBar {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.marketingOddsFill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--green), #8ef0b0);
+}
+
+.marketingPillLive {
+  border-color: rgba(67, 209, 122, 0.35);
+  background: rgba(67, 209, 122, 0.12);
+  color: #9ef0bc;
+}
+
+@keyframes marketingFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }
 
 .marketingPreviewHeader {
@@ -1336,7 +1578,7 @@ button {
 }
 
 .marketingPreviewTitle {
-  margin: 0 0 16px;
+  margin: 0 0 12px;
   font-size: 1.05rem;
   line-height: 1.35;
   letter-spacing: -0.02em;
@@ -1346,7 +1588,6 @@ button {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin-bottom: 14px;
 }
 
 .marketingPreviewStat {
@@ -1371,51 +1612,95 @@ button {
   letter-spacing: -0.03em;
 }
 
-.marketingPreviewRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.marketingStats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
-  padding: 10px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.marketingPreviewIou {
-  font-weight: 700;
-  color: var(--yellow);
+.marketingStat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  text-align: center;
 }
 
-.marketingPreviewRank {
-  font-weight: 800;
-  color: var(--green);
+.marketingStat strong {
+  font-size: 1.1rem;
+  letter-spacing: -0.02em;
 }
 
 .marketingSection {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
+}
+
+.marketingSectionHead {
+  text-align: center;
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+.marketingSectionHeadLeft {
+  text-align: left;
+  margin: 0;
+  max-width: none;
 }
 
 .marketingSectionTitle {
-  margin: 0;
-  font-size: 1.25rem;
+  margin: 0 0 10px;
+  font-size: clamp(1.35rem, 3vw, 1.85rem);
   letter-spacing: -0.03em;
-  text-align: center;
 }
 
-.marketingSteps,
-.marketingWhyGrid {
+.marketingSectionLead {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
+  font-size: 15px;
+}
+
+.marketingBento {
   display: grid;
   gap: 14px;
 }
 
-.marketingStep,
-.marketingWhy {
-  padding: 18px;
+.marketingBentoItem {
+  padding: 20px;
 }
 
-.marketingStep h3,
-.marketingWhy h3 {
+.marketingBentoIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: rgba(100, 166, 255, 0.12);
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+
+.marketingBentoItem h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.marketingSteps {
+  display: grid;
+  gap: 14px;
+}
+
+.marketingStep {
+  padding: 20px;
+}
+
+.marketingStep h3 {
   margin: 0 0 8px;
   font-size: 1rem;
 }
@@ -1434,8 +1719,73 @@ button {
   margin-bottom: 10px;
 }
 
+.marketingCompare {
+  padding: 24px 20px;
+  background: linear-gradient(165deg, rgba(100, 166, 255, 0.08), rgba(255, 255, 255, 0.03));
+  border-color: rgba(100, 166, 255, 0.2);
+}
+
+.marketingCompareGrid {
+  display: grid;
+  gap: 16px;
+}
+
+.marketingCompareCol {
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.marketingCompareColChora {
+  border-color: rgba(67, 209, 122, 0.25);
+  background: rgba(67, 209, 122, 0.06);
+}
+
+.marketingCompareLabel {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.marketingCompareList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.marketingCompareColChora .marketingCompareList {
+  color: var(--text);
+}
+
+.marketingCompareList li {
+  position: relative;
+  padding-left: 18px;
+}
+
+.marketingCompareList li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--muted);
+}
+
+.marketingCompareColChora .marketingCompareList li::before {
+  content: "✓";
+  color: var(--green);
+  font-weight: 900;
+}
+
 .marketingStory {
-  padding: 22px;
+  padding: 28px 22px;
 }
 
 .marketingStoryText {
@@ -1443,6 +1793,7 @@ button {
   color: var(--muted);
   line-height: 1.7;
   font-size: 15px;
+  max-width: 40rem;
 }
 
 .marketingStoryText em {
@@ -1453,23 +1804,29 @@ button {
 
 .marketingFinalCta {
   text-align: center;
-  padding: 28px 22px;
+  padding: 32px 22px;
+  background: linear-gradient(165deg, rgba(67, 209, 122, 0.1), rgba(255, 255, 255, 0.03));
+  border-color: rgba(67, 209, 122, 0.25);
 }
 
 .marketingFinalTitle {
   margin: 0 0 8px;
-  font-size: 1.35rem;
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
   letter-spacing: -0.03em;
 }
 
 .marketingFooter {
+  position: relative;
+  z-index: 1;
   margin-top: 8px;
   padding-top: 16px;
 }
 
 .marketingInviteWrap {
+  position: relative;
+  z-index: 1;
   width: 100%;
-  max-width: 1100px;
+  max-width: 1180px;
   margin: 0 auto;
   padding: 16px 16px 0;
 }
@@ -1512,43 +1869,93 @@ button {
 
 @media (min-width: 768px) {
   .marketingPage {
-    padding: 0 28px 56px;
+    padding: 0 28px 64px;
+  }
+
+  .marketingNavLinks {
+    display: flex;
   }
 
   .marketingHero {
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 48px;
     text-align: left;
-    padding: 24px 0 16px;
+    padding: 32px 0 16px;
   }
 
   .marketingHeroSubtitle {
     margin-left: 0;
   }
 
+  .marketingTrust {
+    justify-content: flex-start;
+  }
+
   .marketingActions {
     margin: 0;
     flex-direction: row;
+    flex-wrap: wrap;
     max-width: none;
   }
 
   .marketingActions .btn {
     width: auto;
     flex: 1;
-    min-width: 0;
+    min-width: 160px;
+  }
+
+  .marketingActionsCenter {
+    flex-wrap: wrap;
+  }
+
+  .marketingMockStage {
+    margin: 0;
+    max-width: none;
+  }
+
+  .marketingBento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .marketingSteps {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .marketingWhyGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .marketingCompareGrid {
+    grid-template-columns: 1fr 1fr;
   }
 
-  .marketingPreview {
-    margin: 0;
-    max-width: none;
+  .marketingCompare {
+    padding: 28px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .marketingBento {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .marketingStats {
+    grid-template-columns: 1fr;
+  }
+
+  .marketingMockBody {
+    min-height: 360px;
+  }
+
+  .marketingMockIou {
+    right: 12px;
+    bottom: 12px;
+    width: calc(100% - 24px);
+  }
+
+  .marketingMockRank {
+    left: 12px;
+    bottom: auto;
+    top: 52%;
+    width: calc(100% - 24px);
   }
 }
 
