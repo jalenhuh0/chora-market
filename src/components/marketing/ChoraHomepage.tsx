@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { LegalFooter } from "@/components/LegalFooter";
 import type { GroupInvitePreview } from "@/lib/market/db";
 
@@ -12,60 +13,15 @@ type CtaProps = {
 function ChoraGreeceBackground() {
   return (
     <div className="marketingChoraBg" aria-hidden>
-      <svg className="marketingChoraSvg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice">
-        <defs>
-          <linearGradient id="choraSky" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#1a3d52" />
-            <stop offset="45%" stopColor="#2d6a8f" />
-            <stop offset="100%" stopColor="#4a8fb5" />
-          </linearGradient>
-          <linearGradient id="choraSea" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#1f5570" />
-            <stop offset="100%" stopColor="#143848" />
-          </linearGradient>
-          <linearGradient id="choraSun" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#f5d78e" stopOpacity="0.55" />
-            <stop offset="100%" stopColor="#f5d78e" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        <rect width="1440" height="900" fill="url(#choraSky)" />
-        <circle cx="1180" cy="120" r="90" fill="url(#choraSun)" />
-        <circle cx="1180" cy="120" r="42" fill="#f8e8b0" opacity="0.85" />
-        <rect x="0" y="620" width="1440" height="280" fill="url(#choraSea)" />
-        <path
-          d="M0 640 Q360 610 720 635 T1440 620 L1440 900 L0 900 Z"
-          fill="#1a4a62"
-          opacity="0.45"
-        />
-        {/* Hillside village — cycladic chora silhouette */}
-        <path
-          d="M0 720 L120 680 L210 700 L320 640 L430 670 L540 610 L650 650 L760 590 L870 630 L980 580 L1090 620 L1200 570 L1320 600 L1440 580 L1440 900 L0 900 Z"
-          fill="#c8d5df"
-          opacity="0.22"
-        />
-        <g fill="#f4f0e6" opacity="0.92">
-          <rect x="180" y="560" width="70" height="55" rx="2" />
-          <rect x="255" y="545" width="55" height="70" rx="2" />
-          <rect x="320" y="575" width="90" height="40" rx="2" />
-          <rect x="420" y="530" width="65" height="85" rx="2" />
-          <rect x="495" y="555" width="50" height="60" rx="2" />
-          <rect x="560" y="515" width="80" height="100" rx="2" />
-          <rect x="650" y="540" width="60" height="75" rx="2" />
-          <rect x="720" y="505" width="95" height="110" rx="2" />
-          <rect x="825" y="535" width="55" height="80" rx="2" />
-          <rect x="890" y="520" width="75" height="95" rx="2" />
-          <rect x="975" y="550" width="65" height="65" rx="2" />
-          <rect x="1050" y="510" width="85" height="105" rx="2" />
-          <rect x="1145" y="540" width="70" height="75" rx="2" />
-          <rect x="1225" y="525" width="60" height="90" rx="2" />
-        </g>
-        {/* Blue dome */}
-        <ellipse cx="760" cy="505" rx="28" ry="18" fill="#3b6ea8" opacity="0.95" />
-        <rect x="738" y="505" width="44" height="28" fill="#f4f0e6" opacity="0.92" />
-        {/* Windmill */}
-        <rect x="1088" y="490" width="12" height="70" fill="#e8e4da" opacity="0.85" />
-        <path d="M1094 490 L1094 455 M1094 490 L1068 505 M1094 490 L1120 505" stroke="#e8e4da" strokeWidth="3" opacity="0.7" />
-      </svg>
+      <Image
+        src="/marketing/chora-village-bg.png"
+        alt=""
+        fill
+        priority
+        className="marketingChoraPhoto"
+        sizes="100vw"
+        quality={82}
+      />
       <div className="marketingChoraScrim" />
     </div>
   );
