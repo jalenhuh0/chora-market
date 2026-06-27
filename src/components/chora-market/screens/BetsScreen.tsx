@@ -9,6 +9,8 @@ import { GroupNotificationsCard } from "@/components/chora-market/GroupNotificat
 export function BetsScreen({ tm }: { tm: ChoraMarketHook }) {
   return (
     <section id="bets" className={`screen${tm.screen === "bets" ? " active" : ""}`}>
+      <div className="betsLayout">
+        <div className="betsMain">
       <div className="card">
         <h2>Create Friend-vs-Friend Bet</h2>
         <label>Bet title / event</label>
@@ -110,7 +112,11 @@ export function BetsScreen({ tm }: { tm: ChoraMarketHook }) {
         </div>
       </div>
 
-      <GroupNotificationsCard notifs={tm.state.notifs} />
+        </div>
+        <aside className="betsAside">
+          <GroupNotificationsCard notifs={tm.state.notifs} />
+        </aside>
+      </div>
     </section>
   );
 }

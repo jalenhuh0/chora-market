@@ -94,6 +94,27 @@ h1 {
   display: inline;
 }
 
+.hideDesktop {
+  display: none !important;
+}
+
+.topActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dashboardLayout,
+.betsLayout {
+  display: block;
+}
+
+.dashboardAside,
+.betsAside {
+  margin-top: 20px;
+}
+
 .tab {
   border: 0;
   background: transparent;
@@ -1052,6 +1073,14 @@ button {
   margin-top: 32px;
 }
 
+.feedbackCard form {
+  margin-top: 8px;
+}
+
+.feedbackSuccess {
+  margin-top: 12px;
+}
+
 .legalCard {
   width: min(680px, 100%);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.035));
@@ -1153,6 +1182,36 @@ button {
   padding-top: 0;
 }
 
+@media (min-width: 901px) {
+  .dashboardLayout,
+  .betsLayout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) min(340px, 30vw);
+    gap: 20px;
+    align-items: start;
+  }
+
+  .dashboardAside,
+  .betsAside {
+    margin-top: 0;
+    position: sticky;
+    top: 20px;
+  }
+
+  .dashboardAside .activityScroll,
+  .betsAside .activityScroll {
+    max-height: min(560px, calc(100vh - 180px));
+  }
+
+  #settings .split {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #settings .legalFooter {
+    justify-content: flex-start;
+  }
+}
+
 @media (max-width: 900px) {
   .grid,
   .split,
@@ -1244,6 +1303,18 @@ button {
 
   .hideMobile {
     display: none !important;
+  }
+
+  .hideDesktop {
+    display: revert !important;
+  }
+
+  .headerBar.hideDesktop {
+    display: flex !important;
+  }
+
+  .settingsFeedbackCard.hideDesktop {
+    display: block !important;
   }
 
   .appTabs {

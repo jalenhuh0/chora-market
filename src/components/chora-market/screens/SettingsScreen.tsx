@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import type { ChoraMarketHook } from "@/hooks/useChoraMarket";
 import { Avatar } from "@/components/Avatar";
@@ -200,6 +201,16 @@ export function SettingsScreen({ tm }: { tm: ChoraMarketHook }) {
               <button type="button" className="btn red" onClick={tm.resetData}>
                 Reset App
               </button>
+            </div>
+          </div>
+
+          <div className="card settingsFeedbackCard hideDesktop">
+            <h2>Feedback</h2>
+            <p className="muted small">Bug reports, ideas, or anything that felt off.</p>
+            <div className="actions">
+              <Link href="/feedback" className="btn secondary">
+                Send feedback
+              </Link>
             </div>
           </div>
         </div>

@@ -6,19 +6,29 @@ import type { Screen } from "@/hooks/useChoraMarket";
 export type AppTab = { id: Screen; label: string; shortLabel: string };
 
 export function AppHeader({ tm, tabs }: { tm: ChoraMarketHook; tabs: AppTab[] }) {
+  const actions = (
+    <>
+      <button type="button" className="btn secondary btnCompact" onClick={tm.copyInviteLink}>
+        Invite
+      </button>
+      <button type="button" className="btn secondary btnCompact" onClick={tm.onSwitchGroup}>
+        Switch group
+      </button>
+      <button type="button" className="btn secondary btnCompact" onClick={tm.onSignOut}>
+        Sign out
+      </button>
+    </>
+  );
+
   return (
     <>
-      <div className="headerBar">
+      <div className="headerBar hideDesktop">
         <div className="headerBarLeft">
           <strong>{tm.localGroupName}</strong>
-          <span className="pill hideMobile">Invite: {tm.inviteCode}</span>
         </div>
         <div className="headerBarRight">
           <button type="button" className="btn secondary btnCompact" onClick={tm.copyInviteLink}>
             Invite
-          </button>
-          <button type="button" className="btn secondary btnCompact hideMobile" onClick={tm.onSwitchGroup}>
-            Switch
           </button>
           <button type="button" className="btn secondary btnCompact" onClick={tm.onSignOut}>
             Out
@@ -31,11 +41,13 @@ export function AppHeader({ tm, tabs }: { tm: ChoraMarketHook; tabs: AppTab[] })
           <div className="logo">CM</div>
           <div>
             <h1>{tm.state.settings.app}</h1>
-            <div className="sub hideMobile">
-              IOUs, bets, and who reads the room in your friend group.
+            <div className="sub">
+              <span className="hideMobile">IOUs, bets, and who reads the room in your friend group.</span>
+              <span className="hideDesktop">{tm.localGroupName}</span>
             </div>
           </div>
         </div>
+        <div className="topActions hideMobile">{actions}</div>
       </div>
 
       <nav className="appTabs" aria-label="Main">

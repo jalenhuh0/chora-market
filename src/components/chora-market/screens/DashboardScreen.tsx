@@ -15,6 +15,8 @@ import {
 export function DashboardScreen({ tm }: { tm: ChoraMarketHook }) {
   return (
     <section id="dashboard" className={`screen${tm.screen === "dashboard" ? " active" : ""}`}>
+      <div className="dashboardLayout">
+        <div className="dashboardMain">
       <div className="metricGrid">
         <div className="metric">
           <b>{tm.money(tm.groupVolume)}</b>
@@ -120,7 +122,11 @@ export function DashboardScreen({ tm }: { tm: ChoraMarketHook }) {
         </div>
       </div>
 
-      <RecentActivityCard activity={tm.state.activity} />
+        </div>
+        <aside className="dashboardAside">
+          <RecentActivityCard activity={tm.state.activity} />
+        </aside>
+      </div>
     </section>
   );
 }

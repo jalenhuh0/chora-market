@@ -6,6 +6,8 @@ export function LegalFooter({ className = "" }: { className?: string }) {
       <Link href="/privacy">Privacy</Link>
       <span aria-hidden="true"> · </span>
       <Link href="/terms">Terms</Link>
+      <span aria-hidden="true"> · </span>
+      <Link href="/feedback">Feedback</Link>
     </p>
   );
 }
