@@ -1202,7 +1202,7 @@ button {
   justify-content: flex-start;
   padding: 0;
   overflow-x: hidden;
-  background: #1a2838;
+  background: #0b1420;
 }
 
 .marketingPage {
@@ -1219,26 +1219,55 @@ button {
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
+  background: #0b1420;
 }
 
 .marketingChoraPhoto {
-  object-fit: cover;
-  object-position: 36% 38%;
-  transform: scale(1.03);
+  position: absolute;
+  inset: -24px;
+  background-image: url("/marketing/chora-village-bg.jpg");
+  background-image: image-set(
+    url("/marketing/chora-village-bg.webp") type("image/webp"),
+    url("/marketing/chora-village-bg.jpg") type("image/jpeg")
+  );
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 36% 40%;
+  filter: blur(2px) saturate(1.08) brightness(0.9);
+  transform: scale(1.04);
+  will-change: transform;
+}
+
+.marketingChoraGrade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      125deg,
+      rgba(11, 16, 32, 0.82) 0%,
+      rgba(18, 42, 62, 0.52) 38%,
+      rgba(32, 68, 88, 0.38) 62%,
+      rgba(20, 48, 64, 0.58) 100%
+    ),
+    linear-gradient(180deg, rgba(180, 130, 80, 0.12) 0%, transparent 35%, rgba(11, 16, 32, 0.25) 100%);
 }
 
 .marketingChoraScrim {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(
-      108deg,
-      rgba(10, 18, 28, 0.86) 0%,
-      rgba(10, 18, 28, 0.68) 34%,
-      rgba(10, 18, 28, 0.42) 58%,
-      rgba(10, 18, 28, 0.62) 100%
-    ),
-    linear-gradient(180deg, rgba(8, 14, 22, 0.5) 0%, transparent 22%, rgba(8, 14, 22, 0.72) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(11, 16, 32, 0.72) 0%,
+    rgba(11, 16, 32, 0.28) 28%,
+    rgba(11, 16, 32, 0.35) 55%,
+    rgba(11, 16, 32, 0.88) 100%
+  );
+}
+
+.marketingChoraVignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 120% 80% at 50% 45%, transparent 25%, rgba(7, 10, 19, 0.55) 100%);
 }
 
 .marketingNav {
@@ -1250,8 +1279,8 @@ button {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: linear-gradient(180deg, rgba(10, 18, 28, 0.88) 65%, rgba(10, 18, 28, 0));
-  backdrop-filter: blur(12px);
+  background: linear-gradient(180deg, rgba(11, 16, 32, 0.82) 55%, rgba(11, 16, 32, 0));
+  backdrop-filter: blur(14px);
 }
 
 .marketingNavBrand {
@@ -1411,10 +1440,10 @@ button {
 }
 
 .marketingPage .card {
-  background: rgba(10, 20, 32, 0.78);
-  border-color: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+  background: rgba(11, 20, 32, 0.72);
+  border-color: rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.22);
 }
 
 .marketingPreview {
@@ -1793,18 +1822,29 @@ button {
   }
 
   .marketingChoraPhoto {
-    object-position: 30% 36%;
+    background-position: 28% 38%;
   }
 }
 
 @media (max-width: 767px) {
   .marketingChoraPhoto {
-    object-position: 58% 30%;
+    background-position: 55% 32%;
+    filter: blur(2.5px) saturate(1.06) brightness(0.88);
+  }
+
+  .marketingChoraGrade {
+    background:
+      linear-gradient(180deg, rgba(11, 16, 32, 0.78) 0%, rgba(11, 16, 32, 0.45) 45%, rgba(11, 16, 32, 0.82) 100%),
+      linear-gradient(180deg, rgba(180, 130, 80, 0.1) 0%, transparent 30%);
   }
 
   .marketingChoraScrim {
-    background:
-      linear-gradient(180deg, rgba(10, 18, 28, 0.78) 0%, rgba(10, 18, 28, 0.55) 40%, rgba(10, 18, 28, 0.82) 100%);
+    background: linear-gradient(
+      180deg,
+      rgba(11, 16, 32, 0.8) 0%,
+      rgba(11, 16, 32, 0.4) 40%,
+      rgba(11, 16, 32, 0.9) 100%
+    );
   }
 }
 
