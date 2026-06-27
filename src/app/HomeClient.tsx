@@ -7,7 +7,7 @@ import ChoraMarketApp from "@/components/ChoraMarketApp";
 import { clearActiveGroupId, getActiveGroupId, setActiveGroupId } from "@/lib/storage";
 import { AuthForm } from "@/components/AuthForm";
 import { GroupGate } from "@/components/GroupGate";
-import { HomeLanding } from "@/components/HomeLanding";
+import { ChoraHomepage, HomeInviteHero } from "@/components/marketing/ChoraHomepage";
 import {
   getGroupByInviteCode,
   getGroupInvitePreview,
@@ -222,14 +222,30 @@ export default function HomeClient() {
     }
 
     const code = joinCode?.trim().toUpperCase();
-    const showInviteLanding = !!code && (previewLoading || invitePreview);
+    const showInviteHero = !!code && (previewLoading || !!invitePreview);
 
     return (
-      <div className="authGate">
-        <HomeLanding
-          invitePreview={showInviteLanding ? invitePreview : null}
-          inviterName={inviterRef?.trim() || undefined}
-          previewLoading={!!code && previewLoading}
+      <div className="authGate authGateMarketing">
+        {showInviteHero && (
+          <div className="marketingInviteWrap">
+            <HomeInviteHero
+              invitePreview={
+                invitePreview ?? {
+                  id: "",
+                  name: "Community",
+                  invite_code: code!,
+                  member_count: 0,
+                  resolved_bets: 0,
+                }
+              }
+              inviterName={inviterRef?.trim() || undefined}
+              previewLoading={previewLoading}
+              onJoin={() => openSignup("join")}
+              onSignIn={openSignIn}
+            />
+          </div>
+        )}
+        <ChoraHomepage
           onJoin={() => openSignup(code ? "join" : "join")}
           onCreate={() => openSignup("create")}
           onSignIn={openSignIn}
