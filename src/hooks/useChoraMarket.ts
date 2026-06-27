@@ -18,7 +18,7 @@ import {
   rankForScore,
   wilsonLowerBound,
 } from "@/lib/market/calculations";
-import { initials, iouUnsettledFor, money } from "@/lib/market/defaults";
+import { initials, iouOpenLabel, money } from "@/lib/market/defaults";
 import { CATEGORIES } from "@/hooks/chora-market/constants";
 import { useBets } from "@/hooks/chora-market/useBets";
 import { useChoraMarketComputed } from "@/hooks/chora-market/useChoraMarketComputed";
@@ -102,7 +102,7 @@ export function useChoraMarket(props: UseChoraMarketProps) {
     ...settings,
 
     money,
-    iouUnsettledFor,
+    iouOpenLabel,
     initials,
     alphaPct: (p: string) => alphaPct(normalized, p),
     repScore: (p: string) => repScore(normalized, p),

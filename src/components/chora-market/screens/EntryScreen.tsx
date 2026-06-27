@@ -93,15 +93,11 @@ export function EntryScreen({ tm }: { tm: ChoraMarketHook }) {
             <h2>Open IOUs</h2>
             <div className="list">
               {tm.openDebts.length ? (
-                tm.openDebts.map((d) => {
-                  const unsettled = tm.iouUnsettledFor(d.created);
-                  return (
+                tm.openDebts.map((d) => (
                   <div key={d.id} className="item">
                     <div>
                       <span className="pill">{d.category}</span>
-                      {unsettled ? (
-                        <span className="pill iouAgePill">Unsettled {unsettled}</span>
-                      ) : null}
+                      <span className="pill iouOpenPill">{tm.iouOpenLabel(d.created)}</span>
                       <strong>
                         {d.owes} owes {d.owed}
                       </strong>
@@ -114,8 +110,7 @@ export function EntryScreen({ tm }: { tm: ChoraMarketHook }) {
                       </button>
                     </div>
                   </div>
-                  );
-                })
+                ))
               ) : (
                 <Empty>No open IOUs.</Empty>
               )}

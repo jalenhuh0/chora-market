@@ -100,6 +100,12 @@ export function normalizeState(state: ChoraMarketState): ChoraMarketState {
     b.doubleDowns = b.doubleDowns || [];
   });
 
+  state.debts.forEach((d) => {
+    if (!d.settled && !d.created) {
+      d.created = Date.now();
+    }
+  });
+
   if (state.activity.length > MAX_ACTIVITY_ITEMS) {
     state.activity = state.activity.slice(0, MAX_ACTIVITY_ITEMS);
   }
@@ -148,8 +154,8 @@ export function estimate(text: string) {
   return 20;
 }
 
-/** Human-readable time since an IOU was opened. */
-export function iouUnsettledFor(created?: number): string | null {
+/** Elapsed time since an IOU was opened (no status prefix). */
+export function iouAgeLabel(created?: number): string | null {
   if (!created) return null;
   const ms = Math.max(0, Date.now() - created);
   const minutes = Math.floor(ms / 60000);
@@ -163,4 +169,16 @@ export function iouUnsettledFor(created?: number): string | null {
   if (days < 60) return `${weeks} week${weeks === 1 ? "" : "s"}`;
   const months = Math.floor(days / 30);
   return `${months} month${months === 1 ? "" : "s"}`;
+}
+
+/** Open IOU status for UI — always ongoing until settled. */
+export function iouOpenLabel(created?: number): string {
+  const age = iouAgeLabel(created);
+  if (!age || age === "just now") return "Ongoing";
+  return `Ongoing · ${age}`;
+}
+
+/** @deprecated Use iouOpenLabel or iouAgeLabel */
+export function iouUnsettledFor(created?: number): string | null {
+  return iouAgeLabel(created);
 }

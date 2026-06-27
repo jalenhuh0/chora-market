@@ -142,20 +142,17 @@ export function PersonDetailModal({ tm }: { tm: ChoraMarketHook }) {
               </div>
               <div className="miniTable">
                 {pd.items.length ? (
-                  pd.items.map((d) => {
-                    const unsettled = tm.iouUnsettledFor(d.created);
-                    return (
+                  pd.items.map((d) => (
                       <div key={d.id} className="miniRow">
                         <div>
                           <span className="pill">{d.category}</span>
-                          {unsettled ? <span className="pill iouAgePill">Unsettled {unsettled}</span> : null}
+                          <span className="pill iouOpenPill">{tm.iouOpenLabel(d.created)}</span>
                           <strong>{d.dir}</strong>
                           <div className="small">{d.reason}</div>
                         </div>
                         <div className={`amount ${d.cls}`}>{tm.money(d.amount)}</div>
                       </div>
-                    );
-                  })
+                    ))
                 ) : (
                   <Empty>No open IOUs.</Empty>
                 )}

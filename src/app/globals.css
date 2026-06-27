@@ -693,9 +693,10 @@ button {
   color: var(--text);
 }
 
-.iouAgePill {
-  color: #ffb48a;
-  border-color: rgba(255, 120, 60, 0.35);
+.iouOpenPill {
+  border-color: rgba(67, 209, 122, 0.35);
+  background: rgba(67, 209, 122, 0.1);
+  color: #9ef0bc;
 }
 
 .hotStreakList {
