@@ -204,7 +204,7 @@ export function SettingsScreen({ tm }: { tm: ChoraMarketHook }) {
             </div>
           </div>
 
-          <div className="card settingsFeedbackCard hideDesktop">
+          <div className="card">
             <h2>Feedback</h2>
             <p className="muted small">Bug reports, ideas, or anything that felt off.</p>
             <div className="actions">
