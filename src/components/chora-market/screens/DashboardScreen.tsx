@@ -96,24 +96,22 @@ export function DashboardScreen({ tm }: { tm: ChoraMarketHook }) {
             )}
           </div>
         </div>
-        <div className="card">
+        <div className="card shameCard">
           <h2>{tm.state.dashboardTitles?.shame || "Hall of Shame"}</h2>
           <p className="small leaderboardHint">Most {tm.worstLabel} allegations from People.</p>
           <div className="list">
             {tm.shameRows.length ? (
               tm.shameRows.map(([p, c], i) => (
-                <div key={p} className="item">
-                  <div className="personLine">
-                    <div className="avatar">{tm.initials(p)}</div>
-                    <div>
-                      <strong>
-                        #{i + 1} {p}
-                      </strong>
-                      <div className="small">{tm.worstLabel} votes</div>
-                    </div>
-                  </div>
-                  <div className="amount neg">{c}</div>
-                </div>
+                <PersonLeaderboardItem
+                  key={p}
+                  rank={i + 1}
+                  person={p}
+                  personInitials={tm.initials(p)}
+                  subtitle={`${tm.worstLabel} votes`}
+                  amount={String(c)}
+                  amountClass="neg"
+                  onClick={() => tm.showPersonDetail(p)}
+                />
               ))
             ) : (
               <Empty>No votes yet.</Empty>
