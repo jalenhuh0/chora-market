@@ -1003,6 +1003,251 @@ button {
   background: radial-gradient(circle at top left, #1c2a54 0, #0b1020 38%, #070a13 100%);
 }
 
+.homeLanding {
+  width: min(560px, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.homeLandingCard {
+  width: 100%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.035));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 32px 28px 24px;
+  text-align: center;
+}
+
+.homeLandingInvite {
+  padding-top: 36px;
+}
+
+.landingBrand {
+  margin: 0 0 12px;
+  font-size: clamp(2.4rem, 8vw, 3rem);
+  letter-spacing: 0.28em;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.landingTagline {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.landingTaglineMobile {
+  display: block;
+}
+
+.landingDesktopCopy {
+  display: none;
+}
+
+.landingBody {
+  margin: 0 0 24px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.landingDivider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0 0 20px;
+}
+
+.landingFeatures {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+  text-align: left;
+}
+
+.landingFeatures li {
+  padding: 10px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.landingFeatures li:last-child {
+  border-bottom: 0;
+}
+
+.landingActions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.landingActionsStack {
+  flex-direction: column;
+}
+
+.landingActionsMobile {
+  display: flex;
+}
+
+.landingActionsDesktop {
+  display: none;
+}
+
+.landingBtn {
+  width: 100%;
+}
+
+.landingSignInPrompt {
+  margin: 22px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.landingLinkBtn {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: var(--blue);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.landingLinkBtn:hover {
+  text-decoration: underline;
+}
+
+.landingInviteIcon {
+  font-size: 2.5rem;
+  line-height: 1;
+  margin-bottom: 16px;
+}
+
+.landingInviteLead {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.landingInviteLead strong {
+  color: var(--text);
+}
+
+.landingGroupName {
+  margin: 0 0 10px;
+  font-size: clamp(1.75rem, 6vw, 2.2rem);
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.landingStats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.landingStatDot {
+  opacity: 0.5;
+}
+
+.landingBackBtn {
+  display: inline-block;
+  margin-bottom: 16px;
+  border: 0;
+  background: none;
+  padding: 0;
+  color: var(--blue);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.landingBackBtn:hover {
+  text-decoration: underline;
+}
+
+.authCardEmbedded {
+  width: min(440px, 100%);
+}
+
+.authCardEmbeddedInner {
+  box-shadow: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.authEmbeddedTitle {
+  margin: 0 0 16px;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+}
+
+.homeLanding .legalFooter {
+  margin-top: 18px;
+}
+
+@media (min-width: 768px) {
+  .homeLanding {
+    width: min(720px, 100%);
+  }
+
+  .homeLandingCard {
+    padding: 40px 48px 28px;
+  }
+
+  .landingTaglineMobile,
+  .landingFeaturesMobile,
+  .landingDividerMobile,
+  .landingActionsMobile {
+    display: none !important;
+  }
+
+  .landingDesktopCopy {
+    display: block;
+  }
+
+  .landingTaglineDesktop {
+    font-size: 17px;
+    margin-bottom: 16px;
+  }
+
+  .landingActionsDesktop {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .landingActionsDesktop .landingBtn {
+    width: auto;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .landingDivider:not(.landingDividerMobile) {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .authGate {
+    align-items: flex-start;
+    padding: 20px 16px;
+  }
+
+  .homeLandingCard {
+    padding: 28px 22px 20px;
+  }
+}
+
 .avatarImg {
   object-fit: cover;
   flex: none;

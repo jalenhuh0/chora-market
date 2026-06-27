@@ -19,6 +19,7 @@ type Props = {
   userId: string;
   email: string | null;
   initialJoinCode?: string;
+  initialIntent?: "join" | "create";
   onGroupReady: (group: GroupInfo) => void;
   onSignOut: () => void;
 };
@@ -37,6 +38,7 @@ export function GroupGate({
   userId,
   email,
   initialJoinCode,
+  initialIntent,
   onGroupReady,
   onSignOut,
 }: Props) {
@@ -160,6 +162,7 @@ export function GroupGate({
           </div>
         )}
 
+        {!initialJoinCode && initialIntent !== "join" && (
         <div className="card" style={{ marginTop: 20, boxShadow: "none" }}>
           <h2>Create new group</h2>
           <label>Group name</label>
@@ -174,7 +177,9 @@ export function GroupGate({
             </button>
           </div>
         </div>
+        )}
 
+        {!initialJoinCode && initialIntent !== "create" && (
         <div className="card" style={{ marginTop: 16, boxShadow: "none" }}>
           <h2>Join with invite code</h2>
           <label>Invite code</label>
@@ -189,6 +194,7 @@ export function GroupGate({
             </button>
           </div>
         </div>
+        )}
 
         {error && <p className="small neg" style={{ marginTop: 12 }}>{error}</p>}
 

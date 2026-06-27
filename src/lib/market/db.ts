@@ -409,6 +409,35 @@ export async function getGroupByInviteCode(supabase: SupabaseClient, code: strin
   return row ?? null;
 }
 
+export type GroupInvitePreview = {
+  id: string;
+  name: string;
+  invite_code: string;
+  member_count: number;
+  resolved_bets: number;
+};
+
+export async function getGroupInvitePreview(
+  supabase: SupabaseClient,
+  code: string
+): Promise<GroupInvitePreview | null> {
+  const { data, error } = await supabase.rpc("lookup_group_invite_preview", {
+    p_code: code.trim(),
+  });
+
+  if (error) throw error;
+  const row = Array.isArray(data) ? data[0] : data;
+  if (!row) return null;
+
+  return {
+    id: row.id,
+    name: row.name,
+    invite_code: row.invite_code,
+    member_count: Number(row.member_count ?? 0),
+    resolved_bets: Number(row.resolved_bets ?? 0),
+  };
+}
+
 export async function isGroupMember(
   supabase: SupabaseClient,
   groupId: string,
@@ -488,7 +517,12 @@ export async function renameGroup(
   if (error) throw error;
 }
 
-export function inviteLink(code: string) {
-  if (typeof window === "undefined") return `/join/${code}`;
-  return `${window.location.origin}/join/${code}`;
+export function inviteLink(code: string, ref?: string) {
+  const path = `/join/${encodeURIComponent(code)}`;
+  if (typeof window === "undefined") {
+    return ref ? `${path}?ref=${encodeURIComponent(ref)}` : path;
+  }
+  const url = new URL(path, window.location.origin);
+  if (ref?.trim()) url.searchParams.set("ref", ref.trim());
+  return url.toString();
 }

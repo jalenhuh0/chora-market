@@ -7,7 +7,13 @@ import ChoraMarketApp from "@/components/ChoraMarketApp";
 import { clearActiveGroupId, getActiveGroupId, setActiveGroupId } from "@/lib/storage";
 import { AuthForm } from "@/components/AuthForm";
 import { GroupGate } from "@/components/GroupGate";
-import { getGroupByInviteCode, isGroupMember } from "@/lib/market/db";
+import { HomeLanding } from "@/components/HomeLanding";
+import {
+  getGroupByInviteCode,
+  getGroupInvitePreview,
+  isGroupMember,
+  type GroupInvitePreview,
+} from "@/lib/market/db";
 import { APP_NAME } from "@/lib/market/defaults";
 
 type GroupInfo = {
@@ -16,10 +22,13 @@ type GroupInfo = {
   invite_code: string;
 };
 
+type PostAuthIntent = "join" | "create" | null;
+
 export default function HomeClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const joinCode = searchParams.get("join");
+  const inviterRef = searchParams.get("ref");
 
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
@@ -27,8 +36,35 @@ export default function HomeClient() {
   const [group, setGroup] = useState<GroupInfo | null>(null);
   const [showGroupGate, setShowGroupGate] = useState(false);
   const [pendingInvite, setPendingInvite] = useState<string | null>(null);
+  const [showAuth, setShowAuth] = useState(false);
+  const [authMode, setAuthMode] = useState<"login" | "signup">("signup");
+  const [postAuthIntent, setPostAuthIntent] = useState<PostAuthIntent>(null);
+  const [invitePreview, setInvitePreview] = useState<GroupInvitePreview | null>(null);
+  const [previewLoading, setPreviewLoading] = useState(false);
 
   const supabase = createClient();
+
+  const loadInvitePreview = useCallback(async (code: string) => {
+    setPreviewLoading(true);
+    try {
+      const preview = await getGroupInvitePreview(supabase, code);
+      setInvitePreview(preview);
+    } catch (e) {
+      console.error("invite preview failed", e);
+      setInvitePreview(null);
+    } finally {
+      setPreviewLoading(false);
+    }
+  }, [supabase]);
+
+  useEffect(() => {
+    const code = joinCode?.trim().toUpperCase();
+    if (!code) {
+      setInvitePreview(null);
+      return;
+    }
+    void loadInvitePreview(code);
+  }, [joinCode, loadInvitePreview]);
 
   const loadSession = useCallback(async () => {
     const {
@@ -44,6 +80,8 @@ export default function HomeClient() {
       setLoading(false);
       return;
     }
+
+    setShowAuth(false);
 
     try {
       const { ensureUserProfile } = await import("@/lib/market/db");
@@ -70,7 +108,6 @@ export default function HomeClient() {
             return;
           }
 
-          // Invite link takes priority over a previously opened group.
           setGroup(null);
           setShowGroupGate(true);
           setLoading(false);
@@ -122,6 +159,8 @@ export default function HomeClient() {
     setGroup(null);
     setShowGroupGate(true);
     setPendingInvite(null);
+    setShowAuth(false);
+    setPostAuthIntent(null);
     router.push("/");
   };
 
@@ -130,6 +169,7 @@ export default function HomeClient() {
     setGroup(g);
     setShowGroupGate(false);
     setPendingInvite(null);
+    setPostAuthIntent(null);
     router.replace("/");
   };
 
@@ -138,6 +178,17 @@ export default function HomeClient() {
     setGroup(null);
     setShowGroupGate(true);
     setPendingInvite(null);
+  };
+
+  const openSignup = (intent: PostAuthIntent) => {
+    setAuthMode("signup");
+    setPostAuthIntent(intent);
+    setShowAuth(true);
+  };
+
+  const openSignIn = () => {
+    setAuthMode("login");
+    setShowAuth(true);
   };
 
   if (loading) {
@@ -152,13 +203,36 @@ export default function HomeClient() {
   }
 
   if (!userId) {
+    if (showAuth) {
+      return (
+        <div className="authGate">
+          <div className="authCard authCardEmbedded">
+            <button type="button" className="landingBackBtn small" onClick={() => setShowAuth(false)}>
+              ← Back
+            </button>
+            <AuthForm
+              embedded
+              initialMode={authMode}
+              joinCode={joinCode || undefined}
+              onSuccess={() => loadSession()}
+            />
+          </div>
+        </div>
+      );
+    }
+
+    const code = joinCode?.trim().toUpperCase();
+    const showInviteLanding = !!code && (previewLoading || invitePreview);
+
     return (
       <div className="authGate">
-        <AuthForm
-          initialMode={joinCode ? "signup" : "login"}
-          joinHint={joinCode ? `Invite code: ${joinCode.toUpperCase()}` : undefined}
-          joinCode={joinCode || undefined}
-          onSuccess={() => loadSession()}
+        <HomeLanding
+          invitePreview={showInviteLanding ? invitePreview : null}
+          inviterName={inviterRef?.trim() || undefined}
+          previewLoading={!!code && previewLoading}
+          onJoin={() => openSignup(code ? "join" : "join")}
+          onCreate={() => openSignup("create")}
+          onSignIn={openSignIn}
         />
       </div>
     );
@@ -171,6 +245,7 @@ export default function HomeClient() {
           userId={userId}
           email={email}
           initialJoinCode={pendingInvite || joinCode || undefined}
+          initialIntent={postAuthIntent || (joinCode ? "join" : undefined)}
           onGroupReady={handleGroupSelected}
           onSignOut={handleSignOut}
         />

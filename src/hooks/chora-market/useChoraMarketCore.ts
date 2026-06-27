@@ -179,14 +179,18 @@ export function useChoraMarketCore({
   }, []);
 
   const copyInviteLink = useCallback(async () => {
-    const link = inviteLink(inviteCode);
+    const ref =
+      profile?.display_name?.trim() ||
+      groupMembers.find((m) => m.user_id === userId)?.ledger_name?.trim() ||
+      undefined;
+    const link = inviteLink(inviteCode, ref);
     try {
       await navigator.clipboard.writeText(link);
       showToast("Invite link copied.");
     } catch {
       showToast(link);
     }
-  }, [inviteCode, showToast]);
+  }, [inviteCode, profile?.display_name, groupMembers, userId, showToast]);
 
   const showPersonDetail = useCallback((person: string) => setPersonModal(person), []);
   const closePersonDetail = useCallback(() => setPersonModal(null), []);

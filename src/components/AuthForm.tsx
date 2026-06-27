@@ -12,10 +12,11 @@ type Props = {
   initialMode?: "login" | "signup";
   joinHint?: string;
   joinCode?: string;
+  embedded?: boolean;
   onSuccess?: () => void;
 };
 
-export function AuthForm({ initialMode = "login", joinHint, joinCode, onSuccess }: Props) {
+export function AuthForm({ initialMode = "login", joinHint, joinCode, embedded, onSuccess }: Props) {
   const router = useRouter();
   const supabase = createClient();
 
@@ -88,7 +89,8 @@ export function AuthForm({ initialMode = "login", joinHint, joinCode, onSuccess 
   };
 
   return (
-    <div className="authCard">
+    <div className={`authCard${embedded ? " authCardEmbeddedInner" : ""}`}>
+      {!embedded && (
       <div className="brand" style={{ marginBottom: 20 }}>
         <div className="logo">CM</div>
         <div>
@@ -96,6 +98,11 @@ export function AuthForm({ initialMode = "login", joinHint, joinCode, onSuccess 
           <div className="sub">Sign in to your friend group economy</div>
         </div>
       </div>
+      )}
+
+      {embedded && (
+        <h2 className="authEmbeddedTitle">{mode === "login" ? "Sign in" : "Create account"}</h2>
+      )}
 
       {joinHint && <p className="pill" style={{ marginBottom: 16 }}>{joinHint}</p>}
 
@@ -229,7 +236,7 @@ export function AuthForm({ initialMode = "login", joinHint, joinCode, onSuccess 
         </div>
       </form>
       )}
-      <LegalFooter />
+      {!embedded && <LegalFooter />}
     </div>
   );
 }
