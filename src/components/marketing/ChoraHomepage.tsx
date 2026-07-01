@@ -227,25 +227,25 @@ export function ChoraHomepage({ onJoin, onCreate, onSignIn }: CtaProps) {
         </section>
 
         <section className="marketingSection">
-          <div className="card marketingCompare">
-            <h2 className="marketingSectionTitle">Group chat vs Chora</h2>
-            <div className="marketingCompareGrid">
-              <div className="marketingCompareCol">
-                <h3 className="marketingCompareLabel muted">Group chat</h3>
-                <ul className="marketingCompareList">
-                  <li>Odds argued every time</li>
-                  <li>IOUs lost in scrollback</li>
-                  <li>No scoreboard for who&apos;s sharp</li>
-                </ul>
-              </div>
-              <div className="marketingCompareCol marketingCompareColChora">
-                <h3 className="marketingCompareLabel">Chora</h3>
-                <ul className="marketingCompareList">
-                  <li>One vote sets fair odds</li>
-                  <li>Open IOUs with ongoing status</li>
-                  <li>Leaderboards update on resolve</li>
-                </ul>
-              </div>
+          <div className="marketingSectionHead">
+            <p className="marketingEyebrow">Why not just the group chat?</p>
+            <h2 className="marketingSectionTitle">Chora keeps the record straight</h2>
+          </div>
+          <div className="marketingCompareRows card">
+            <div className="marketingCompareRow">
+              <span className="marketingCompareTopic">Odds</span>
+              <span className="marketingCompareBefore muted">Argued every time</span>
+              <span className="marketingCompareAfter">One community vote</span>
+            </div>
+            <div className="marketingCompareRow">
+              <span className="marketingCompareTopic">IOUs</span>
+              <span className="marketingCompareBefore muted">Lost in scrollback</span>
+              <span className="marketingCompareAfter">Tracked until settled</span>
+            </div>
+            <div className="marketingCompareRow">
+              <span className="marketingCompareTopic">Reputation</span>
+              <span className="marketingCompareBefore muted">No scoreboard</span>
+              <span className="marketingCompareAfter">Leaderboards on resolve</span>
             </div>
           </div>
         </section>

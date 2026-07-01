@@ -1200,6 +1200,8 @@ button {
 .authGateMarketing {
   align-items: stretch;
   justify-content: flex-start;
+  flex-direction: column;
+  width: 100%;
   padding: 0;
 }
 
@@ -1215,7 +1217,8 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
+  flex-wrap: wrap;
   padding: 18px 0 8px;
   position: sticky;
   top: 0;
@@ -1277,6 +1280,17 @@ button {
   align-items: center;
   padding: 16px 0 8px;
   text-align: center;
+}
+
+.marketingHeroCopy {
+  min-width: 0;
+}
+
+.marketingHeroVisual {
+  min-width: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .marketingEyebrow {
@@ -1475,6 +1489,7 @@ button {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  scroll-margin-top: 72px;
 }
 
 .marketingSectionHead {
@@ -1544,72 +1559,69 @@ button {
   margin-bottom: 10px;
 }
 
-.marketingCompare {
-  padding: 22px 18px;
+.marketingCompareRows {
+  padding: 4px 0;
+  overflow: hidden;
 }
 
-.marketingCompare .marketingSectionTitle {
-  text-align: center;
-  margin-bottom: 16px;
-}
-
-.marketingCompareGrid {
+.marketingCompareRow {
   display: grid;
-  gap: 16px;
-}
-
-.marketingCompareCol {
-  padding: 16px;
-  border-radius: 16px;
-  background: rgba(0, 0, 0, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.marketingCompareColChora {
-  border-color: rgba(67, 209, 122, 0.25);
-  background: rgba(67, 209, 122, 0.06);
-}
-
-.marketingCompareLabel {
-  margin: 0 0 12px;
+  grid-template-columns: minmax(72px, auto) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px 16px;
+  align-items: center;
+  padding: 14px 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   font-size: 14px;
+  line-height: 1.45;
+}
+
+.marketingCompareRow:first-child {
+  border-top: 0;
+}
+
+.marketingCompareTopic {
   font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.02em;
 }
 
-.marketingCompareList {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  font-size: 14px;
-  color: var(--muted);
-  line-height: 1.5;
+.marketingCompareBefore {
+  text-decoration: line-through;
+  text-decoration-color: rgba(255, 100, 100, 0.45);
 }
 
-.marketingCompareColChora .marketingCompareList {
-  color: var(--text);
-}
-
-.marketingCompareList li {
-  position: relative;
-  padding-left: 18px;
-}
-
-.marketingCompareList li::before {
-  content: "ΓÇö";
-  position: absolute;
-  left: 0;
-  color: var(--muted);
-}
-
-.marketingCompareColChora .marketingCompareList li::before {
-  content: "Γ£ô";
+.marketingCompareAfter {
+  font-weight: 700;
   color: var(--green);
-  font-weight: 900;
+}
+
+@media (max-width: 767px) {
+  .marketingCompareRow {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 16px 18px;
+  }
+
+  .marketingCompareBefore {
+    font-size: 13px;
+  }
+
+  .marketingCompareAfter::before {
+    content: "→ ";
+    color: var(--muted);
+    font-weight: 600;
+  }
+}
+
+@media (max-width: 900px) and (min-width: 641px) {
+  .marketingCompareRow {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .marketingCompareTopic {
+    margin-bottom: 2px;
+  }
 }
 
 .marketingStory {
@@ -1655,6 +1667,7 @@ button {
   max-width: 1080px;
   margin: 0 auto;
   padding: 16px 16px 0;
+  box-sizing: border-box;
 }
 
 .marketingInvite {
@@ -1703,10 +1716,14 @@ button {
   }
 
   .marketingHero {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 36px;
     text-align: left;
     padding: 20px 0 12px;
+  }
+
+  .marketingHeroVisual {
+    justify-content: flex-end;
   }
 
   .marketingHeroSubtitle {
@@ -1726,8 +1743,8 @@ button {
 
   .marketingActions .btn {
     width: auto;
-    flex: 1;
-    min-width: 150px;
+    flex: 1 1 150px;
+    min-width: 0;
   }
 
   .marketingActionsCenter {
@@ -1745,14 +1762,6 @@ button {
 
   .marketingSteps {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .marketingCompareGrid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .marketingCompare {
-    padding: 24px;
   }
 }
 
